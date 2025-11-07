@@ -1,0 +1,67 @@
+.calendar-container {
+  @apply bg-white rounded-lg border p-4;
+}
+
+/* FullCalendar Custom Styles */
+.fc {
+  font-family: inherit;
+}
+
+.fc .fc-button {
+  @apply bg-zinc-900 border-zinc-900 text-white hover:bg-zinc-800 hover:border-zinc-800;
+  text-transform: capitalize;
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  @apply bg-zinc-800 border-zinc-800;
+}
+
+.fc .fc-toolbar-title {
+  @apply text-xl font-semibold;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  @apply border-zinc-200;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  @apply border-zinc-200;
+}
+
+.fc .fc-daygrid-day-number {
+  @apply text-sm p-2;
+}
+
+.fc .fc-col-header-cell {
+  @apply bg-zinc-50 font-semibold text-sm;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  @apply bg-blue-50;
+}
+
+.fc-event {
+  @apply cursor-pointer border-0;
+  font-size: 12px;
+  padding: 2px 4px;
+}
+
+.fc-event:hover {
+  opacity: 0.9;
+}
+
+.fc .fc-daygrid-event-dot {
+  @apply border-white;
+}
+
+.fc-timegrid-slot {
+  @apply text-xs;
+}
+
+.fc-timegrid-slot-label {
+  @apply text-zinc-600;
+}
+

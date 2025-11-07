@@ -1,278 +1,249 @@
-# 🧭 MindGraphy
+# MindGraphy Frontend
 
-> Comprehensive Wedding Photography Management System
+> 웨딩 촬영 관리 시스템 - Production-Ready 프로토타입
 
-MindGraphy는 웨딩 촬영 서비스를 위한 올인원 관리 시스템입니다. 예약부터 계약, 촬영, 편집, 배송, 백업까지 모든 워크플로우를 하나의 생태계에서 관리합니다.
+Next.js App Router 기반의 듀얼 포털 웹 애플리케이션입니다.
 
----
+## 🚀 Quick Start
 
-## 📋 Project Structure
+### 개발 서버 실행
 
-```
-mindgraphy/
-├── README.md
-├── PROJECT_OVERVIEW.md           # 시스템 개요 및 주요 기능
-├── TECH_STACK.md                 # 기술 스택 상세
-├── DATABASE_SCHEMA.md            # 데이터베이스 스키마 설계
-├── API_ENDPOINTS.md              # REST API 엔드포인트 명세
-├── DEVELOPMENT_ROADMAP.md        # 개발 로드맵 (16-20주)
-├── .cursorrules                  # Cursor 개발 가이드라인
-├── frontend/                     # React + Next.js (예정)
-├── backend/                      # Nest.js (예정)
-└── infrastructure/               # AWS CDK/Terraform (예정)
+```bash
+npm run dev
 ```
 
----
+브라우저에서 [http://localhost:3000](http://localhost:3000) 을 열어 확인하세요.
 
-## 🎯 Core Features
+### 빌드
 
-### Client Portal (고객용 포털)
-- 🔐 토큰 기반 보안 접근
-- 📝 디지털 계약서 및 전자서명
-- 📷 프루프 갤러리 (사진 선택 & 코멘트)
-- 📥 최종 사진 다운로드
-- 💳 결제 상태 추적
-- 📱 모바일 최적화
+```bash
+npm run build
+```
 
-### Back Office (내부 업무 시스템)
-- 📅 **스케줄 캘린더** (중심 기능)
-  - 드래그 앤 드롭 배정
-  - 다중 뷰 (Month/Week/Day/Timeline)
-  - 사진작가별 개인 뷰
-  - 실시간 동기화
-- 👥 CRM & 예약 관리
-- 📄 계약 관리
-- 👨‍💼 사진작가 관리
-- 🎨 편집 큐 관리
-- 📦 배송 & 백업
-- 📊 분석 대시보드
-- 🔔 자동화 알림 시스템
+### 프로덕션 실행
 
----
+```bash
+npm start
+```
 
-## 🛠️ Technology Stack
+## 📂 프로젝트 구조
 
-### Frontend
-- **Framework**: React 18+ with Next.js 14+ (App Router)
+```
+frontend/
+├── app/
+│   ├── (public)/              # Public 그룹
+│   │   └── page.tsx           # Landing page (/)
+│   ├── (client)/              # Client Portal 그룹
+│   │   └── c/[token]/         # 토큰 기반 라우팅
+│   │       ├── page.tsx       # 클라이언트 대시보드
+│   │       ├── contract/      # 계약서
+│   │       ├── proof-gallery/ # 프루프 갤러리
+│   │       ├── download/      # 다운로드
+│   │       └── payment/       # 결제 정보
+│   ├── (admin)/               # Admin 그룹
+│   │   └── admin/             # Back Office
+│   │       ├── dashboard/     # 관리자 대시보드
+│   │       ├── calendar/      # 스케줄 캘린더
+│   │       ├── projects/      # 프로젝트 관리
+│   │       └── ...            # 기타 관리 페이지
+│   ├── layout.tsx             # Root 레이아웃
+│   ├── not-found.tsx          # 404 페이지
+│   └── globals.css            # 전역 스타일
+├── components/
+│   ├── ui/                    # shadcn/ui 컴포넌트
+│   ├── common/                # 공통 컴포넌트
+│   │   ├── progress-bar.tsx
+│   │   ├── dday-badge.tsx
+│   │   └── empty-state.tsx
+│   ├── layout/                # 레이아웃 컴포넌트
+│   │   ├── admin-nav.tsx
+│   │   ├── admin-layout.tsx
+│   │   ├── client-portal-nav.tsx
+│   │   └── client-portal-layout.tsx
+│   └── calendar/              # 캘린더 컴포넌트 (준비중)
+├── lib/
+│   ├── types.ts               # TypeScript 타입 정의
+│   ├── mock-data.ts           # 목업 데이터
+│   ├── constants.ts           # 상수 및 라우트
+│   └── utils.ts               # 유틸리티 함수
+└── public/                    # 정적 파일
+```
+
+## 🎯 주요 기능
+
+### Landing Page (/)
+
+- 두 개의 큰 카드로 포털 선택
+- Client Portal과 Back Office로 명확한 분기
+- 모던하고 반응형 디자인
+
+### Client Portal (`/c/[token]`)
+
+**토큰 기반 접근 (MVP에서는 로그인 없음)**
+
+- **대시보드**: 
+  - D-Day 카운터 (커플의 결혼식까지 남은 날짜)
+  - 진행 상황 (Milestone 추적)
+  - 다음 단계 안내
+  - 빠른 링크
+- **계약서**: 계약 내용 확인 (플레이스홀더)
+- **프루프 갤러리**: 
+  - 그리드 레이아웃 사진 선택
+  - 최대 50장 선택 가능
+  - 진행률 바 및 선택 카운터
+- **다운로드**: 최종 사진 다운로드 (플레이스홀더)
+- **결제 정보**: 결제 내역 및 영수증 (플레이스홀더)
+
+### Back Office (`/admin`)
+
+**내부 업무 시스템 (향후 역할 기반 권한 추가 예정)**
+
+- **대시보드**: 
+  - 프로젝트 현황 통계
+  - 매출, 전환율, 만족도 지표
+  - 예정된 프로젝트 및 일정
+  - 프루프 대기, 편집 큐 현황
+- **스케줄 캘린더**: FullCalendar 통합 준비 (플레이스홀더)
+- **프로젝트 관리**: 
+  - 프로젝트 목록 및 상태
+  - 진행률 추적
+  - D-Day 표시
+- **고객 관리**: CRM 기능 (준비중)
+- **계약서 관리**: 계약 및 전자서명 (준비중)
+- **사진작가 관리**: 배정 및 스케줄 (준비중)
+- **사진 관리**: 업로드 및 앨범 (준비중)
+- **편집 큐**: 편집 작업 관리 (준비중)
+- **배송 관리**: 배송 및 다운로드 링크 (준비중)
+- **분석**: 성과 분석 대시보드 (준비중)
+
+## 🛠 기술 스택
+
+- **Framework**: Next.js 14+ (App Router)
 - **Language**: TypeScript
-- **Styling**: TailwindCSS + shadcn/ui
-- **Calendar**: FullCalendar.js
-- **State**: React Query (TanStack Query)
-- **Forms**: React Hook Form + Zod
+- **Styling**: TailwindCSS
+- **UI Components**: shadcn/ui
+- **Icons**: Lucide React
+- **Calendar**: FullCalendar (설치됨, 통합 준비중)
+- **Date Utils**: date-fns
+- **State**: React Hooks + URL SearchParams (필터/뷰 지속성)
 
-### Backend
-- **Framework**: Nest.js with TypeScript
-- **Database**: PostgreSQL (AWS RDS) + Prisma/TypeORM
-- **High-Frequency**: DynamoDB
-- **Cache**: Redis (AWS ElastiCache)
-- **API Docs**: Swagger (OpenAPI)
+## 🎨 디자인 시스템
 
-### Infrastructure (AWS)
-- **Compute**: ECS Fargate + Lambda
-- **Storage**: S3 + Glacier
-- **CDN**: CloudFront
-- **Auth**: Cognito
-- **Messaging**: SES (Email), SNS (SMS), SQS (Queue)
-- **Monitoring**: CloudWatch, X-Ray, CloudTrail
+### Colors
+- Primary: Zinc-900 (거의 검은색)
+- Background: Zinc-50 (밝은 회색)
+- Borders: Zinc-200
 
----
+### Components
+- shadcn/ui 기반 (Button, Card, Badge, Input, Avatar 등)
+- 공통 컴포넌트:
+  - `ProgressBar`: 진행률 표시
+  - `DdayBadge`: D-Day 카운터 배지
+  - `EmptyState`: 빈 상태 플레이스홀더
 
-## 🚀 Getting Started
+### Typography
+- System fonts
+- Headings: Bold, tracking-tight
+- Body: Regular, muted-foreground
 
-### Prerequisites
+## 📱 반응형 디자인
 
-- Node.js 18+
-- Docker & Docker Compose
-- AWS CLI configured
-- PostgreSQL 14+ (or use Docker)
-- Git
+- Mobile: 375px+ (우선순위)
+- Tablet: 768px+ (md breakpoint)
+- Desktop: 1024px+ (lg breakpoint)
+- Max Width: 7xl (1280px)
 
-### Installation
+## 🔗 라우팅 구조
 
-```bash
-# Clone the repository
-git clone https://github.com/your-org/mindgraphy.git
-cd mindgraphy
+### Public Routes
+- `/` - Landing page
 
-# Install dependencies (예정)
-# npm install
+### Client Portal Routes (Token-gated)
+- `/c/[token]` - 클라이언트 대시보드
+- `/c/[token]/contract` - 계약서
+- `/c/[token]/proof-gallery` - 프루프 갤러리
+- `/c/[token]/download` - 다운로드
+- `/c/[token]/payment` - 결제 정보
 
-# Set up environment variables
-# cp .env.example .env
-# Edit .env with your configuration
+**Demo Token**: `demo-token-2025` (상수로 정의됨)
 
-# Run database migrations
-# npm run migrate
+### Admin Routes (Role-based guard 준비중)
+- `/admin/dashboard` - 관리자 대시보드
+- `/admin/calendar` - 스케줄 캘린더
+- `/admin/projects` - 프로젝트 관리
+- `/admin/customers` - 고객 관리
+- `/admin/contracts` - 계약서 관리
+- `/admin/photographers` - 사진작가 관리
+- `/admin/photos` - 사진 관리
+- `/admin/editing` - 편집 큐
+- `/admin/delivery` - 배송 관리
+- `/admin/analytics` - 분석
 
-# Start development servers
-# npm run dev
-```
+### Special Routes
+- `/not-found` - 404 페이지 (자동 처리)
 
----
+## 📊 목업 데이터
 
-## 📚 Documentation
+모든 데이터는 `lib/mock-data.ts`에서 관리:
 
-- [Project Overview](./PROJECT_OVERVIEW.md) - 시스템 개요 및 원칙
-- [Tech Stack](./TECH_STACK.md) - 기술 스택 상세 정보
-- [Database Schema](./DATABASE_SCHEMA.md) - 데이터베이스 설계
-- [API Endpoints](./API_ENDPOINTS.md) - REST API 명세
-- [Development Roadmap](./DEVELOPMENT_ROADMAP.md) - 16-20주 개발 계획
-- [Cursor Rules](./.cursorrules) - 코딩 가이드라인
+- 5명의 사용자 (관리자, 매니저, 사진작가 2명, 편집자)
+- 3개의 고객 (웨딩 커플)
+- 2개의 계약서
+- 3개의 프로젝트 (진행 중, 편집 중, 예정)
+- 4개의 캘린더 이벤트
+- 대시보드 통계 데이터
+- 사진작가 정보
+- 편집 큐 데이터
 
----
+## 🔧 상수 관리
 
-## 🗓️ Development Phases
+`lib/constants.ts`에서 중앙 관리:
 
-| Phase | Duration | Focus |
-|-------|----------|-------|
-| Phase 1 | Week 1-2 | Foundation & Setup |
-| Phase 2 | Week 3-4 | Authentication & Users |
-| Phase 3 | Week 5-6 | CRM & Contracts |
-| Phase 4 | Week 7 | Payments |
-| Phase 5 | Week 8-10 | Projects & **Schedule Calendar** |
-| Phase 6 | Week 11 | Photographer Management |
-| Phase 7 | Week 12-13 | Photo Management & Proof Gallery |
-| Phase 8 | Week 14 | Editing Workflow |
-| Phase 9 | Week 15 | Delivery & Backup |
-| Phase 10 | Week 16 | Client Portal |
-| Phase 11 | Week 17 | Notifications |
-| Phase 12 | Week 18 | Analytics & Reporting |
-| Phase 13 | Week 19 | Testing & QA |
-| Phase 14 | Week 20 | Deployment & Launch |
+- `DEMO_TOKEN`: 데모용 토큰
+- `ROUTES`: 모든 라우트 경로
+- `SETTINGS`: 시스템 설정 (최대 선택 수 등)
+- `PROJECT_STATUSES`: 프로젝트 상태 목록
+- `CONTRACT_STATUSES`: 계약 상태 목록
 
----
+## 🚧 구현 대기 중
 
-## 🏗️ Architecture Principles
+- [ ] FullCalendar 통합 (설치됨, 컴포넌트 준비 필요)
+- [ ] 실제 백엔드 API 연동
+- [ ] 인증 및 권한 관리 (Admin guard)
+- [ ] 토큰 검증 로직
+- [ ] 실시간 업데이트 (WebSocket)
+- [ ] 파일 업로드 (S3 연동)
+- [ ] 이메일/SMS 알림
+- [ ] 고급 검색 및 필터링
+- [ ] 페이지네이션
+- [ ] 다크 모드 (준비됨)
+- [ ] 다국어 지원
 
-1. **Calendar-Centric**: 모든 활동이 중앙 스케줄 캘린더에 매핑
-2. **All-in-One Workflow**: 예약 → 촬영 → 편집 → 배송 전체 프로세스 통합
-3. **Dual Experience**: 고객용 포털 + 내부 업무 시스템
-4. **Mobile-First**: 양쪽 플랫폼 모두 모바일 최적화
-5. **Automation**: 반복 작업의 자동화 (알림, 백업, 워크플로우)
-6. **Data-Driven**: 분석 및 성과 추적
+## ✅ 구현 완료
 
----
+- [x] Next.js 14 App Router 구조
+- [x] TypeScript 설정
+- [x] TailwindCSS + shadcn/ui
+- [x] Route Groups (public, client, admin)
+- [x] 토큰 기반 라우팅 (`/c/[token]`)
+- [x] Landing page with branching
+- [x] Client Portal 기본 페이지
+- [x] Admin Dashboard
+- [x] 공통 컴포넌트 (ProgressBar, DdayBadge, EmptyState)
+- [x] 404 페이지
+- [x] 반응형 레이아웃
+- [x] Mock 데이터 구조
+- [x] 상수 관리 시스템
 
-## 🔐 Security
-
-- HTTPS only in production
-- JWT-based authentication
-- AWS Cognito for user management
-- Role-based access control (RBAC)
-- Data encryption at rest and in transit
-- Regular security audits
-- OWASP Top 10 compliance
-
----
-
-## 📊 Performance Targets
-
-- **First Contentful Paint (FCP)**: < 1.5s
-- **Largest Contentful Paint (LCP)**: < 2.5s
-- **Time to Interactive (TTI)**: < 3.5s
-- **API Response Time**: < 500ms (P95)
-
----
-
-## 🧪 Testing
-
-```bash
-# Run unit tests
-# npm run test
-
-# Run integration tests
-# npm run test:integration
-
-# Run E2E tests
-# npm run test:e2e
-
-# Check coverage
-# npm run test:coverage
-```
-
----
-
-## 🚢 Deployment
-
-### Development
-```bash
-# npm run deploy:dev
-```
-
-### Staging
-```bash
-# npm run deploy:staging
-```
-
-### Production
-```bash
-# npm run deploy:prod
-```
-
----
-
-## 🤝 Contributing
-
-This is a private project. If you're part of the development team:
-
-1. Create a feature branch from `develop`
-2. Follow the guidelines in `.cursorrules`
-3. Write tests for new features
-4. Submit a pull request
-5. Wait for code review and approval
-
----
-
-## 📝 License
+## 📄 라이센스
 
 Proprietary - All rights reserved
 
----
+## 👥 팀
 
-## 📞 Contact
-
-- **Project Lead**: [Name]
-- **Email**: [email@example.com]
-- **Slack**: [workspace]
+MindGraphy Development Team
 
 ---
 
-## 🗂️ Quick Links
-
-- [API Documentation](http://localhost:3000/api/docs) (when running)
-- [Swagger Spec](http://localhost:3000/api/docs-json)
-- AWS Console
-- Sentry Dashboard
-- Analytics Dashboard
-
----
-
-## 📈 Current Status
-
-**Status**: 🚧 In Planning Phase
-
-- [x] Project Overview Complete
-- [x] Tech Stack Defined
-- [x] Database Schema Designed
-- [x] API Endpoints Designed
-- [x] Development Roadmap Created
-- [ ] Infrastructure Setup
-- [ ] Backend Development
-- [ ] Frontend Development
-- [ ] Testing
-- [ ] Deployment
-
----
-
-## 🎯 Next Steps
-
-1. Review and approve all planning documents
-2. Assemble development team
-3. Set up AWS infrastructure
-4. Initialize frontend and backend repositories
-5. Begin Phase 1: Foundation & Setup
-
----
-
-**Last Updated**: November 3, 2025
-
+**버전**: 1.0.0 (Production-Ready Prototype)  
+**최종 업데이트**: 2025-11-03
