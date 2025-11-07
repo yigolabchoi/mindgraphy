@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { use } from 'react'
 import { ClientPortalLayout } from '@/components/layout/client-portal-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'

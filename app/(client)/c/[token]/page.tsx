@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { use } from 'react'
 import { redirect } from 'next/navigation'
 import { ClientPortalLayout } from '@/components/layout/client-portal-layout'
