@@ -88,12 +88,12 @@ export const mockPhotographers: Photographer[] = [
 ]
 
 // Status color mapping
-const statusColors: Record<ScheduleStatus, { bg: string; border: string; text: string }> = {
-  reserved: { bg: '#dbeafe', border: '#3b82f6', text: '#1e40af' },
-  in_progress: { bg: '#fef3c7', border: '#f59e0b', text: '#92400e' },
-  editing: { bg: '#e9d5ff', border: '#a855f7', text: '#6b21a8' },
-  completed: { bg: '#d1fae5', border: '#10b981', text: '#065f46' },
-  cancelled: { bg: '#f3f4f6', border: '#9ca3af', text: '#4b5563' }
+const statusColors: Record<ScheduleStatus, { backgroundColor: string; borderColor: string; textColor: string }> = {
+  reserved: { backgroundColor: '#dbeafe', borderColor: '#3b82f6', textColor: '#1e40af' },
+  in_progress: { backgroundColor: '#fef3c7', borderColor: '#f59e0b', textColor: '#92400e' },
+  editing: { backgroundColor: '#e9d5ff', borderColor: '#a855f7', textColor: '#6b21a8' },
+  completed: { backgroundColor: '#d1fae5', borderColor: '#10b981', textColor: '#065f46' },
+  cancelled: { backgroundColor: '#f3f4f6', borderColor: '#9ca3af', textColor: '#4b5563' }
 }
 
 const today = new Date()

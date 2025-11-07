@@ -25,7 +25,7 @@ export const clientInfoSchema = z.object({
   
   // Step 3: Makeup Information
   makeupType: z.enum(['in-house', 'external', 'none'], {
-    required_error: '메이크업 유형을 선택해주세요'
+    message: '메이크업 유형을 선택해주세요'
   }),
   makeupLocation: z.string().max(200).optional().or(z.literal('')),
   makeupNotes: z.string().max(500).optional().or(z.literal('')),

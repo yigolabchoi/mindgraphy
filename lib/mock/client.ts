@@ -176,11 +176,11 @@ export const mockClientData: Record<string, ClientPortalData> = {
     currentStep: 'contract',
     steps: {
       contract: {
-        status: 'in_progress',
-        deadline: format(addDays(today, 2), 'yyyy-MM-dd') // D-2! Urgent
+        status: 'in_progress'
       },
       info: {
-        status: 'pending'
+        status: 'pending',
+        deadline: format(addDays(today, 2), 'yyyy-MM-dd') // D-2! Urgent
       },
       proof: {
         status: 'pending'
@@ -381,8 +381,9 @@ export const getNextStepCTA = (data: ClientPortalData): {
   for (const step of stepOrder) {
     const stepData = data.steps[step]
     if (stepData.status === 'in_progress' || stepData.status === 'overdue') {
-      const isUrgent = stepData.deadline 
-        ? isDeadlineNear(stepData.deadline) || isDeadlineOverdue(stepData.deadline)
+      const deadline = 'deadline' in stepData ? stepData.deadline : undefined
+      const isUrgent = deadline 
+        ? isDeadlineNear(deadline) || isDeadlineOverdue(deadline)
         : false
       
       return {

@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import { getClientDataByToken } from '@/lib/mock/client'
 import { getDaysUntilDeadline, isDeadlineNear, isDeadlineOverdue } from '@/lib/mock/client'
+import { ROUTES } from '@/lib/constants'
 import {
   generateMockProofPhotos,
   getCategoryLabel,

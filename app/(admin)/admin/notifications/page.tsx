@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { AdminLayout } from '@/components/layout/admin-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -27,7 +27,7 @@ import { cn } from '@/lib/utils'
 import { formatDistanceToNow } from 'date-fns'
 import { ko } from 'date-fns/locale'
 
-export default function NotificationsPage() {
+function NotificationsContent() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -456,3 +456,10 @@ export default function NotificationsPage() {
   )
 }
 
+export default function NotificationsPage() {
+  return (
+    <Suspense fallback={<AdminLayout><NotificationListSkeleton /></AdminLayout>}>
+      <NotificationsContent />
+    </Suspense>
+  )
+}

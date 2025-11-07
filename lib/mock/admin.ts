@@ -201,7 +201,7 @@ export const mockNotifications: Notification[] = [
   // Urgent - Unassigned
   {
     id: 'notif-1',
-    type: 'assign',
+    type: 'assignment',
     title: '미배정 촬영 일정',
     message: '이철수 & 박민지 커플의 오늘 촬영이 아직 사진작가에게 배정되지 않았습니다.',
     relatedEntityType: 'schedule',
@@ -213,7 +213,7 @@ export const mockNotifications: Notification[] = [
   },
   {
     id: 'notif-2',
-    type: 'assign',
+    type: 'assignment',
     title: '미배정 촬영 일정',
     message: '정우성 & 한가인 커플의 촬영(D-2)이 아직 배정되지 않았습니다.',
     relatedEntityType: 'schedule',
@@ -303,7 +303,7 @@ export const mockNotifications: Notification[] = [
   // Assignment confirmation
   {
     id: 'notif-9',
-    type: 'assign',
+    type: 'assignment',
     title: '사진작가 배정 완료',
     message: '박서준 & 박보영 촬영에 박작가가 배정되었습니다.',
     relatedEntityType: 'schedule',

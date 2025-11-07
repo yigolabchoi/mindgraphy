@@ -62,7 +62,6 @@ export function getStatusColor(status: string): string {
     
     // Payment statuses
     'pending': 'bg-yellow-100 text-yellow-800',
-    'completed': 'bg-green-100 text-green-800',
     'failed': 'bg-red-100 text-red-800',
     'refunded': 'bg-orange-100 text-orange-800',
   }
@@ -90,7 +89,6 @@ export function getStatusLabel(status: string): string {
     
     // Payment statuses
     'pending': '대기중',
-    'completed': '완료',
     'failed': '실패',
     'refunded': '환불',
   }

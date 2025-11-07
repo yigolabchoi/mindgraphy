@@ -50,11 +50,12 @@ export function ProgressSteps({ data }: ProgressStepsProps) {
   
   const getDeadlineInfo = (step: ClientStep) => {
     const stepData = data.steps[step]
-    if (!stepData.deadline) return null
+    const deadline = 'deadline' in stepData ? stepData.deadline : undefined
+    if (!deadline) return null
     
-    const days = getDaysUntilDeadline(stepData.deadline)
-    const isNear = isDeadlineNear(stepData.deadline)
-    const isOverdue = isDeadlineOverdue(stepData.deadline)
+    const days = getDaysUntilDeadline(deadline)
+    const isNear = isDeadlineNear(deadline)
+    const isOverdue = isDeadlineOverdue(deadline)
     
     if (isOverdue) {
       return {
@@ -73,7 +74,7 @@ export function ProgressSteps({ data }: ProgressStepsProps) {
     }
     
     return {
-      text: `${format(new Date(stepData.deadline), 'M월 d일', { locale: ko })} 마감`,
+      text: `${format(new Date(deadline), 'M월 d일', { locale: ko })} 마감`,
       color: 'text-gray-600',
       urgent: false
     }

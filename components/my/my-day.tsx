@@ -31,7 +31,7 @@ export function MyDay({ schedule, checklist, onChecklistToggle }: MyDayProps) {
   if (schedule.length === 0) {
     return (
       <EmptyState
-        icon={<Calendar className="h-12 w-12 text-gray-400" />}
+        icon={Calendar}
         title="오늘 일정이 없습니다"
         description="편안한 하루 보내세요!"
       />

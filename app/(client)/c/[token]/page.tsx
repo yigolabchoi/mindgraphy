@@ -41,14 +41,17 @@ export default function ClientPortalHome({ params }: ClientPortalHomeProps) {
 
   // Check for urgent deadlines
   const urgentDeadlines = Object.entries(clientData.steps)
-    .filter(([_, step]) => step.deadline)
-    .map(([key, step]) => ({
-      step: key,
-      deadline: step.deadline!,
-      days: getDaysUntilDeadline(step.deadline!),
-      isNear: isDeadlineNear(step.deadline!),
-      isOverdue: isDeadlineOverdue(step.deadline!)
-    }))
+    .filter(([_, step]) => 'deadline' in step && step.deadline)
+    .map(([key, step]) => {
+      const deadline = (step as any).deadline as string
+      return {
+        step: key,
+        deadline,
+        days: getDaysUntilDeadline(deadline),
+        isNear: isDeadlineNear(deadline),
+        isOverdue: isDeadlineOverdue(deadline)
+      }
+    })
     .filter(d => d.isNear || d.isOverdue)
 
   return (
