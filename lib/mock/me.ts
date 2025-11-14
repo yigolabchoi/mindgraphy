@@ -157,6 +157,154 @@ export const getWeekSchedule = (): MySchedule[] => {
   ]
 }
 
+// All Upcoming Schedules (including future)
+export const getAllUpcomingSchedule = (): MySchedule[] => {
+  return [
+    // Today
+    {
+      id: 'my-schedule-1',
+      eventId: 'schedule-1',
+      date: format(today, 'yyyy-MM-dd'),
+      startTime: '11:00',
+      endTime: '16:00',
+      title: '홍길동 & 김영희',
+      venueName: '서울 그랜드 호텔',
+      venueAddress: '서울시 강남구 테헤란로 123',
+      ceremonyTime: '14:00',
+      packageType: '프리미엄',
+      options: ['본식+스냅', '야외촬영', '드론촬영'],
+      groomPhone: '010-1234-5678',
+      bridePhone: '010-2345-6789',
+      travelTimeMinutes: 30,
+      status: 'in_progress',
+      checklistCompleted: 3,
+      checklistTotal: 5
+    },
+    // Day after tomorrow
+    {
+      id: 'my-schedule-2',
+      eventId: 'schedule-4',
+      date: format(addDays(today, 2), 'yyyy-MM-dd'),
+      startTime: '14:00',
+      endTime: '18:00',
+      title: '정우성 & 한가인',
+      venueName: '부산 해운대 그랜드 호텔',
+      venueAddress: '부산시 해운대구 우동',
+      ceremonyTime: '16:00',
+      packageType: '프리미엄',
+      options: ['본식+스냅', '해변 촬영'],
+      groomPhone: '010-1111-2222',
+      bridePhone: '010-3333-4444',
+      travelTimeMinutes: 240,
+      status: 'upcoming',
+      checklistCompleted: 0,
+      checklistTotal: 5,
+      specialRequests: '부산 출장 - 전날 출발 필요'
+    },
+    // 5 days later
+    {
+      id: 'my-schedule-3',
+      eventId: 'schedule-6',
+      date: format(addDays(today, 5), 'yyyy-MM-dd'),
+      startTime: '13:00',
+      endTime: '18:00',
+      title: '최민수 & 한예슬',
+      venueName: '제이드가든',
+      venueAddress: '경기도 가평군',
+      ceremonyTime: '15:00',
+      packageType: '스탠다드',
+      options: ['본식', '야외 촬영'],
+      groomPhone: '010-5555-6666',
+      bridePhone: '010-7777-8888',
+      travelTimeMinutes: 90,
+      status: 'upcoming',
+      checklistCompleted: 0,
+      checklistTotal: 5
+    },
+    // 10 days later
+    {
+      id: 'my-schedule-4',
+      eventId: 'schedule-7',
+      date: format(addDays(today, 10), 'yyyy-MM-dd'),
+      startTime: '12:00',
+      endTime: '17:00',
+      title: '이병헌 & 이민정',
+      venueName: '신라호텔',
+      venueAddress: '서울시 중구 동호로',
+      ceremonyTime: '14:30',
+      packageType: '프리미엄',
+      options: ['본식+스냅', '야외촬영', '당일편집'],
+      groomPhone: '010-9999-0000',
+      bridePhone: '010-8888-7777',
+      travelTimeMinutes: 40,
+      status: 'upcoming',
+      checklistCompleted: 0,
+      checklistTotal: 5
+    },
+    // 14 days later
+    {
+      id: 'my-schedule-5',
+      eventId: 'schedule-8',
+      date: format(addDays(today, 14), 'yyyy-MM-dd'),
+      startTime: '11:30',
+      endTime: '16:30',
+      title: '송중기 & 송혜교',
+      venueName: '파크하얏트 서울',
+      venueAddress: '서울시 강남구 테헤란로',
+      ceremonyTime: '14:00',
+      packageType: '프리미엄',
+      options: ['본식+스냅', '드론촬영', '영상촬영'],
+      groomPhone: '010-1010-2020',
+      bridePhone: '010-3030-4040',
+      travelTimeMinutes: 35,
+      status: 'upcoming',
+      checklistCompleted: 0,
+      checklistTotal: 5
+    },
+    // 21 days later
+    {
+      id: 'my-schedule-6',
+      eventId: 'schedule-9',
+      date: format(addDays(today, 21), 'yyyy-MM-dd'),
+      startTime: '13:30',
+      endTime: '18:30',
+      title: '현빈 & 손예진',
+      venueName: '아나타라 스위트',
+      venueAddress: '서울시 중구 소공로',
+      ceremonyTime: '16:00',
+      packageType: '프리미엄',
+      options: ['본식+스냅', '야외촬영', '드론촬영', '당일편집'],
+      groomPhone: '010-5050-6060',
+      bridePhone: '010-7070-8080',
+      travelTimeMinutes: 45,
+      status: 'upcoming',
+      checklistCompleted: 0,
+      checklistTotal: 5
+    },
+    // 28 days later
+    {
+      id: 'my-schedule-7',
+      eventId: 'schedule-10',
+      date: format(addDays(today, 28), 'yyyy-MM-dd'),
+      startTime: '14:00',
+      endTime: '19:00',
+      title: '공유 & 정유미',
+      venueName: '제주 롯데호텔',
+      venueAddress: '제주시 탑동로',
+      ceremonyTime: '16:30',
+      packageType: '프리미엄',
+      options: ['본식+스냅', '해변 촬영', '드론촬영'],
+      groomPhone: '010-1212-3434',
+      bridePhone: '010-5656-7878',
+      travelTimeMinutes: 180,
+      status: 'upcoming',
+      checklistCompleted: 0,
+      checklistTotal: 5,
+      specialRequests: '제주 출장 - 전날 출발 필요'
+    }
+  ]
+}
+
 // Weekly Availability (Next 2 weeks)
 export const getWeeklyAvailability = (): WeeklyAvailability[] => {
   const availability: WeeklyAvailability[] = []

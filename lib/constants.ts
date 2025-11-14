@@ -27,8 +27,10 @@ export const ROUTES = {
   
   // Admin - Main
   ADMIN_DASHBOARD: '/admin/dashboard',
+  ADMIN_LIVE_STATUS: '/admin/live-status',
   ADMIN_CALENDAR: '/admin/calendar',
   ADMIN_MY: '/admin/my',
+  ADMIN_TEAM: '/admin/team',
   ADMIN_NOTIFICATIONS: '/admin/notifications',
   
   // Admin - Management

@@ -71,18 +71,18 @@ export default function AdminDashboard() {
   }
 
   return (
-    <AdminLayout>
-      <div className="space-y-6">
+    <AdminLayout align="left">
+      <div className="space-y-4 md:space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">운영 대시보드</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">운영 대시보드</h1>
+            <p className="text-sm md:text-base text-muted-foreground">
               오늘의 핵심 지표와 일정을 확인하세요
             </p>
           </div>
-          <Link href={ROUTES.ADMIN_CALENDAR}>
-            <Button>
+          <Link href={ROUTES.ADMIN_CALENDAR} className="w-full sm:w-auto">
+            <Button className="w-full sm:w-auto">
               <Calendar className="mr-2 h-4 w-4" />
               스케줄 캘린더로
             </Button>
@@ -189,17 +189,17 @@ export default function AdminDashboard() {
         )}
 
         {/* Quick Actions */}
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-3 md:gap-4 grid-cols-1 sm:grid-cols-3">
           <Link href={ROUTES.ADMIN_CALENDAR}>
             <Card className="hover:bg-zinc-50 transition-colors cursor-pointer h-full">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-900 text-white flex-shrink-0">
                     <Calendar className="h-5 w-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold">스케줄 캘린더</h3>
-                    <p className="text-sm text-muted-foreground truncate">
+                    <h3 className="font-semibold text-sm md:text-base">스케줄 캘린더</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground truncate">
                       전체 일정 관리
                     </p>
                   </div>
@@ -211,7 +211,7 @@ export default function AdminDashboard() {
 
           <Link href="/admin/notifications">
             <Card className="hover:bg-zinc-50 transition-colors cursor-pointer h-full relative">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-900 text-white flex-shrink-0 relative">
                     <Bell className="h-5 w-5" />
@@ -222,8 +222,8 @@ export default function AdminDashboard() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold">알림함</h3>
-                    <p className="text-sm text-muted-foreground truncate">
+                    <h3 className="font-semibold text-sm md:text-base">알림함</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground truncate">
                       {unreadCount > 0 ? `${unreadCount}개의 새 알림` : '모든 알림 확인됨'}
                     </p>
                   </div>
@@ -235,14 +235,14 @@ export default function AdminDashboard() {
 
           <Link href={ROUTES.ADMIN_CALENDAR}>
             <Card className="hover:bg-zinc-50 transition-colors cursor-pointer h-full">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-900 text-white flex-shrink-0">
                     <User className="h-5 w-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold">내 일정 (My)</h3>
-                    <p className="text-sm text-muted-foreground truncate">
+                    <h3 className="font-semibold text-sm md:text-base">내 일정 (My)</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground truncate">
                       개인 스케줄 보기
                     </p>
                   </div>
@@ -256,10 +256,10 @@ export default function AdminDashboard() {
         {/* This Week's Schedules */}
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>이번 주 일정 (상위 10개)</CardTitle>
-              <Link href={ROUTES.ADMIN_CALENDAR}>
-                <Button variant="outline" size="sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <CardTitle className="text-lg md:text-xl">이번 주 일정 (상위 10개)</CardTitle>
+              <Link href={ROUTES.ADMIN_CALENDAR} className="w-full sm:w-auto">
+                <Button variant="outline" size="sm" className="w-full sm:w-auto">
                   전체 보기
                   <ArrowRight className="ml-2 h-3 w-3" />
                 </Button>
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
                 {schedules.map((schedule) => (
                   <div
                     key={schedule.id}
-                    className="flex items-start gap-4 border-b pb-3 last:border-0 last:pb-0 hover:bg-zinc-50 -mx-2 px-2 py-2 rounded-lg transition-colors"
+                    className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 border-b pb-3 last:border-0 last:pb-0 hover:bg-zinc-50 -mx-2 px-2 py-2 rounded-lg transition-colors"
                     tabIndex={0}
                     role="button"
                     onKeyDown={(e) => {
@@ -291,7 +291,7 @@ export default function AdminDashboard() {
                   >
                     <div className="flex-1 space-y-2 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="font-semibold">{schedule.customerName}</h4>
+                        <h4 className="font-semibold text-sm md:text-base">{schedule.customerName}</h4>
                         <Badge className={cn(
                           "text-xs border",
                           getStatusColor(schedule.status)
@@ -308,25 +308,25 @@ export default function AdminDashboard() {
                         )}
                       </div>
                       
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                      <div className="flex items-center gap-3 md:gap-4 text-xs md:text-sm text-muted-foreground flex-wrap">
                         <div className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
                           <span>{schedule.date} {schedule.time}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <MapPin className="h-3 w-3" />
-                          <span className="truncate max-w-[200px]">{schedule.location}</span>
+                          <span className="truncate max-w-[150px] sm:max-w-[200px]">{schedule.location}</span>
                         </div>
-                        {schedule.photographerName && (
+                        {schedule.photographerNames && schedule.photographerNames.length > 0 && (
                           <div className="flex items-center gap-1">
                             <User className="h-3 w-3" />
-                            <span>{schedule.photographerName}</span>
+                            <span>{schedule.photographerNames.join(', ')}</span>
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 self-start sm:self-center">
                       {schedule.daysUntil === 0 ? (
                         <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                           오늘

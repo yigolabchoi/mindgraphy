@@ -1,11 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, ArrowRight, X, Clock, Calendar } from 'lucide-react'
-import { ROUTES, DEMO_TOKEN } from '@/lib/constants'
+import { Users, ArrowRight, Calendar } from 'lucide-react'
+import { ROUTES } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 const STORAGE_KEY = 'mindgraphy-last-portal'
@@ -13,72 +11,15 @@ const STORAGE_KEY = 'mindgraphy-last-portal'
 type Portal = 'client' | 'admin' | null
 
 export default function HomePage() {
-  const [lastPortal, setLastPortal] = useState<Portal>(null)
-  const [showBanner, setShowBanner] = useState(false)
-
-  useEffect(() => {
-    // Load last choice from localStorage
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'client' || stored === 'admin') {
-      setLastPortal(stored)
-      setShowBanner(true)
-    }
-  }, [])
-
   const handlePortalClick = (portal: Portal) => {
     if (portal) {
       localStorage.setItem(STORAGE_KEY, portal)
     }
   }
 
-  const getLastPortalUrl = () => {
-    if (lastPortal === 'client') {
-      return ROUTES.CLIENT_PORTAL(DEMO_TOKEN)
-    }
-    return ROUTES.ADMIN_DASHBOARD
-  }
-
-  const getLastPortalLabel = () => {
-    return lastPortal === 'client' ? '고객용 페이지' : '내부 업무 시스템'
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-zinc-50">
       <div className="container mx-auto flex min-h-screen flex-col items-center justify-center px-4 py-16">
-        {/* Continue Banner */}
-        {showBanner && lastPortal && (
-          <div className="mb-8 w-full max-w-4xl">
-            <div className="relative overflow-hidden rounded-lg border border-blue-200 bg-blue-50 p-4">
-              <button
-                onClick={() => setShowBanner(false)}
-                className="absolute top-2 right-2 rounded-full p-1 hover:bg-blue-100 transition-colors"
-                aria-label="배너 닫기"
-              >
-                <X className="h-4 w-4 text-blue-700" />
-              </button>
-              <div className="flex items-start gap-3 pr-8">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 flex-shrink-0">
-                  <Clock className="h-5 w-5 text-blue-700" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-blue-900 mb-1">
-                    이전에 방문했던 곳으로 돌아가시겠어요?
-                  </h3>
-                  <p className="text-sm text-blue-700 mb-3">
-                    마지막으로 <strong>{getLastPortalLabel()}</strong>을(를) 사용하셨습니다
-                  </p>
-                  <Link href={getLastPortalUrl()}>
-                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                      이어서 계속하기
-                      <ArrowRight className="ml-2 h-3 w-3" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Logo & Brand */}
         <div className="mb-12 text-center">
           <div className="flex items-center justify-center gap-3">
@@ -93,7 +34,7 @@ export default function HomePage() {
         <div className="grid w-full max-w-4xl gap-6 md:grid-cols-2">
           {/* Client Portal Card */}
           <Link 
-            href={ROUTES.CLIENT_PORTAL(DEMO_TOKEN)}
+            href="/c"
             onClick={() => handlePortalClick('client')}
             data-branch="client"
             data-portal="client-portal"
@@ -151,7 +92,7 @@ export default function HomePage() {
 
                 <div className="pt-2 border-t">
                   <p className="text-xs text-center text-muted-foreground">
-                    💡 데모 토큰으로 체험해보세요
+                    🚧 새로운 포털을 준비하고 있습니다
                   </p>
                 </div>
               </CardContent>
@@ -160,7 +101,7 @@ export default function HomePage() {
 
           {/* Admin Portal Card */}
           <Link 
-            href={ROUTES.ADMIN_DASHBOARD}
+            href="/login"
             onClick={() => handlePortalClick('admin')}
             data-branch="admin"
             data-portal="back-office"
@@ -218,7 +159,7 @@ export default function HomePage() {
 
                 <div className="pt-2 border-t">
                   <p className="text-xs text-center text-muted-foreground">
-                    🔐 프로토타입에서는 인증 없이 접속 가능
+                    🔐 로그인이 필요합니다
                   </p>
                 </div>
               </CardContent>

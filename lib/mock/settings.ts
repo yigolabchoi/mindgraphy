@@ -7,26 +7,21 @@ import { format } from 'date-fns'
 export interface Product {
   id: string
   name: string
-  category: 'wedding' | 'studio' | 'event' | 'commercial'
+  category: 'SNAP' | 'OPTION'
+  title: string
+  description: string[]
+  albumIncluded: boolean
+  photoCount: number
+  albumPages?: number
+  miniAlbums?: number
   basePrice: number
-  maxProofSelections: number
-  includesOriginals: boolean
-  deliveryFormat: string[]
-  turnAroundDays: number
+  delivery: {
+    includesWebGallery: boolean
+    includesRawDownload: boolean
+  }
   isActive: boolean
-  description: string
-  createdAt: string
-  updatedAt: string
-}
-
-export interface ProductOption {
-  id: string
-  name: string
-  type: 'addon' | 'upgrade'
-  price: number
-  description: string
-  isActive: boolean
-  applicableProducts: string[] // product IDs
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface Policy {
@@ -40,126 +35,253 @@ export interface Policy {
   createdAt: string
 }
 
-export const mockProducts: Product[] = [
+// ============================================================
+// BASE PRODUCTS (본식스냅 상품)
+// ============================================================
+
+export const baseProducts: Product[] = [
   {
-    id: 'prod-001',
-    name: '프리미엄 웨딩 패키지',
-    category: 'wedding',
-    basePrice: 2500000,
-    maxProofSelections: 50,
-    includesOriginals: true,
-    deliveryFormat: ['Digital (High-Res)', 'Album 30P', 'USB'],
-    turnAroundDays: 30,
+    id: 'new-basic',
+    name: 'new BASIC',
+    category: 'SNAP',
+    title: '본식스냅 앨범형 기본상품',
+    description: [
+      '1인 작가 진행',
+      '예식 시작시간 기준 1시간30분 전 시작, 연회장 촬영 1인 작가 진행 후 마무리',
+      '13x10인치 합본(스냅·원판) 앨범 60페이지 1권',
+      '11x8.5인치 미니합본(스냅·원판) 앨범 60페이지 2권',
+      '최종본 60장 (고객셀렉, 세부보정 적용)',
+      '웹갤러리 제공 (사진링크, 다운로드링크)',
+      '전체원본 제공 (다운로드링크)'
+    ],
+    albumIncluded: true,
+    photoCount: 60,
+    albumPages: 60,
+    miniAlbums: 2,
+    basePrice: 1210000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
     isActive: true,
-    description: '본식 + 스냅 전체 촬영, 프리미엄 보정, 앨범 제작 포함',
     createdAt: '2024-01-15',
-    updatedAt: '2024-11-01'
+    updatedAt: '2024-11-12'
   },
   {
-    id: 'prod-002',
-    name: '스탠다드 웨딩 패키지',
-    category: 'wedding',
-    basePrice: 1800000,
-    maxProofSelections: 40,
-    includesOriginals: false,
-    deliveryFormat: ['Digital (High-Res)', 'Album 20P'],
-    turnAroundDays: 45,
+    id: 'new-data',
+    name: 'new DATA',
+    category: 'SNAP',
+    title: '본식스냅 데이터형 기본상품',
+    description: [
+      '1인 작가 진행',
+      '예식 시작시간 기준 1시간30분 전 시작, 연회장 촬영 1인 작가 진행 후 마무리',
+      '최종본 65장 (고객셀렉, 세부보정 적용)',
+      '웹갤러리 제공 (사진링크, 다운로드링크)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 65,
+    basePrice: 990000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
     isActive: true,
-    description: '본식 촬영 중심, 기본 보정, 앨범 제작 포함',
     createdAt: '2024-01-15',
-    updatedAt: '2024-10-20'
+    updatedAt: '2024-11-12'
   },
   {
-    id: 'prod-003',
-    name: '스냅 촬영 패키지',
-    category: 'wedding',
-    basePrice: 800000,
-    maxProofSelections: 30,
-    includesOriginals: false,
-    deliveryFormat: ['Digital (High-Res)'],
-    turnAroundDays: 21,
+    id: 'basic',
+    name: 'BASIC',
+    category: 'SNAP',
+    title: '본식스냅 앨범형 기본상품',
+    description: [
+      '1인 작가 진행',
+      '예식 시작시간 기준 1시간30분 전 시작, 연회장 촬영 1인 작가 진행 후 마무리',
+      '13x10인치 합본(스냅·원판) 앨범 50페이지 1권',
+      '11x8.5인치 미니합본(스냅·원판) 앨범 50페이지 2권',
+      '최종본 50장 (고객셀렉, 세부보정 적용)',
+      '웹갤러리 제공 (사진링크, 다운로드링크)',
+      '전체원본 제공 (다운로드링크)'
+    ],
+    albumIncluded: true,
+    photoCount: 50,
+    albumPages: 50,
+    miniAlbums: 2,
+    basePrice: 1020000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
     isActive: true,
-    description: '스냅 촬영만, 디지털 파일 제공',
-    createdAt: '2024-02-01',
-    updatedAt: '2024-09-15'
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
   },
   {
-    id: 'prod-004',
-    name: '가족 스튜디오 촬영',
-    category: 'studio',
-    basePrice: 350000,
-    maxProofSelections: 20,
-    includesOriginals: false,
-    deliveryFormat: ['Digital (High-Res)', 'Prints 10P'],
-    turnAroundDays: 14,
+    id: 'data',
+    name: 'DATA',
+    category: 'SNAP',
+    title: '본식스냅 데이터형 기본상품',
+    description: [
+      '1인 작가 진행',
+      '예식 시작시간 기준 1시간30분 전 시작, 연회장 촬영 1인 작가 진행 후 마무리',
+      '최종본 60장 (고객셀렉, 세부보정 적용)',
+      '웹갤러리 제공 (사진링크, 다운로드링크)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 60,
+    basePrice: 930000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
     isActive: true,
-    description: '스튜디오 내 가족 촬영, 2시간',
-    createdAt: '2024-03-10',
-    updatedAt: '2024-10-05'
-  },
-  {
-    id: 'prod-005',
-    name: '기업 행사 촬영',
-    category: 'event',
-    basePrice: 1200000,
-    maxProofSelections: 100,
-    includesOriginals: true,
-    deliveryFormat: ['Digital (High-Res)', 'USB'],
-    turnAroundDays: 7,
-    isActive: false,
-    description: '기업 행사, 세미나, 컨퍼런스 촬영 (단종)',
-    createdAt: '2024-01-20',
-    updatedAt: '2024-08-30'
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
   }
 ]
 
-export const mockProductOptions: ProductOption[] = [
+// ============================================================
+// OPTION PRODUCTS (추가 옵션 항목)
+// ============================================================
+
+export const optionProducts: Product[] = [
   {
-    id: 'opt-001',
-    name: '드론 촬영 추가',
-    type: 'addon',
-    price: 300000,
-    description: '외부 전경, 단체 사진 드론 촬영',
+    id: 'option-1',
+    name: 'Option 1',
+    category: 'OPTION',
+    title: '대표작가 지정',
+    description: ['대표작가 지정 촬영 상품'],
+    albumIncluded: false,
+    photoCount: 0,
+    basePrice: 440000,
+    delivery: { 
+      includesWebGallery: false, 
+      includesRawDownload: false 
+    },
     isActive: true,
-    applicableProducts: ['prod-001', 'prod-002']
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
   },
   {
-    id: 'opt-002',
-    name: '메이크업 동행',
-    type: 'addon',
-    price: 200000,
-    description: '메이크업샵 동행 촬영 (1시간)',
+    id: 'option-2',
+    name: 'Option 2',
+    category: 'OPTION',
+    title: '2인 작가 진행',
+    description: [
+      '기본상품에서 최종본 20장 업그레이드',
+      '앨범이 포함된 경우 각 20페이지씩 업그레이드'
+    ],
+    albumIncluded: true,
+    photoCount: 20,
+    basePrice: 330000,
+    delivery: { 
+      includesWebGallery: false, 
+      includesRawDownload: false 
+    },
     isActive: true,
-    applicableProducts: ['prod-001', 'prod-002']
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
   },
   {
-    id: 'opt-003',
-    name: '원본 파일 전체 제공',
-    type: 'upgrade',
-    price: 500000,
-    description: 'RAW + JPEG 전체 원본 파일',
+    id: 'option-3',
+    name: 'Option 3',
+    category: 'OPTION',
+    title: '메이크업샵부터 촬영',
+    description: ['메이크업샵 촬영 포함'],
+    albumIncluded: false,
+    photoCount: 0,
+    basePrice: 250000,
+    delivery: { 
+      includesWebGallery: false, 
+      includesRawDownload: false 
+    },
     isActive: true,
-    applicableProducts: ['prod-002', 'prod-003']
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
   },
   {
-    id: 'opt-004',
-    name: '추가 앨범 제작 (20P)',
-    type: 'addon',
-    price: 400000,
-    description: '고급 양장 앨범 추가 제작',
+    id: 'option-y',
+    name: 'Option Y',
+    category: 'OPTION',
+    title: '이사 지정 촬영',
+    description: ['이사 지정 작가 촬영 상품'],
+    albumIncluded: false,
+    photoCount: 0,
+    basePrice: 330000,
+    delivery: { 
+      includesWebGallery: false, 
+      includesRawDownload: false 
+    },
     isActive: true,
-    applicableProducts: ['prod-001', 'prod-002']
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
   },
   {
-    id: 'opt-005',
-    name: '긴급 납품 (2주)',
-    type: 'upgrade',
-    price: 800000,
-    description: '촬영 후 2주 내 최종 납품 보장',
+    id: 'option-s',
+    name: 'Option S',
+    category: 'OPTION',
+    title: '수석작가 지정 촬영',
+    description: ['수석작가 지정 촬영 상품'],
+    albumIncluded: false,
+    photoCount: 0,
+    basePrice: 220000,
+    delivery: { 
+      includesWebGallery: false, 
+      includesRawDownload: false 
+    },
     isActive: true,
-    applicableProducts: ['prod-001', 'prod-002', 'prod-003']
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  },
+  {
+    id: 'option-iphone',
+    name: 'Option iPhone',
+    category: 'OPTION',
+    title: '아이폰 스냅 촬영',
+    description: [
+      '여성 작가 1인 진행',
+      '예식 시작 1시간30분 전부터 원판 촬영 직후까지',
+      '연회장 이후 30여 장 현장 베스트컷 제공',
+      '작가셀렉 최종본 10장 (세부보정) 48시간 이내 제공',
+      '아이폰 촬영은 앨범 수록 불가'
+    ],
+    albumIncluded: false,
+    photoCount: 10,
+    basePrice: 330000,
+    delivery: { 
+      includesWebGallery: false, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  },
+  {
+    id: 'option-early',
+    name: 'EARLY',
+    category: 'OPTION',
+    title: '얼리 진행',
+    description: [
+      '예식 시작시간 기준 1시간30분보다 일찍 시작하는 경우 적용',
+      '1인 작가당 적용'
+    ],
+    albumIncluded: false,
+    photoCount: 0,
+    basePrice: 110000,
+    delivery: { 
+      includesWebGallery: false, 
+      includesRawDownload: false 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
   }
 ]
+
+// Combined product list for easier access
+export const mockProducts: Product[] = [...baseProducts, ...optionProducts]
 
 export const mockPolicies: Policy[] = [
   {

@@ -1,0 +1,3 @@
+{
+  "/(client)/c/[token]/download/page": "app/(client)/c/[token]/download/page.js"
+}

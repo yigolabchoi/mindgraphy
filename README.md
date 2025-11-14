@@ -33,13 +33,9 @@ frontend/
 ├── app/
 │   ├── (public)/              # Public 그룹
 │   │   └── page.tsx           # Landing page (/)
-│   ├── (client)/              # Client Portal 그룹
-│   │   └── c/[token]/         # 토큰 기반 라우팅
-│   │       ├── page.tsx       # 클라이언트 대시보드
-│   │       ├── contract/      # 계약서
-│   │       ├── proof-gallery/ # 프루프 갤러리
-│   │       ├── download/      # 다운로드
-│   │       └── payment/       # 결제 정보
+│   ├── (client)/              # Client Portal 그룹 (준비 중)
+│   │   └── c/
+│   │       └── page.tsx       # 임시 페이지
 │   ├── (admin)/               # Admin 그룹
 │   │   └── admin/             # Back Office
 │   │       ├── dashboard/     # 관리자 대시보드
@@ -57,9 +53,7 @@ frontend/
 │   │   └── empty-state.tsx
 │   ├── layout/                # 레이아웃 컴포넌트
 │   │   ├── admin-nav.tsx
-│   │   ├── admin-layout.tsx
-│   │   ├── client-portal-nav.tsx
-│   │   └── client-portal-layout.tsx
+│   │   └── admin-layout.tsx
 │   └── calendar/              # 캘린더 컴포넌트 (준비중)
 ├── lib/
 │   ├── types.ts               # TypeScript 타입 정의
@@ -77,22 +71,12 @@ frontend/
 - Client Portal과 Back Office로 명확한 분기
 - 모던하고 반응형 디자인
 
-### Client Portal (`/c/[token]`)
+### Client Portal (`/c`)
 
-**토큰 기반 접근 (MVP에서는 로그인 없음)**
+**새로운 고객 포털 준비 중**
 
-- **대시보드**: 
-  - D-Day 카운터 (커플의 결혼식까지 남은 날짜)
-  - 진행 상황 (Milestone 추적)
-  - 다음 단계 안내
-  - 빠른 링크
-- **계약서**: 계약 내용 확인 (플레이스홀더)
-- **프루프 갤러리**: 
-  - 그리드 레이아웃 사진 선택
-  - 최대 50장 선택 가능
-  - 진행률 바 및 선택 카운터
-- **다운로드**: 최종 사진 다운로드 (플레이스홀더)
-- **결제 정보**: 결제 내역 및 영수증 (플레이스홀더)
+- 현재는 "준비 중" 임시 페이지만 표시됩니다
+- 향후 토큰 기반 접근, 계약서, 프루프 갤러리, 다운로드 등의 기능이 추가될 예정입니다
 
 ### Back Office (`/admin`)
 
@@ -158,14 +142,8 @@ frontend/
 ### Public Routes
 - `/` - Landing page
 
-### Client Portal Routes (Token-gated)
-- `/c/[token]` - 클라이언트 대시보드
-- `/c/[token]/contract` - 계약서
-- `/c/[token]/proof-gallery` - 프루프 갤러리
-- `/c/[token]/download` - 다운로드
-- `/c/[token]/payment` - 결제 정보
-
-**Demo Token**: `demo-token-2025` (상수로 정의됨)
+### Client Portal Routes
+- `/c` - 고객 포털 임시 페이지 (준비 중)
 
 ### Admin Routes (Role-based guard 준비중)
 - `/admin/dashboard` - 관리자 대시보드
@@ -225,9 +203,8 @@ frontend/
 - [x] TypeScript 설정
 - [x] TailwindCSS + shadcn/ui
 - [x] Route Groups (public, client, admin)
-- [x] 토큰 기반 라우팅 (`/c/[token]`)
 - [x] Landing page with branching
-- [x] Client Portal 기본 페이지
+- [ ] Client Portal (준비 중)
 - [x] Admin Dashboard
 - [x] 공통 컴포넌트 (ProgressBar, DdayBadge, EmptyState)
 - [x] 404 페이지

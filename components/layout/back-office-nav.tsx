@@ -33,14 +33,14 @@ const navigation = [
   { name: '분석', href: '/back-office/analytics', icon: BarChart3 },
 ]
 
-export function BackOfficeNav() {
+export function BackOfficeNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname()
 
   return (
     <div className="flex h-screen w-64 flex-col border-r bg-zinc-50">
       {/* Logo */}
       <div className="flex h-16 items-center border-b px-6">
-        <Link href="/back-office" className="flex items-center gap-2">
+        <Link href="/back-office" className="flex items-center gap-2" onClick={onNavigate}>
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm">
             M
           </div>
@@ -51,13 +51,15 @@ export function BackOfficeNav() {
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
         {navigation.map((item) => {
+          // Check if the current path matches this navigation item
           const isActive = pathname === item.href || 
-            (item.href !== '/back-office' && pathname.startsWith(item.href))
+            (pathname.startsWith(item.href) && item.href.length > 1)
           
           return (
             <Link
               key={item.name}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                 isActive

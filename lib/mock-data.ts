@@ -171,6 +171,58 @@ export const mockContracts: Contract[] = [
   }
 ]
 
+// Mock Payments
+export const mockPayments: Payment[] = [
+  {
+    id: 'payment-1',
+    contractId: 'contract-1',
+    paymentType: 'deposit',
+    amount: 2000000,
+    paymentMethod: '계좌이체',
+    paymentStatus: 'completed',
+    paymentDate: '2025-09-07',
+    receiptUrl: 'https://s3.example.com/receipts/payment-1.pdf',
+    cashReceiptIssued: true,
+    notes: '계약금 입금 완료',
+    createdAt: '2025-09-07T10:30:00Z'
+  },
+  {
+    id: 'payment-2',
+    contractId: 'contract-1',
+    paymentType: 'balance',
+    amount: 3000000,
+    paymentMethod: '계좌이체',
+    paymentStatus: 'pending',
+    cashReceiptIssued: false,
+    notes: '잔금 입금 대기중',
+    createdAt: '2025-09-07T10:31:00Z'
+  },
+  {
+    id: 'payment-3',
+    contractId: 'contract-2',
+    paymentType: 'deposit',
+    amount: 1500000,
+    paymentMethod: '신용카드',
+    paymentStatus: 'completed',
+    paymentDate: '2025-08-27',
+    receiptUrl: 'https://s3.example.com/receipts/payment-3.pdf',
+    cashReceiptIssued: true,
+    notes: '계약금 카드 결제',
+    createdAt: '2025-08-27T14:20:00Z'
+  },
+  {
+    id: 'payment-4',
+    contractId: 'contract-2',
+    paymentType: 'balance',
+    amount: 2000000,
+    paymentMethod: '계좌이체',
+    paymentStatus: 'pending',
+    cashReceiptIssued: false,
+    notes: '잔금 입금 예정',
+    createdAt: '2025-08-27T14:21:00Z'
+  }
+]
+
 // Mock Projects
 export const mockProjects: Project[] = [
   {
@@ -186,8 +238,8 @@ export const mockProjects: Project[] = [
     weddingVenue: '서울 그랜드 웨딩홀',
     makeupInfo: '웨딩홀 내 메이크업샵 (12:00)',
     specialRequests: '야외 촬영 희망',
-    assignedPhotographerId: 'photographer-1',
-    assignedPhotographer: mockPhotographers[0],
+    assignedPhotographerIds: ['photographer-1', 'photographer-2'],
+    assignedPhotographers: [mockPhotographers[0], mockPhotographers[1]],
     assignedEditorId: 'editor-1',
     assignedEditor: mockUsers[4],
     progress: 60,
@@ -206,8 +258,8 @@ export const mockProjects: Project[] = [
     weddingTime: '11:00',
     weddingVenue: '경기 럭셔리 컨벤션',
     makeupInfo: '외부 메이크업 (09:00)',
-    assignedPhotographerId: 'photographer-2',
-    assignedPhotographer: mockPhotographers[1],
+    assignedPhotographerIds: ['photographer-2', 'photographer-3'],
+    assignedPhotographers: [mockPhotographers[1], mockPhotographers[2]],
     assignedEditorId: 'editor-1',
     assignedEditor: mockUsers[4],
     progress: 75,
@@ -225,11 +277,49 @@ export const mockProjects: Project[] = [
     weddingTime: '10:00',
     weddingVenue: '제주 스냅 촬영',
     specialRequests: '해변 배경 중점',
-    assignedPhotographerId: 'photographer-1',
-    assignedPhotographer: mockPhotographers[0],
+    assignedPhotographerIds: ['photographer-1'],
+    assignedPhotographers: [mockPhotographers[0]],
     progress: 10,
     createdAt: '2025-10-20T10:00:00Z',
     updatedAt: '2025-10-20T10:00:00Z'
+  },
+  {
+    id: 'project-4',
+    projectNumber: 'PRJ-2025-004',
+    customerId: 'customer-1',
+    customer: mockCustomers[0],
+    contractId: 'contract-1',
+    projectType: 'wedding',
+    projectStatus: 'scheduled',
+    weddingDate: '2025-12-22',
+    weddingTime: '13:00',
+    weddingVenue: '인천 드림웨딩홀',
+    makeupInfo: '웨딩홀 내 메이크업샵 (11:00)',
+    specialRequests: '가족 단체 사진 중요',
+    assignedPhotographerIds: [],
+    assignedPhotographers: [],
+    progress: 5,
+    createdAt: '2025-11-10T10:00:00Z',
+    updatedAt: '2025-11-10T10:00:00Z'
+  },
+  {
+    id: 'project-5',
+    projectNumber: 'PRJ-2025-005',
+    customerId: 'customer-3',
+    customer: mockCustomers[2],
+    contractId: 'contract-2',
+    projectType: 'wedding',
+    projectStatus: 'contracted',
+    weddingDate: '2026-01-18',
+    weddingTime: '15:00',
+    weddingVenue: '부산 씨사이드호텔',
+    makeupInfo: '호텔 스위트룸 (13:00)',
+    specialRequests: '오션뷰 촬영 희망',
+    assignedPhotographerIds: [],
+    assignedPhotographers: [],
+    progress: 0,
+    createdAt: '2025-11-12T14:00:00Z',
+    updatedAt: '2025-11-12T14:00:00Z'
   }
 ]
 

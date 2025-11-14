@@ -176,7 +176,7 @@ function NotificationsContent() {
   const unreadCount = notifications.filter(n => !n.isRead).length
 
   return (
-    <AdminLayout>
+    <AdminLayout align="left">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

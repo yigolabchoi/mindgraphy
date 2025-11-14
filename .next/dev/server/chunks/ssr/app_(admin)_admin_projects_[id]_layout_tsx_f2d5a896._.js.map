@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/hyojoonchoi/Hyojoon%20Drive/Cursor-Project/Proce/mindgraphy/app/%28admin%29/admin/projects/%5Bid%5D/layout.tsx"],"sourcesContent":["import { ReactNode } from 'react'\n\n// Static export를 위한 프로젝트 ID 목록\nexport async function generateStaticParams() {\n  return [\n    { id: 'project-baby-kwon' },\n    // 추가 프로젝트 ID들이 여기에 추가됩니다\n  ]\n}\n\nexport default function ProjectDetailLayout({\n  children,\n}: {\n  children: ReactNode\n}) {\n  return <>{children}</>\n}\n\n"],"names":[],"mappings":";;;;;;;;AAGO,eAAe;IACpB,OAAO;QACL;YAAE,IAAI;QAAoB;KAE3B;AACH;AAEe,SAAS,oBAAoB,EAC1C,QAAQ,EAGT;IACC,qBAAO;kBAAG;;AACZ","debugId":null}}]
+}

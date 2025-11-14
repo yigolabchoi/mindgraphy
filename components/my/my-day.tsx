@@ -1,8 +1,17 @@
 'use client'
 
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { DdayBadge } from '@/components/common/dday-badge'
 import { EmptyState } from '@/components/common/empty-state'
 import type { MySchedule, ChecklistItem } from '@/lib/mock/me'
@@ -10,24 +19,63 @@ import {
   Clock,
   MapPin,
   Phone,
-  Navigation,
   CheckCircle2,
   Circle,
   Package,
   AlertCircle,
-  Calendar
+  Calendar,
+  Play,
+  CheckCheck
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
 
 interface MyDayProps {
   schedule: MySchedule[]
   checklist: ChecklistItem[]
   onChecklistToggle: (id: string) => void
+  onStatusChange?: (scheduleId: string, newStatus: 'in_progress' | 'completed') => void
 }
 
-export function MyDay({ schedule, checklist, onChecklistToggle }: MyDayProps) {
+export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }: MyDayProps) {
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    scheduleId: string
+    action: 'start' | 'complete'
+    title: string
+  }>({
+    open: false,
+    scheduleId: '',
+    action: 'start',
+    title: ''
+  })
+
+  const handleStatusChangeClick = (item: MySchedule, action: 'start' | 'complete') => {
+    setConfirmDialog({
+      open: true,
+      scheduleId: item.id,
+      action,
+      title: item.title
+    })
+  }
+
+  const handleConfirm = () => {
+    const newStatus = confirmDialog.action === 'start' ? 'in_progress' : 'completed'
+    
+    if (onStatusChange) {
+      onStatusChange(confirmDialog.scheduleId, newStatus)
+    }
+    
+    const message = confirmDialog.action === 'start' 
+      ? '촬영을 시작했습니다!' 
+      : '촬영이 완료되었습니다!'
+    
+    toast.success(message)
+    setConfirmDialog({ ...confirmDialog, open: false })
+  }
+
   if (schedule.length === 0) {
     return (
       <EmptyState
@@ -35,22 +83,6 @@ export function MyDay({ schedule, checklist, onChecklistToggle }: MyDayProps) {
         title="오늘 일정이 없습니다"
         description="편안한 하루 보내세요!"
       />
-    )
-  }
-
-  const getTravelTimeBadge = (minutes: number) => {
-    const hours = Math.floor(minutes / 60)
-    const mins = minutes % 60
-    
-    let label = '이동시간: '
-    if (hours > 0) label += `${hours}시간 `
-    if (mins > 0) label += `${mins}분`
-    
-    return (
-      <Badge variant="outline" className="text-xs">
-        <Navigation className="mr-1 h-3 w-3" />
-        {label}
-      </Badge>
     )
   }
 
@@ -105,7 +137,6 @@ export function MyDay({ schedule, checklist, onChecklistToggle }: MyDayProps) {
                 </div>
                 <span className="text-muted-foreground">·</span>
                 <span>예식 {item.ceremonyTime}</span>
-                {getTravelTimeBadge(item.travelTimeMinutes)}
                 <DdayBadge targetDate={item.date} showIcon={false} />
               </div>
 
@@ -165,6 +196,31 @@ export function MyDay({ schedule, checklist, onChecklistToggle }: MyDayProps) {
                   </Button>
                 </a>
               </div>
+
+              {/* Start/Complete Button */}
+              {item.status !== 'completed' && (
+                <div className="pt-2">
+                  {item.status === 'upcoming' ? (
+                    <Button
+                      onClick={() => handleStatusChangeClick(item, 'start')}
+                      className="w-full bg-green-600 hover:bg-green-700"
+                      size="lg"
+                    >
+                      <Play className="mr-2 h-5 w-5" />
+                      촬영 시작
+                    </Button>
+                  ) : item.status === 'in_progress' ? (
+                    <Button
+                      onClick={() => handleStatusChangeClick(item, 'complete')}
+                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      size="lg"
+                    >
+                      <CheckCheck className="mr-2 h-5 w-5" />
+                      촬영 완료
+                    </Button>
+                  ) : null}
+                </div>
+              )}
 
               {/* Checklist Progress */}
               <div className="pt-2 border-t">
@@ -239,6 +295,60 @@ export function MyDay({ schedule, checklist, onChecklistToggle }: MyDayProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDialog.open} onOpenChange={(open) => setConfirmDialog({...confirmDialog, open})}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {confirmDialog.action === 'start' ? (
+                <>
+                  <Play className="h-5 w-5 text-green-600" />
+                  촬영 시작 확인
+                </>
+              ) : (
+                <>
+                  <CheckCheck className="h-5 w-5 text-blue-600" />
+                  촬영 완료 확인
+                </>
+              )}
+            </DialogTitle>
+            <DialogDescription>
+              {confirmDialog.action === 'start' ? (
+                <>
+                  <strong>{confirmDialog.title}</strong> 촬영을 시작하시겠습니까?
+                  <br />
+                  <span className="text-xs text-muted-foreground mt-2 block">
+                    시작 시간이 기록되며 실시간 현황판에 표시됩니다.
+                  </span>
+                </>
+              ) : (
+                <>
+                  <strong>{confirmDialog.title}</strong> 촬영을 완료하시겠습니까?
+                  <br />
+                  <span className="text-xs text-muted-foreground mt-2 block">
+                    완료 시간이 기록되며 일정이 종료됩니다.
+                  </span>
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button
+              variant="outline"
+              onClick={() => setConfirmDialog({...confirmDialog, open: false})}
+            >
+              취소
+            </Button>
+            <Button
+              onClick={handleConfirm}
+              className={confirmDialog.action === 'start' ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'}
+            >
+              {confirmDialog.action === 'start' ? '시작하기' : '완료하기'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

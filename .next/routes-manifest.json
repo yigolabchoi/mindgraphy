@@ -35,6 +35,14 @@
   },
   "dynamicRoutes": [
     {
+      "page": "/admin/projects/[id]",
+      "regex": "^/admin/projects/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/projects/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/c/[token]",
       "regex": "^/c/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -123,6 +131,12 @@
       "namedRegex": "^/admin/dashboard(?:/)?$"
     },
     {
+      "page": "/admin/live-status",
+      "regex": "^/admin/live\\-status(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/live\\-status(?:/)?$"
+    },
+    {
       "page": "/admin/my",
       "regex": "^/admin/my(?:/)?$",
       "routeKeys": {},
@@ -165,10 +179,22 @@
       "namedRegex": "^/admin/settings/products(?:/)?$"
     },
     {
+      "page": "/c",
+      "regex": "^/c(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/c(?:/)?$"
+    },
+    {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
     }
   ],
   "dataRoutes": [],

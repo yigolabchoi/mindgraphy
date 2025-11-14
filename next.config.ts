@@ -2,11 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: 'export', // ✅ Static HTML export for AWS S3 deployment
+  // output: 'export', // ❌ Disabled - incompatible with dynamic routes ([id], [token])
+  // Note: For static export, we would need generateStaticParams() in all dynamic route pages
   images: {
-    unoptimized: true, // Required for static export - allows <Image> to work
+    unoptimized: true, // Allows <Image> to work without optimization
   },
-  trailingSlash: true, // Better for S3 hosting
+  trailingSlash: true, // Better for hosting compatibility
 };
 
 export default nextConfig;

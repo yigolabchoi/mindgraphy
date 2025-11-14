@@ -83,8 +83,8 @@ export interface Project {
   weddingVenue: string
   makeupInfo?: string
   specialRequests?: string
-  assignedPhotographerId?: string
-  assignedPhotographer?: Photographer
+  assignedPhotographerIds?: string[]  // 복수 작가 지원
+  assignedPhotographers?: Photographer[]  // 복수 작가 지원
   assignedEditorId?: string
   assignedEditor?: User
   progress: number

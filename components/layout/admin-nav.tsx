@@ -1,43 +1,70 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { 
-  Calendar, 
-  LayoutDashboard, 
-  FolderKanban, 
-  Users, 
-  FileText, 
-  Image, 
-  Edit, 
-  Package, 
-  BarChart3,
-  Camera,
-  UserCircle2,
-  Settings
-} from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useAuthStore } from '@/lib/store/auth-store'
+import { getNavigationForRole } from '@/lib/config/navigation'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { ROUTES } from '@/lib/constants'
+import { LogOut, Settings, User } from 'lucide-react'
+import { useEffect } from 'react'
 
-const navigation = [
-  { name: '대시보드', href: ROUTES.ADMIN_DASHBOARD, icon: LayoutDashboard },
-  { name: '스케줄 캘린더', href: ROUTES.ADMIN_CALENDAR, icon: Calendar, badge: 5 },
-  { name: '내 일정', href: ROUTES.ADMIN_MY, icon: UserCircle2, badge: 3 },
-  { name: '프로젝트', href: ROUTES.ADMIN_PROJECTS, icon: FolderKanban },
-  { name: '고객 관리', href: ROUTES.ADMIN_CUSTOMERS, icon: Users },
-  { name: '계약서', href: ROUTES.ADMIN_CONTRACTS, icon: FileText },
-  { name: '사진작가', href: ROUTES.ADMIN_PHOTOGRAPHERS, icon: Camera },
-  { name: '사진 관리', href: ROUTES.ADMIN_PHOTOS, icon: Image },
-  { name: '편집 큐', href: ROUTES.ADMIN_EDITING, icon: Edit, badge: 4 },
-  { name: '배송 관리', href: ROUTES.ADMIN_DELIVERY, icon: Package },
-  { name: '분석', href: ROUTES.ADMIN_ANALYTICS, icon: BarChart3 },
-  { name: '운영 설정', href: ROUTES.ADMIN_SETTINGS_PRODUCTS, icon: Settings },
-]
-
-export function AdminNav() {
+export function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const { user, isAuthenticated, logout } = useAuthStore()
+
+  // 인증되지 않은 경우 로그인 페이지로 리다이렉트
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      router.push('/login')
+    }
+  }, [isAuthenticated, user, router])
+
+  // 로딩 중이거나 사용자가 없으면 렌더링하지 않음
+  if (!user) {
+    return null
+  }
+
+  // 사용자 권한에 따른 네비게이션 아이템
+  const navigation = getNavigationForRole(user.role)
+
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
+
+  // 사용자 이름의 첫 글자
+  const getInitials = (name: string) => {
+    return name.charAt(0).toUpperCase()
+  }
+
+  // 역할 배지
+  const getRoleBadge = () => {
+    if (user.role === 'admin') {
+      return (
+        <Badge variant="default" className="bg-blue-600">
+          관리자
+        </Badge>
+      )
+    }
+    return (
+      <Badge variant="secondary" className="bg-green-600 text-white">
+        작가
+      </Badge>
+    )
+  }
 
   return (
     <div className="flex h-screen w-64 flex-col border-r bg-zinc-50">
@@ -54,13 +81,15 @@ export function AdminNav() {
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
         {navigation.map((item) => {
+          // Check if the current path matches this navigation item
           const isActive = pathname === item.href || 
-            (item.href !== ROUTES.ADMIN_DASHBOARD && pathname.startsWith(item.href))
+            (pathname.startsWith(item.href) && item.href !== ROUTES.HOME)
           
           return (
             <Link
-              key={item.name}
+              key={item.title}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                 isActive
@@ -69,7 +98,7 @@ export function AdminNav() {
               )}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
-              <span className="flex-1">{item.name}</span>
+              <span className="flex-1">{item.title}</span>
               {item.badge && (
                 <Badge variant="secondary" className="ml-auto">
                   {item.badge}
@@ -81,22 +110,48 @@ export function AdminNav() {
       </nav>
 
       {/* User Profile */}
-      <div className="border-t p-4">
-        <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarFallback className="bg-zinc-200 text-zinc-700 text-sm font-medium">
-              Admin
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-zinc-900 truncate">
-              김관리자
-            </p>
-            <p className="text-xs text-zinc-500 truncate">
-              admin@mindgraphy.com
-            </p>
-          </div>
-        </div>
+      <div className="border-t p-4 space-y-3">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-colors">
+              <Avatar>
+                <AvatarFallback className="bg-zinc-900 text-white text-sm font-medium">
+                  {getInitials(user.name)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0 text-left">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-medium text-zinc-900 truncate">
+                    {user.name}
+                  </p>
+                  {getRoleBadge()}
+                </div>
+                <p className="text-xs text-zinc-500 truncate">
+                  {user.email}
+                </p>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>내 계정</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              <span>프로필</span>
+            </DropdownMenuItem>
+            {user.role === 'admin' && (
+              <DropdownMenuItem onClick={() => router.push('/admin/settings')}>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>설정</span>
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>로그아웃</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )
