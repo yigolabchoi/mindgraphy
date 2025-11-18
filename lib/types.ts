@@ -61,6 +61,16 @@ export interface Payment {
 }
 
 // Project Types
+export type ProjectType = 
+  | 'wedding' 
+  | 'hanbok' 
+  | 'dress_shop' 
+  | 'baby'
+  | 'studio' 
+  | 'outdoor' 
+  | 'pre_wedding' 
+  | 'family'
+
 export type ProjectStatus = 
   | 'scheduled' 
   | 'in_progress' 
@@ -77,13 +87,16 @@ export interface Project {
   customerId: string
   customer?: Customer
   contractId: string
-  projectType: 'wedding' | 'studio' | 'outdoor' | 'pre_wedding' | 'family'
+  projectType: ProjectType
   projectStatus: ProjectStatus
+  packageId?: string  // 선택된 상품 ID
+  optionIds?: string[]  // 선택된 옵션 ID 목록
   weddingDate: string
   weddingTime: string
   weddingVenue: string
   makeupInfo?: string
   specialRequests?: string
+  referralSource?: string  // 유입 경로
   assignedPhotographerIds?: string[]  // 복수 작가 지원
   assignedPhotographers?: Photographer[]  // 복수 작가 지원
   assignedEditorId?: string
@@ -292,5 +305,80 @@ export interface AnalyticsData {
   satisfaction: number[]
   revenue: number[]
   labels: string[]
+}
+
+// Product Types (for client selection and admin management)
+export interface Product {
+  id: string
+  name: string
+  category: 'SNAP' | 'OPTION'
+  title: string
+  description: string[]
+  albumIncluded: boolean
+  photoCount: number
+  albumPages?: number
+  miniAlbums?: number
+  basePrice: number
+  delivery: {
+    includesWebGallery: boolean
+    includesRawDownload: boolean
+  }
+  isActive: boolean
+  createdAt?: string
+  updatedAt?: string
+}
+
+// Policy Types
+export interface Policy {
+  id: string
+  name: string
+  type: 'cancellation' | 'refund' | 'usage' | 'privacy'
+  version: string
+  content: string
+  effectiveDate: string
+  isActive: boolean
+  createdAt: string
+}
+
+export interface ContractArticle {
+  id: string
+  order: number
+  title: string
+  content: string[]
+}
+
+// Contract Template (for admin management)
+export interface ContractTemplate {
+  id: string
+  name: string
+  version: string
+  title: string
+  description: string
+  articles: ContractArticle[]
+  footer: string
+  importantNotice: string
+  effectiveDate: string
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+// Contract (actual customer contract)
+export interface Contract {
+  id: string
+  templateId: string
+  contractNumber: string
+  customerId: string
+  packageType: string
+  weddingDate: string
+  weddingTime: string
+  venue: string
+  totalAmount: number
+  depositAmount: number
+  balanceAmount: number
+  groomName?: string
+  brideName?: string
+  signedAt?: string
+  createdAt: string
 }
 

@@ -9,8 +9,15 @@ interface EmptyStateProps {
   action?: {
     label: string
     onClick: () => void
+    variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link'
+  }
+  secondaryAction?: {
+    label: string
+    onClick: () => void
+    variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link'
   }
   className?: string
+  iconClassName?: string
 }
 
 export function EmptyState({
@@ -18,25 +25,52 @@ export function EmptyState({
   title,
   description,
   action,
-  className
+  secondaryAction,
+  className,
+  iconClassName
 }: EmptyStateProps) {
   return (
-    <div className={cn('flex flex-col items-center justify-center py-12', className)}>
+    <div className={cn(
+      'flex flex-col items-center justify-center py-12 px-4 animate-in fade-in slide-in-from-bottom duration-300',
+      className
+    )}>
       {Icon && (
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-zinc-100">
+        <div className={cn(
+          "mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-zinc-100 transition-all hover:scale-105",
+          iconClassName
+        )}>
           <Icon className="h-8 w-8 text-zinc-400" />
         </div>
       )}
-      <h3 className="mb-2 text-lg font-semibold text-zinc-900">{title}</h3>
+      <h3 className="mb-2 text-lg md:text-xl font-semibold text-zinc-900">{title}</h3>
       {description && (
-        <p className="mb-6 max-w-sm text-center text-sm text-muted-foreground">
+        <p className="mb-6 max-w-md text-center text-sm md:text-base text-muted-foreground leading-relaxed">
           {description}
         </p>
       )}
-      {action && (
-        <Button onClick={action.onClick} size="sm">
-          {action.label}
-        </Button>
+      {(action || secondaryAction) && (
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          {action && (
+            <Button 
+              onClick={action.onClick} 
+              variant={action.variant || 'default'}
+              size="sm"
+              className="w-full sm:w-auto"
+            >
+              {action.label}
+            </Button>
+          )}
+          {secondaryAction && (
+            <Button 
+              onClick={secondaryAction.onClick} 
+              variant={secondaryAction.variant || 'outline'}
+              size="sm"
+              className="w-full sm:w-auto"
+            >
+              {secondaryAction.label}
+            </Button>
+          )}
+        </div>
       )}
     </div>
   )

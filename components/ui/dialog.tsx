@@ -119,3 +119,14 @@ export {
   DialogTitle,
   DialogDescription,
 }
+
+// For accessibility, always include a DialogTitle in DialogContent
+// If you need to hide it visually, use VisuallyHidden:
+// import { VisuallyHidden } from "@/components/ui/visually-hidden"
+// 
+// <DialogContent>
+//   <VisuallyHidden>
+//     <DialogTitle>Hidden Title</DialogTitle>
+//   </VisuallyHidden>
+//   {/* rest of content */}
+// </DialogContent>

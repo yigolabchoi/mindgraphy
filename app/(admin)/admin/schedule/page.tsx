@@ -413,15 +413,19 @@ export default function SchedulePage() {
             <>
               <SheetHeader>
                 <SheetTitle className="text-xl">{selectedEvent.title}</SheetTitle>
-                <SheetDescription className="flex flex-wrap gap-2 mt-2">
-                  <Badge variant="outline" className={EVENT_TYPE_COLORS[selectedEvent.type].bg}>
-                    {EVENT_TYPE_LABELS[selectedEvent.type]}
-                  </Badge>
-                  <Badge className={EVENT_STATUS_COLORS[selectedEvent.status]}>
-                    {EVENT_STATUS_LABELS[selectedEvent.status]}
-                  </Badge>
+                <SheetDescription>
+                  {selectedEvent.date && selectedEvent.startTime}
                 </SheetDescription>
               </SheetHeader>
+
+              <div className="flex flex-wrap gap-2 mt-4">
+                <Badge variant="outline" className={EVENT_TYPE_COLORS[selectedEvent.type].bg}>
+                  {EVENT_TYPE_LABELS[selectedEvent.type]}
+                </Badge>
+                <Badge className={EVENT_STATUS_COLORS[selectedEvent.status]}>
+                  {EVENT_STATUS_LABELS[selectedEvent.status]}
+                </Badge>
+              </div>
 
               <div className="mt-6 space-y-6">
                 {/* Date and Time */}

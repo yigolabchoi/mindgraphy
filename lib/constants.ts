@@ -29,9 +29,9 @@ export const ROUTES = {
   ADMIN_DASHBOARD: '/admin/dashboard',
   ADMIN_LIVE_STATUS: '/admin/live-status',
   ADMIN_CALENDAR: '/admin/calendar',
+  ADMIN_SCHEDULE: '/admin/schedule',
   ADMIN_MY: '/admin/my',
   ADMIN_TEAM: '/admin/team',
-  ADMIN_NOTIFICATIONS: '/admin/notifications',
   
   // Admin - Management
   ADMIN_PROJECTS: '/admin/projects',
@@ -46,7 +46,6 @@ export const ROUTES = {
   // Admin - Settings
   ADMIN_SETTINGS: '/admin/settings',
   ADMIN_SETTINGS_PRODUCTS: '/admin/settings/products',
-  ADMIN_SETTINGS_NOTIFICATIONS: '/admin/settings/notifications',
   ADMIN_SETTINGS_MASTERS: '/admin/settings/masters',
 } as const
 
@@ -83,5 +82,52 @@ export const DATE_FORMATS = {
   DISPLAY: 'yyyy년 MM월 dd일',
   DISPLAY_WITH_TIME: 'yyyy년 MM월 dd일 HH:mm',
   ISO: "yyyy-MM-dd'T'HH:mm:ss'Z'",
+} as const
+
+// Session Storage Keys (for client portal)
+export const SESSION_KEYS = {
+  // Product Selection
+  PRODUCT_TYPE: 'mindgraphy_product_type',
+  CLIENT_TYPE: 'mindgraphy_client_type',
+  PACKAGE: 'mindgraphy_package',
+  OPTIONS: 'mindgraphy_options',
+  
+  // Customer Information
+  BRIDE_NAME: 'mindgraphy_bride_name',
+  GROOM_NAME: 'mindgraphy_groom_name',
+  BRIDE_PHONE: 'mindgraphy_bride_phone',
+  GROOM_PHONE: 'mindgraphy_groom_phone',
+  PHONE: 'mindgraphy_phone',
+  EMAIL: 'mindgraphy_email',
+  MAIN_CONTACT: 'mindgraphy_main_contact',
+  
+  // Event Details
+  WEDDING_DATE: 'mindgraphy_wedding_date',
+  WEDDING_TIME: 'mindgraphy_wedding_time',
+  WEDDING_DATE_INFO: 'mindgraphy_wedding_date_info',
+  VENUE: 'mindgraphy_venue',
+  VENUE_REQUEST: 'mindgraphy_venue_request',
+  
+  // Referral & Misc
+  REFERRAL_SOURCE: 'mindgraphy_referral_source',
+  REFERRER_PAGE: 'mindgraphy_referrer_page',
+  
+  // Auth
+  CLIENT_PHONE: 'mindgraphy_client_phone',
+  CLIENT_LOGGED_IN: 'mindgraphy_client_logged_in',
+} as const
+
+// Product Type values
+export const PRODUCT_TYPES = {
+  WEDDING: 'wedding',
+  HANBOK: 'hanbok',
+  DRESS_SHOP: 'dress_shop',
+  BABY: 'baby',
+} as const
+
+// Client Type values  
+export const CLIENT_TYPES = {
+  DIRECT: 'direct',
+  VENUE_AFFILIATED: 'venue_affiliated',
 } as const
 

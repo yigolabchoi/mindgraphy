@@ -66,7 +66,6 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$dashboard$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutDashboard$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/layout-dashboard.js [app-ssr] (ecmascript) <export default as LayoutDashboard>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$folder$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FolderOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/folder-open.js [app-ssr] (ecmascript) <export default as FolderOpen>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/bell.js [app-ssr] (ecmascript) <export default as Bell>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/settings.js [app-ssr] (ecmascript) <export default as Settings>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/camera.js [app-ssr] (ecmascript) <export default as Camera>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clipboard$2d$list$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ClipboardList$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clipboard-list.js [app-ssr] (ecmascript) <export default as ClipboardList>");
@@ -154,15 +153,6 @@ const navigationItems = [
         title: '소통게시판',
         href: '/admin/board',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageSquare$3e$__["MessageSquare"],
-        roles: [
-            'admin',
-            'photographer'
-        ]
-    },
-    {
-        title: '알림',
-        href: '/admin/notifications',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"],
         roles: [
             'admin',
             'photographer'
@@ -993,14 +983,17 @@ function getNextStatuses(currentStatus) {
     const statusFlow = {
         'scheduled': [
             'in_progress',
+            'cancelled',
             'archived'
         ],
         'in_progress': [
             'proof_ready',
+            'cancelled',
             'archived'
         ],
         'proof_ready': [
             'editing',
+            'cancelled',
             'archived'
         ],
         'editing': [
@@ -1011,6 +1004,9 @@ function getNextStatuses(currentStatus) {
             'delivered'
         ],
         'delivered': [
+            'archived'
+        ],
+        'cancelled': [
             'archived'
         ],
         'archived': []
@@ -1029,6 +1025,7 @@ function getStatusProgress(status) {
         'editing': 60,
         'completed': 80,
         'delivered': 100,
+        'cancelled': 0,
         'archived': 100
     };
     return progressMap[status] || 0;
@@ -1545,16 +1542,22 @@ DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 
 // Demo token for development
 __turbopack_context__.s([
+    "CLIENT_TYPES",
+    ()=>CLIENT_TYPES,
     "CONTRACT_STATUSES",
     ()=>CONTRACT_STATUSES,
     "DATE_FORMATS",
     ()=>DATE_FORMATS,
     "DEMO_TOKEN",
     ()=>DEMO_TOKEN,
+    "PRODUCT_TYPES",
+    ()=>PRODUCT_TYPES,
     "PROJECT_STATUSES",
     ()=>PROJECT_STATUSES,
     "ROUTES",
     ()=>ROUTES,
+    "SESSION_KEYS",
+    ()=>SESSION_KEYS,
     "SETTINGS",
     ()=>SETTINGS,
     "STATIC_TOKENS",
@@ -1584,9 +1587,9 @@ const ROUTES = {
     ADMIN_DASHBOARD: '/admin/dashboard',
     ADMIN_LIVE_STATUS: '/admin/live-status',
     ADMIN_CALENDAR: '/admin/calendar',
+    ADMIN_SCHEDULE: '/admin/schedule',
     ADMIN_MY: '/admin/my',
     ADMIN_TEAM: '/admin/team',
-    ADMIN_NOTIFICATIONS: '/admin/notifications',
     // Admin - Management
     ADMIN_PROJECTS: '/admin/projects',
     ADMIN_CUSTOMERS: '/admin/customers',
@@ -1599,7 +1602,6 @@ const ROUTES = {
     // Admin - Settings
     ADMIN_SETTINGS: '/admin/settings',
     ADMIN_SETTINGS_PRODUCTS: '/admin/settings/products',
-    ADMIN_SETTINGS_NOTIFICATIONS: '/admin/settings/notifications',
     ADMIN_SETTINGS_MASTERS: '/admin/settings/masters'
 };
 const PROJECT_STATUSES = [
@@ -1628,6 +1630,43 @@ const DATE_FORMATS = {
     DISPLAY: 'yyyy년 MM월 dd일',
     DISPLAY_WITH_TIME: 'yyyy년 MM월 dd일 HH:mm',
     ISO: "yyyy-MM-dd'T'HH:mm:ss'Z'"
+};
+const SESSION_KEYS = {
+    // Product Selection
+    PRODUCT_TYPE: 'mindgraphy_product_type',
+    CLIENT_TYPE: 'mindgraphy_client_type',
+    PACKAGE: 'mindgraphy_package',
+    OPTIONS: 'mindgraphy_options',
+    // Customer Information
+    BRIDE_NAME: 'mindgraphy_bride_name',
+    GROOM_NAME: 'mindgraphy_groom_name',
+    BRIDE_PHONE: 'mindgraphy_bride_phone',
+    GROOM_PHONE: 'mindgraphy_groom_phone',
+    PHONE: 'mindgraphy_phone',
+    EMAIL: 'mindgraphy_email',
+    MAIN_CONTACT: 'mindgraphy_main_contact',
+    // Event Details
+    WEDDING_DATE: 'mindgraphy_wedding_date',
+    WEDDING_TIME: 'mindgraphy_wedding_time',
+    WEDDING_DATE_INFO: 'mindgraphy_wedding_date_info',
+    VENUE: 'mindgraphy_venue',
+    VENUE_REQUEST: 'mindgraphy_venue_request',
+    // Referral & Misc
+    REFERRAL_SOURCE: 'mindgraphy_referral_source',
+    REFERRER_PAGE: 'mindgraphy_referrer_page',
+    // Auth
+    CLIENT_PHONE: 'mindgraphy_client_phone',
+    CLIENT_LOGGED_IN: 'mindgraphy_client_logged_in'
+};
+const PRODUCT_TYPES = {
+    WEDDING: 'wedding',
+    HANBOK: 'hanbok',
+    DRESS_SHOP: 'dress_shop',
+    BABY: 'baby'
+};
+const CLIENT_TYPES = {
+    DIRECT: 'direct',
+    VENUE_AFFILIATED: 'venue_affiliated'
 };
 }),
 "[project]/components/layout/admin-nav.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
@@ -1717,16 +1756,16 @@ function AdminNav({ onNavigate }) {
         }, this);
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex h-screen w-64 flex-col border-r bg-zinc-50",
+        className: "flex h-screen w-64 flex-col border-r bg-gradient-to-b from-zinc-50 to-white shadow-sm",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex h-16 items-center border-b px-6",
+                className: "flex h-16 items-center border-b px-6 bg-white/80 backdrop-blur-sm",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                     href: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ROUTES"].HOME,
-                    className: "flex items-center gap-2",
+                    className: "flex items-center gap-2 group",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm",
+                            className: "flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm transition-transform group-hover:scale-105",
                             children: "M"
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
@@ -1753,20 +1792,20 @@ function AdminNav({ onNavigate }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
-                className: "flex-1 space-y-1 px-3 py-4 overflow-y-auto",
+                className: "flex-1 space-y-1 px-3 py-4 overflow-y-auto custom-scrollbar",
                 children: navigation.map((item)=>{
                     // Check if the current path matches this navigation item
                     const isActive = pathname === item.href || pathname.startsWith(item.href) && item.href !== __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ROUTES"].HOME;
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                         href: item.href,
                         onClick: onNavigate,
-                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])('flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors', isActive ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900'),
+                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])('flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200', isActive ? 'bg-zinc-900 text-white shadow-md scale-[1.02]' : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 hover:scale-[1.01]', 'focus-ring'),
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(item.icon, {
                                 className: "h-5 w-5 flex-shrink-0"
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 100,
+                                lineNumber: 101,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1774,16 +1813,16 @@ function AdminNav({ onNavigate }) {
                                 children: item.title
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 101,
+                                lineNumber: 102,
                                 columnNumber: 15
                             }, this),
                             item.badge && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                 variant: "secondary",
-                                className: "ml-auto",
+                                className: "ml-auto text-xs",
                                 children: item.badge
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 103,
+                                lineNumber: 104,
                                 columnNumber: 17
                             }, this)
                         ]
@@ -1799,26 +1838,27 @@ function AdminNav({ onNavigate }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "border-t p-4 space-y-3",
+                className: "border-t p-4 space-y-3 bg-white/50 backdrop-blur-sm",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenu"], {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuTrigger"], {
                             asChild: true,
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                className: "flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-colors",
+                                className: "flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-all duration-200 hover:shadow-sm focus-ring",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Avatar"], {
+                                        className: "ring-2 ring-white",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                             className: "bg-zinc-900 text-white text-sm font-medium",
                                             children: getInitials(user.name)
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 118,
+                                            lineNumber: 119,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                        lineNumber: 117,
+                                        lineNumber: 118,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1832,14 +1872,14 @@ function AdminNav({ onNavigate }) {
                                                         children: user.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                                        lineNumber: 124,
+                                                        lineNumber: 125,
                                                         columnNumber: 19
                                                     }, this),
                                                     getRoleBadge()
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                                lineNumber: 123,
+                                                lineNumber: 124,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1847,24 +1887,24 @@ function AdminNav({ onNavigate }) {
                                                 children: user.email
                                             }, void 0, false, {
                                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                                lineNumber: 129,
+                                                lineNumber: 130,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 123,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 116,
+                                lineNumber: 117,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
-                            lineNumber: 115,
+                            lineNumber: 116,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -1875,103 +1915,105 @@ function AdminNav({ onNavigate }) {
                                     children: "내 계정"
                                 }, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 136,
+                                    lineNumber: 137,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 137,
+                                    lineNumber: 138,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
+                                    className: "focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 139,
+                                            lineNumber: 140,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "프로필"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 140,
+                                            lineNumber: 141,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 138,
+                                    lineNumber: 139,
                                     columnNumber: 13
                                 }, this),
                                 user.role === 'admin' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
                                     onClick: ()=>router.push('/admin/settings'),
+                                    className: "focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 144,
+                                            lineNumber: 145,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "설정"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 145,
+                                            lineNumber: 146,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 143,
+                                    lineNumber: 144,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 149,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
                                     onClick: handleLogout,
-                                    className: "text-red-600",
+                                    className: "text-red-600 focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__["LogOut"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 150,
+                                            lineNumber: 151,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "로그아웃"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 151,
+                                            lineNumber: 152,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 149,
+                                    lineNumber: 150,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
-                            lineNumber: 135,
+                            lineNumber: 136,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/layout/admin-nav.tsx",
-                    lineNumber: 114,
+                    lineNumber: 115,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-nav.tsx",
-                lineNumber: 113,
+                lineNumber: 114,
                 columnNumber: 7
             }, this)
         ]
@@ -2196,7 +2238,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$layout$2f$admi
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/sheet.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/menu.js [app-ssr] (ecmascript) <export default as Menu>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-ssr] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils/index.ts [app-ssr] (ecmascript)");
 'use client';
+;
 ;
 ;
 ;
@@ -2212,12 +2257,12 @@ function AdminLayout({ children, align = 'center' }) {
                 className: "hidden lg:flex",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$layout$2f$admin$2d$nav$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AdminNav"], {}, void 0, false, {
                     fileName: "[project]/components/layout/admin-layout.tsx",
-                    lineNumber: 21,
+                    lineNumber: 22,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 20,
+                lineNumber: 21,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Sheet"], {
@@ -2230,40 +2275,40 @@ function AdminLayout({ children, align = 'center' }) {
                         onNavigate: ()=>setMobileMenuOpen(false)
                     }, void 0, false, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 27,
+                        lineNumber: 28,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/layout/admin-layout.tsx",
-                    lineNumber: 26,
+                    lineNumber: 27,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 25,
+                lineNumber: 26,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex-1 flex flex-col overflow-hidden",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                        className: "lg:hidden flex items-center justify-between h-14 px-4 border-b bg-white sticky top-0 z-10",
+                        className: "lg:hidden flex items-center justify-between h-14 px-4 border-b bg-white sticky top-0 z-10 shadow-sm",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                 variant: "ghost",
                                 size: "sm",
                                 onClick: ()=>setMobileMenuOpen(true),
-                                className: "flex items-center gap-2",
+                                className: "flex items-center gap-2 focus-ring",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/layout/admin-layout.tsx",
-                                    lineNumber: 41,
+                                    lineNumber: 42,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 35,
+                                lineNumber: 36,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2274,7 +2319,7 @@ function AdminLayout({ children, align = 'center' }) {
                                         children: "M"
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-layout.tsx",
-                                        lineNumber: 44,
+                                        lineNumber: 45,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2282,54 +2327,54 @@ function AdminLayout({ children, align = 'center' }) {
                                         children: "MindGraphy"
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-layout.tsx",
-                                        lineNumber: 47,
+                                        lineNumber: 48,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 43,
+                                lineNumber: 44,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "w-10"
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 49,
+                                lineNumber: 50,
                                 columnNumber: 11
                             }, this),
                             " "
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 34,
+                        lineNumber: 35,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-                        className: "flex-1 overflow-y-auto",
+                        className: "flex-1 overflow-y-auto bg-zinc-50/50 custom-scrollbar",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: align === 'left' ? 'p-4 md:p-6' : 'container mx-auto p-4 md:p-6 max-w-7xl',
+                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])(align === 'left' ? 'p-4 md:p-6 lg:p-8' : 'container mx-auto p-4 md:p-6 lg:p-8 max-w-7xl', 'animate-in fade-in slide-in-from-bottom duration-300'),
                             children: children
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-layout.tsx",
-                            lineNumber: 54,
+                            lineNumber: 55,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 53,
+                        lineNumber: 54,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 32,
+                lineNumber: 33,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/layout/admin-layout.tsx",
-        lineNumber: 18,
+        lineNumber: 19,
         columnNumber: 5
     }, this);
 }
@@ -2645,6 +2690,16 @@ const DialogDescription = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$proje
     }, ("TURBOPACK compile-time value", void 0)));
 DialogDescription.displayName = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$dialog$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Description"].displayName;
 ;
+ // For accessibility, always include a DialogTitle in DialogContent
+ // If you need to hide it visually, use VisuallyHidden:
+ // import { VisuallyHidden } from "@/components/ui/visually-hidden"
+ // 
+ // <DialogContent>
+ //   <VisuallyHidden>
+ //     <DialogTitle>Hidden Title</DialogTitle>
+ //   </VisuallyHidden>
+ //   {/* rest of content */}
+ // </DialogContent>
 }),
 "[project]/components/ui/label.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -3771,7 +3826,7 @@ function PostDetailDialog({ post, open, onOpenChange }) {
                 postId: post.id,
                 content: commentText,
                 authorId: user?.id || '',
-                authorName: user ? `${user.lastName}${user.firstName}` : '',
+                authorName: user?.name || '익명',
                 authorRole: user?.role || 'photographer',
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
@@ -4301,14 +4356,14 @@ function BoardPage() {
                                                 className: "h-8 w-8"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 99,
+                                                lineNumber: 97,
                                                 columnNumber: 15
                                             }, this),
                                             "소통게시판"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 98,
+                                        lineNumber: 96,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4316,13 +4371,13 @@ function BoardPage() {
                                         children: "팀원들과 정보를 공유하고 소통하세요"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 102,
+                                        lineNumber: 100,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                lineNumber: 97,
+                                lineNumber: 95,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4333,20 +4388,20 @@ function BoardPage() {
                                         className: "mr-2 h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 110,
+                                        lineNumber: 108,
                                         columnNumber: 13
                                     }, this),
                                     "글 작성"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                lineNumber: 106,
+                                lineNumber: 104,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                        lineNumber: 96,
+                        lineNumber: 94,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4365,7 +4420,7 @@ function BoardPage() {
                                                         children: "전체 글"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                        lineNumber: 121,
+                                                        lineNumber: 119,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4373,36 +4428,36 @@ function BoardPage() {
                                                         children: totalPosts
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                        lineNumber: 122,
+                                                        lineNumber: 120,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 120,
+                                                lineNumber: 118,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageSquare$3e$__["MessageSquare"], {
                                                 className: "h-8 w-8 text-muted-foreground"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 124,
+                                                lineNumber: 122,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 119,
+                                        lineNumber: 117,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                    lineNumber: 118,
+                                    lineNumber: 116,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                lineNumber: 117,
+                                lineNumber: 115,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -4418,7 +4473,7 @@ function BoardPage() {
                                                         children: "공지사항"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                        lineNumber: 133,
+                                                        lineNumber: 131,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4426,36 +4481,36 @@ function BoardPage() {
                                                         children: noticeCount
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                        lineNumber: 134,
+                                                        lineNumber: 132,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 132,
+                                                lineNumber: 130,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pin$3e$__["Pin"], {
                                                 className: "h-8 w-8 text-red-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 136,
+                                                lineNumber: 134,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 131,
+                                        lineNumber: 129,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                    lineNumber: 130,
+                                    lineNumber: 128,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                lineNumber: 129,
+                                lineNumber: 127,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -4471,7 +4526,7 @@ function BoardPage() {
                                                         children: "질문"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                        lineNumber: 145,
+                                                        lineNumber: 143,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4479,36 +4534,36 @@ function BoardPage() {
                                                         children: questionCount
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                        lineNumber: 146,
+                                                        lineNumber: 144,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 144,
+                                                lineNumber: 142,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageCircle$3e$__["MessageCircle"], {
                                                 className: "h-8 w-8 text-green-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 148,
+                                                lineNumber: 146,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 143,
+                                        lineNumber: 141,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                    lineNumber: 142,
+                                    lineNumber: 140,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                lineNumber: 141,
+                                lineNumber: 139,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -4524,7 +4579,7 @@ function BoardPage() {
                                                         children: "내가 쓴 글"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                        lineNumber: 157,
+                                                        lineNumber: 155,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4532,42 +4587,42 @@ function BoardPage() {
                                                         children: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$board$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["mockPosts"].filter((p)=>p.authorId === user?.id).length
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                        lineNumber: 158,
+                                                        lineNumber: 156,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 156,
+                                                lineNumber: 154,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
                                                 className: "h-8 w-8 text-muted-foreground"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 162,
+                                                lineNumber: 160,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 155,
+                                        lineNumber: 153,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                    lineNumber: 154,
+                                    lineNumber: 152,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                lineNumber: 153,
+                                lineNumber: 151,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                        lineNumber: 116,
+                        lineNumber: 114,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4579,7 +4634,7 @@ function BoardPage() {
                                     className: "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                    lineNumber: 171,
+                                    lineNumber: 169,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -4589,18 +4644,18 @@ function BoardPage() {
                                     className: "pl-9"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                    lineNumber: 172,
+                                    lineNumber: 170,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                            lineNumber: 170,
+                            lineNumber: 168,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                        lineNumber: 169,
+                        lineNumber: 167,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tabs"], {
@@ -4615,7 +4670,7 @@ function BoardPage() {
                                         children: "전체"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 184,
+                                        lineNumber: 182,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -4623,7 +4678,7 @@ function BoardPage() {
                                         children: "공지사항"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 185,
+                                        lineNumber: 183,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -4631,7 +4686,7 @@ function BoardPage() {
                                         children: "자유게시판"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 186,
+                                        lineNumber: 184,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -4639,7 +4694,7 @@ function BoardPage() {
                                         children: "질문"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 187,
+                                        lineNumber: 185,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -4647,7 +4702,7 @@ function BoardPage() {
                                         children: "팁/노하우"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 188,
+                                        lineNumber: 186,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -4655,13 +4710,13 @@ function BoardPage() {
                                         children: "이벤트"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 189,
+                                        lineNumber: 187,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                lineNumber: 183,
+                                lineNumber: 181,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -4673,12 +4728,12 @@ function BoardPage() {
                                         children: "게시글이 없습니다"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                        lineNumber: 195,
+                                        lineNumber: 193,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                    lineNumber: 194,
+                                    lineNumber: 192,
                                     columnNumber: 15
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "space-y-3",
@@ -4694,7 +4749,7 @@ function BoardPage() {
                                                             className: "h-5 w-5 text-red-600 mt-1 flex-shrink-0"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                            lineNumber: 211,
+                                                            lineNumber: 209,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4708,7 +4763,7 @@ function BoardPage() {
                                                                             children: CATEGORY_LABELS[post.category]
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                            lineNumber: 218,
+                                                                            lineNumber: 216,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         post.isPinned && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -4717,13 +4772,13 @@ function BoardPage() {
                                                                             children: "공지"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                            lineNumber: 222,
+                                                                            lineNumber: 220,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                    lineNumber: 217,
+                                                                    lineNumber: 215,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -4731,7 +4786,7 @@ function BoardPage() {
                                                                     children: post.title
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                    lineNumber: 228,
+                                                                    lineNumber: 226,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4739,7 +4794,7 @@ function BoardPage() {
                                                                     children: post.content
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                    lineNumber: 233,
+                                                                    lineNumber: 231,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4752,14 +4807,14 @@ function BoardPage() {
                                                                                     className: "h-4 w-4"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 240,
+                                                                                    lineNumber: 238,
                                                                                     columnNumber: 31
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                                     children: post.authorName
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 241,
+                                                                                    lineNumber: 239,
                                                                                     columnNumber: 31
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4771,13 +4826,13 @@ function BoardPage() {
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 242,
+                                                                                    lineNumber: 240,
                                                                                     columnNumber: 31
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                            lineNumber: 239,
+                                                                            lineNumber: 237,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4787,20 +4842,20 @@ function BoardPage() {
                                                                                     className: "h-4 w-4"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 248,
+                                                                                    lineNumber: 246,
                                                                                     columnNumber: 31
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$date$2e$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRelativeTime"])(post.createdAt)
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 249,
+                                                                                    lineNumber: 247,
                                                                                     columnNumber: 31
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                            lineNumber: 247,
+                                                                            lineNumber: 245,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4810,20 +4865,20 @@ function BoardPage() {
                                                                                     className: "h-4 w-4"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 253,
+                                                                                    lineNumber: 251,
                                                                                     columnNumber: 31
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                                     children: post.viewCount
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 254,
+                                                                                    lineNumber: 252,
                                                                                     columnNumber: 31
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                            lineNumber: 252,
+                                                                            lineNumber: 250,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4833,70 +4888,70 @@ function BoardPage() {
                                                                                     className: "h-4 w-4"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 258,
+                                                                                    lineNumber: 256,
                                                                                     columnNumber: 31
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                                     children: post.commentCount
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                                    lineNumber: 259,
+                                                                                    lineNumber: 257,
                                                                                     columnNumber: 31
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                            lineNumber: 257,
+                                                                            lineNumber: 255,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                                    lineNumber: 238,
+                                                                    lineNumber: 236,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                            lineNumber: 215,
+                                                            lineNumber: 213,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                    lineNumber: 208,
+                                                    lineNumber: 206,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                                lineNumber: 207,
+                                                lineNumber: 205,
                                                 columnNumber: 21
                                             }, this)
                                         }, post.id, false, {
                                             fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                            lineNumber: 202,
+                                            lineNumber: 200,
                                             columnNumber: 19
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                    lineNumber: 200,
+                                    lineNumber: 198,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                                lineNumber: 192,
+                                lineNumber: 190,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                        lineNumber: 182,
+                        lineNumber: 180,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                lineNumber: 94,
+                lineNumber: 92,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$board$2f$create$2d$post$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CreatePostDialog"], {
@@ -4907,7 +4962,7 @@ function BoardPage() {
                 }
             }, void 0, false, {
                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                lineNumber: 274,
+                lineNumber: 272,
                 columnNumber: 7
             }, this),
             selectedPost && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$board$2f$post$2d$detail$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PostDetailDialog"], {
@@ -4916,13 +4971,13 @@ function BoardPage() {
                 onOpenChange: setDetailDialogOpen
             }, void 0, false, {
                 fileName: "[project]/app/(admin)/admin/board/page.tsx",
-                lineNumber: 284,
+                lineNumber: 282,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/(admin)/admin/board/page.tsx",
-        lineNumber: 93,
+        lineNumber: 91,
         columnNumber: 5
     }, this);
 }

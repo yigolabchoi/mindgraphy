@@ -14,7 +14,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { mockPhotographers } from '@/lib/mock/schedules'
+import { Checkbox } from '@/components/ui/checkbox'
+import { mockSchedulePhotographers } from '@/lib/mock/schedules'
 import {
   Calendar,
   Clock,
@@ -30,7 +31,7 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
-import type { ScheduleEvent, ScheduleStatus, PackageType } from '@/lib/mock/schedules'
+import type { ScheduleEvent, ScheduleStatus, ProductType } from '@/lib/mock/schedules'
 
 interface CreateScheduleDialogProps {
   open: boolean
@@ -39,10 +40,11 @@ interface CreateScheduleDialogProps {
   defaultDate?: Date
 }
 
-const packageTypes: { value: PackageType; label: string; description: string }[] = [
-  { value: 'basic', label: '베이직', description: '기본 촬영 패키지' },
-  { value: 'standard', label: '스탠다드', description: '인기 패키지' },
-  { value: 'premium', label: '프리미엄', description: '고급 패키지' },
+const productTypes: { value: ProductType; label: string; description: string }[] = [
+  { value: 'wedding', label: '일반 웨딩', description: '웨딩 촬영' },
+  { value: 'hanbok', label: '한복 & 캐주얼', description: '한복 촬영' },
+  { value: 'dress_shop', label: '가봉 스냅', description: '드레스 샵 촬영' },
+  { value: 'baby', label: '돌스냅', description: '돌 촬영' },
 ]
 
 export function CreateScheduleDialog({
@@ -62,9 +64,11 @@ export function CreateScheduleDialog({
     ceremonyTime: '',
     venueName: '',
     venueAddress: '',
-    packageType: 'standard' as PackageType,
-    photographerId: '',
-    photographerName: '',
+    productType: 'wedding' as ProductType,
+    packageId: 'new-basic',
+    packageName: 'new BASIC',
+    photographerIds: [] as string[], // 복수 작가 지원 (2~3인)
+    photographerNames: [] as string[], // 복수 작가 이름
     startTime: '',
     endTime: '',
   })
@@ -73,15 +77,35 @@ export function CreateScheduleDialog({
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const selectPhotographer = (photographerId: string) => {
-    const photographer = mockPhotographers.find(p => p.id === photographerId)
-    if (photographer) {
-      setFormData(prev => ({
-        ...prev,
-        photographerId: photographer.id,
-        photographerName: photographer.name
-      }))
-    }
+  const togglePhotographer = (photographerId: string) => {
+    const photographer = mockSchedulePhotographers.find(p => p.id === photographerId)
+    if (!photographer) return
+
+    setFormData(prev => {
+      const isSelected = prev.photographerIds.includes(photographerId)
+      
+      if (isSelected) {
+        // 제거
+        return {
+          ...prev,
+          photographerIds: prev.photographerIds.filter(id => id !== photographerId),
+          photographerNames: prev.photographerNames.filter((_, idx) => 
+            prev.photographerIds[idx] !== photographerId
+          )
+        }
+      } else {
+        // 추가 (최대 3명)
+        if (prev.photographerIds.length >= 3) {
+          toast.warning('작가는 최대 3명까지 선택할 수 있습니다')
+          return prev
+        }
+        return {
+          ...prev,
+          photographerIds: [...prev.photographerIds, photographer.id],
+          photographerNames: [...prev.photographerNames, photographer.name]
+        }
+      }
+    })
   }
 
   const handleCreate = () => {
@@ -94,8 +118,8 @@ export function CreateScheduleDialog({
       toast.error('날짜와 시간을 입력해주세요')
       return
     }
-    if (!formData.photographerId) {
-      toast.error('사진작가를 선택해주세요')
+    if (formData.photographerIds.length === 0) {
+      toast.error('최소 1명의 작가를 선택해주세요')
       return
     }
 
@@ -115,9 +139,11 @@ export function CreateScheduleDialog({
       ceremonyTime: formData.ceremonyTime,
       venueName: formData.venueName,
       venueAddress: formData.venueAddress,
-      packageType: formData.packageType,
-      photographerIds: formData.photographerId ? [formData.photographerId] : [],
-      photographerNames: formData.photographerName ? [formData.photographerName] : [],
+      productType: formData.productType,
+      packageId: formData.packageId,
+      packageName: formData.packageName,
+      photographerIds: formData.photographerIds,
+      photographerNames: formData.photographerNames,
       status: 'reserved' as ScheduleStatus,
       backgroundColor: '#3b82f6',
       borderColor: '#3b82f6',
@@ -137,9 +163,11 @@ export function CreateScheduleDialog({
       ceremonyTime: '',
       venueName: '',
       venueAddress: '',
-      packageType: 'standard',
-      photographerId: '',
-      photographerName: '',
+      productType: 'wedding',
+      packageId: 'new-basic',
+      packageName: 'new BASIC',
+      photographerIds: [],
+      photographerNames: [],
       startTime: '',
       endTime: '',
     })
@@ -147,7 +175,7 @@ export function CreateScheduleDialog({
     onOpenChange(false)
   }
 
-  const filteredPhotographers = mockPhotographers.filter(p =>
+  const filteredPhotographers = mockSchedulePhotographers.filter(p =>
     p.name.toLowerCase().includes(photographerSearch.toLowerCase())
   )
 
@@ -165,7 +193,7 @@ export function CreateScheduleDialog({
             새 일정 생성
           </DialogTitle>
           <DialogDescription>
-            촬영 일정을 생성하고 사진작가를 배정하세요
+            촬영 일정을 생성하세요. 최소 1명, 최대 3명의 작가를 배정해야 합니다.
           </DialogDescription>
         </DialogHeader>
 
@@ -190,7 +218,7 @@ export function CreateScheduleDialog({
               "flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold",
               step === 'photographer' ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-600"
             )}>2</div>
-            작가배정
+            작가배정 (필수)
           </div>
         </div>
 
@@ -326,14 +354,14 @@ export function CreateScheduleDialog({
                   패키지 선택
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
-                  {packageTypes.map((pkg) => (
+                  {productTypes.map((pkg) => (
                     <button
                       key={pkg.value}
                       type="button"
-                      onClick={() => handleInputChange('packageType', pkg.value)}
+                      onClick={() => handleInputChange('productType', pkg.value)}
                       className={cn(
                         "p-4 rounded-lg border-2 transition-all text-left",
-                        formData.packageType === pkg.value
+                        formData.productType === pkg.value
                           ? "border-blue-600 bg-blue-50"
                           : "border-gray-200 hover:border-gray-300"
                       )}
@@ -352,12 +380,12 @@ export function CreateScheduleDialog({
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold flex items-center gap-2">
                     <User className="h-4 w-4" />
-                    사진작가 선택
+                    사진작가 선택 * <span className="text-xs text-muted-foreground font-normal">(최소 1명, 최대 3명)</span>
                   </h3>
-                  {formData.photographerId && (
+                  {formData.photographerIds.length > 0 && (
                     <Badge className="bg-green-600">
                       <CheckCircle className="mr-1 h-3 w-3" />
-                      선택완료
+                      {formData.photographerIds.length}명 선택
                     </Badge>
                   )}
                 </div>
@@ -373,26 +401,16 @@ export function CreateScheduleDialog({
                   />
                 </div>
 
-                {/* Selected Photographer Info */}
-                {formData.photographerId && (
+                {/* Selected Photographers Info */}
+                {formData.photographerIds.length > 0 && (
                   <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="bg-blue-600">
-                        <AvatarFallback className="bg-blue-600 text-white">
-                          {formData.photographerName.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="font-semibold">{formData.photographerName}</div>
-                        <div className="text-sm text-muted-foreground">선택된 작가</div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleInputChange('photographerId', '')}
-                      >
-                        변경
-                      </Button>
+                    <div className="text-sm font-medium mb-2">선택된 작가 ({formData.photographerIds.length}명)</div>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.photographerNames.map((name, idx) => (
+                        <Badge key={idx} variant="secondary" className="bg-blue-100 text-blue-700">
+                          {name}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -401,21 +419,25 @@ export function CreateScheduleDialog({
                 <div className="space-y-2 max-h-[400px] overflow-y-auto">
                   {filteredPhotographers.map((photographer) => {
                     const availability = getPhotographerAvailability(photographer.id)
-                    const isSelected = formData.photographerId === photographer.id
+                    const isSelected = formData.photographerIds.includes(photographer.id)
 
                     return (
-                      <button
+                      <div
                         key={photographer.id}
-                        type="button"
-                        onClick={() => selectPhotographer(photographer.id)}
                         className={cn(
-                          "w-full p-4 rounded-lg border-2 transition-all text-left",
+                          "flex items-center space-x-3 p-3 rounded-lg border-2 transition-all cursor-pointer",
                           isSelected
                             ? "border-blue-600 bg-blue-50"
                             : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
                         )}
+                        onClick={() => togglePhotographer(photographer.id)}
                       >
-                        <div className="flex items-center gap-3">
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={() => togglePhotographer(photographer.id)}
+                          className="pointer-events-none"
+                        />
+                        <div className="flex items-center gap-3 flex-1">
                           <Avatar className={cn(
                             isSelected ? "bg-blue-600" : "bg-gray-600"
                           )}>
@@ -446,11 +468,8 @@ export function CreateScheduleDialog({
                               사진작가
                             </div>
                           </div>
-                          {isSelected && (
-                            <CheckCircle className="h-5 w-5 text-blue-600" />
-                          )}
                         </div>
-                      </button>
+                      </div>
                     )
                   })}
                 </div>

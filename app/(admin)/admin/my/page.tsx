@@ -9,29 +9,15 @@ import { AvailabilityTab } from '@/components/my/availability-tab'
 import {
   getTodaySchedule,
   getAllUpcomingSchedule,
-  getMyChecklist,
-  toggleChecklistItem,
-  currentUser,
-  type ChecklistItem
+  currentUser
 } from '@/lib/mock/me'
 import { Calendar, User, CheckSquare } from 'lucide-react'
-import { toast } from 'sonner'
 
 export default function MyPage() {
   // State
   const [activeTab, setActiveTab] = useState<'day' | 'upcoming' | 'availability'>('day')
   const [todaySchedule, setTodaySchedule] = useState(getTodaySchedule())
   const [upcomingSchedule] = useState(getAllUpcomingSchedule())
-  const [checklist, setChecklist] = useState<ChecklistItem[]>(getMyChecklist())
-
-  // Handlers
-  const handleChecklistToggle = (id: string) => {
-    setChecklist(prev => toggleChecklistItem(id, prev))
-    const item = checklist.find(c => c.id === id)
-    if (item) {
-      toast.success(item.completed ? '체크리스트 항목 미완료로 변경됨' : '체크리스트 항목 완료!')
-    }
-  }
 
   const handleStatusChange = (scheduleId: string, newStatus: 'in_progress' | 'completed') => {
     setTodaySchedule(prev =>
@@ -70,8 +56,6 @@ export default function MyPage() {
           <TabsContent value="day" className="mt-6">
             <MyDay
               schedule={todaySchedule}
-              checklist={checklist}
-              onChecklistToggle={handleChecklistToggle}
               onStatusChange={handleStatusChange}
             />
           </TabsContent>

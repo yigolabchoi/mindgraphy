@@ -89,6 +89,26 @@ export const mockPhotographers: Photographer[] = [
     totalProjects: 89,
     availabilityStatus: 'busy',
     createdAt: '2023-06-01T00:00:00Z'
+  },
+  {
+    id: 'photographer-3',
+    userId: 'photo-3',
+    user: {
+      id: 'photo-3',
+      email: 'photographer3@mindgraphy.com',
+      role: 'photographer',
+      firstName: '작가',
+      lastName: '김',
+      status: 'active',
+      phone: '010-6789-0123'
+    },
+    portfolioUrl: 'https://portfolio.example.com/kim',
+    experienceYears: 6,
+    specialties: ['웨딩', '야외촬영', '스냅'],
+    rating: 4.7,
+    totalProjects: 120,
+    availabilityStatus: 'available',
+    createdAt: '2023-03-01T00:00:00Z'
   }
 ]
 
@@ -232,12 +252,15 @@ export const mockProjects: Project[] = [
     customer: mockCustomers[0],
     contractId: 'contract-1',
     projectType: 'wedding',
+    packageId: 'new-basic',  // 고객 선택 패키지
+    optionIds: ['option-1', 'option-2'],  // 고객 선택 옵션들
     projectStatus: 'proof_ready',
     weddingDate: '2025-12-15',
     weddingTime: '14:00',
     weddingVenue: '서울 그랜드 웨딩홀',
     makeupInfo: '웨딩홀 내 메이크업샵 (12:00)',
     specialRequests: '야외 촬영 희망',
+    referralSource: 'Instagram',  // 유입 경로
     assignedPhotographerIds: ['photographer-1', 'photographer-2'],
     assignedPhotographers: [mockPhotographers[0], mockPhotographers[1]],
     assignedEditorId: 'editor-1',
@@ -253,11 +276,14 @@ export const mockProjects: Project[] = [
     customer: mockCustomers[2],
     contractId: 'contract-2',
     projectType: 'wedding',
+    packageId: 'new-data',  // 고객 선택 패키지
+    optionIds: ['option-3'],  // 메이크업샵 촬영
     projectStatus: 'editing',
     weddingDate: '2025-11-20',
     weddingTime: '11:00',
     weddingVenue: '경기 럭셔리 컨벤션',
     makeupInfo: '외부 메이크업 (09:00)',
+    referralSource: 'Naver Blog',  // 유입 경로
     assignedPhotographerIds: ['photographer-2', 'photographer-3'],
     assignedPhotographers: [mockPhotographers[1], mockPhotographers[2]],
     assignedEditorId: 'editor-1',
@@ -271,12 +297,15 @@ export const mockProjects: Project[] = [
     projectNumber: 'PRJ-2025-003',
     customerId: 'customer-2',
     contractId: 'contract-3',
-    projectType: 'pre_wedding',
+    projectType: 'hanbok',  // wedding에서 hanbok으로 변경
+    packageId: 'hanbok-a2',  // 한복 패키지
+    optionIds: [],
     projectStatus: 'scheduled',
     weddingDate: '2026-03-10',
     weddingTime: '10:00',
-    weddingVenue: '제주 스냅 촬영',
+    weddingVenue: '제주 야외 촬영',
     specialRequests: '해변 배경 중점',
+    referralSource: '웨딩홀 제휴',  // 유입 경로
     assignedPhotographerIds: ['photographer-1'],
     assignedPhotographers: [mockPhotographers[0]],
     progress: 10,
@@ -290,12 +319,15 @@ export const mockProjects: Project[] = [
     customer: mockCustomers[0],
     contractId: 'contract-1',
     projectType: 'wedding',
+    packageId: 'basic',  // BASIC 패키지
+    optionIds: [],
     projectStatus: 'scheduled',
     weddingDate: '2025-12-22',
     weddingTime: '13:00',
     weddingVenue: '인천 드림웨딩홀',
     makeupInfo: '웨딩홀 내 메이크업샵 (11:00)',
     specialRequests: '가족 단체 사진 중요',
+    referralSource: 'Facebook',  // 유입 경로
     assignedPhotographerIds: [],
     assignedPhotographers: [],
     progress: 5,
@@ -309,12 +341,15 @@ export const mockProjects: Project[] = [
     customer: mockCustomers[2],
     contractId: 'contract-2',
     projectType: 'wedding',
+    packageId: 'data',  // DATA 패키지
+    optionIds: ['option-2'],  // 2인 작가
     projectStatus: 'scheduled',
     weddingDate: '2026-01-18',
     weddingTime: '15:00',
     weddingVenue: '부산 씨사이드호텔',
     makeupInfo: '호텔 스위트룸 (13:00)',
     specialRequests: '오션뷰 촬영 희망',
+    referralSource: '지인 추천',  // 유입 경로
     assignedPhotographerIds: [],
     assignedPhotographers: [],
     progress: 0,

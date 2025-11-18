@@ -1,7 +1,7 @@
 import { addDays, subDays, format } from 'date-fns'
 
 export type ScheduleStatus = 'reserved' | 'in_progress' | 'editing' | 'completed' | 'cancelled'
-export type PackageType = 'premium' | 'standard' | 'basic'
+export type ProductType = 'wedding' | 'hanbok' | 'dress_shop' | 'baby'
 export type VenueType = 'hotel' | 'convention' | 'outdoor' | 'studio'
 
 export interface ScheduleEvent {
@@ -15,6 +15,8 @@ export interface ScheduleEvent {
   brideName: string
   groomPhone: string
   bridePhone: string
+  email?: string
+  referralSource?: string
   contractId: string
   clientPortalToken: string
   projectDetailId?: string // 프로젝트 상세 페이지 연결용
@@ -36,10 +38,11 @@ export interface ScheduleEvent {
   photographerNames?: string[]
   assistantIds?: string[]
   
-  // Package & Options
-  packageType: PackageType
-  packageName: string
-  options: string[]
+  // Product & Package & Options
+  productType: ProductType  // 상품 유형 (웨딩, 한복 등)
+  packageId: string  // 패키지 ID (new-basic, hanbok-a2 등)
+  packageName: string  // 패키지 이름 (new BASIC, HANBOK A2 등)
+  options: string[]  // 선택한 옵션들
   
   // Status & Meta
   status: ScheduleStatus
@@ -54,104 +57,121 @@ export interface ScheduleEvent {
   textColor: string
 }
 
-export interface Photographer {
+// Schedule용 간소화된 Photographer 타입 (lib/types.ts의 Photographer와 구분)
+export interface SchedulePhotographer {
   id: string
   name: string
   color: string
   availabilityStatus: 'available' | 'busy' | 'on_leave'
+  phone?: string
 }
 
-// Photographers
-export const mockPhotographers: Photographer[] = [
+// Photographers (Schedule용)
+export const mockSchedulePhotographers: SchedulePhotographer[] = [
   {
     id: 'photo-1',
     name: '박작가',
     color: '#3b82f6', // blue
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-1234-5678'
   },
   {
     id: 'photo-2',
     name: '최작가',
     color: '#8b5cf6', // purple
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-2345-6789'
   },
   {
     id: 'photo-3',
     name: '김작가',
     color: '#10b981', // green
-    availabilityStatus: 'busy'
+    availabilityStatus: 'busy',
+    phone: '010-3456-7890'
   },
   {
     id: 'photo-4',
     name: '이작가',
     color: '#f59e0b', // amber
-    availabilityStatus: 'on_leave'
+    availabilityStatus: 'on_leave',
+    phone: '010-4567-8901'
   },
   {
     id: 'photo-5',
     name: '정작가',
     color: '#ec4899', // pink
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-5678-9012'
   },
   {
     id: 'photo-6',
     name: '강작가',
     color: '#14b8a6', // teal
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-6789-0123'
   },
   {
     id: 'photo-7',
     name: '조작가',
     color: '#f97316', // orange
-    availabilityStatus: 'on_leave'
+    availabilityStatus: 'on_leave',
+    phone: '010-7890-1234'
   },
   {
     id: 'photo-8',
     name: '윤작가',
     color: '#06b6d4', // cyan
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-8901-2345'
   },
   {
     id: 'photo-9',
     name: '장작가',
     color: '#8b5cf6', // violet
-    availabilityStatus: 'on_leave'
+    availabilityStatus: 'on_leave',
+    phone: '010-9012-3456'
   },
   {
     id: 'photo-10',
     name: '한작가',
     color: '#84cc16', // lime
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-0123-4567'
   },
   {
     id: 'photo-11',
     name: '신작가',
     color: '#3b82f6', // blue
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-1122-3344'
   },
   {
     id: 'photo-12',
     name: '오작가',
     color: '#ef4444', // red
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-2233-4455'
   },
   {
     id: 'photo-13',
     name: '배작가',
     color: '#06b6d4', // cyan
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-3344-5566'
   },
   {
     id: 'photo-14',
     name: '임작가',
     color: '#8b5cf6', // violet
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-4455-6677'
   },
   {
     id: 'photo-15',
     name: '황작가',
     color: '#10b981', // emerald
-    availabilityStatus: 'available'
+    availabilityStatus: 'available',
+    phone: '010-5566-7788'
   }
 ]
 
@@ -188,9 +208,10 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '10:00',
     photographerIds: ['photo-10'],
     photographerNames: ['한작가'],
-    packageType: 'standard',
-    packageName: '스탠다드 웨딩 패키지',
-    options: ['본식', '스냅'],
+    productType: 'wedding',
+    packageId: 'new-data',
+    packageName: 'new DATA',
+    options: ['메이크업샵 촬영'],
     status: 'completed',
     travelTimeMinutes: 20,
     ...statusColors.completed
@@ -216,9 +237,10 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '09:30',
     photographerIds: ['photo-4', 'photo-11'],
     photographerNames: ['이작가', '신작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 웨딩 패키지',
-    options: ['본식+스냅', '야외촬영'],
+    productType: 'wedding',
+    packageId: 'basic',
+    packageName: 'BASIC',
+    options: ['2인 작가', '원본 초고화질 다운로드'],
     status: 'completed',
     travelTimeMinutes: 30,
     ...statusColors.completed
@@ -247,8 +269,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     photographerIds: ['photo-1', 'photo-2'],
     photographerNames: ['박작가', '최작가'],
     assistantIds: [],
-    packageType: 'premium',
-    packageName: '프리미엄 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'data',
+    packageName: 'DATA',
     options: ['본식+스냅', '야외촬영', '드론촬영', '당일편집'],
     status: 'in_progress',
     specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망',
@@ -278,8 +301,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '14:00',
     photographerIds: ['photo-5', 'photo-6'],
     photographerNames: ['정작가', '강작가'],
-    packageType: 'standard',
-    packageName: '스탠다드 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'new-data',
+    packageName: 'new DATA',
     options: ['본식', '메이크업 촬영'],
     status: 'in_progress',
     specialRequests: '하객 단체 사진 많이 촬영 요청',
@@ -307,8 +331,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '13:30',
     photographerIds: ['photo-8', 'photo-10', 'photo-12'],
     photographerNames: ['윤작가', '한작가', '오작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'data',
+    packageName: 'DATA',
     options: ['본식+스냅', '야외촬영', '당일편집'],
     status: 'in_progress',
     specialRequests: '경주 전통 건축물 배경으로 촬영',
@@ -339,8 +364,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     makeupLocation: '호텔 스위트룸',
     photographerIds: ['photo-3', 'photo-13'],
     photographerNames: ['김작가', '배작가'],
-    packageType: 'premium' as PackageType,
-    packageName: '럭셔리 웨딩 패키지',
+    productType: 'wedding' as ProductType,
+    packageId: 'data',
+    packageName: 'DATA',
     options: ['본식+스냅', '야외촬영', '드론촬영', '프리웨딩 앨범', '당일편집'],
     status: 'reserved',
     specialRequests: '인천 바다 배경 스냅 촬영',
@@ -368,8 +394,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '19:00',
     photographerIds: ['photo-14', 'photo-15'],
     photographerNames: ['임작가', '황작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'data',
+    packageName: 'DATA',
     options: ['본식+스냅', '야외촬영'],
     status: 'reserved',
     specialRequests: '해운대 바다 배경 촬영',
@@ -397,8 +424,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '16:00',
     photographerIds: ['photo-11'],
     photographerNames: ['신작가'],
-    packageType: 'standard',
-    packageName: '스탠다드 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'new-data',
+    packageName: 'new DATA',
     options: ['본식', '스냅'],
     status: 'reserved',
     travelTimeMinutes: 60,
@@ -427,8 +455,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     makeupLocation: '호텔 룸',
     photographerIds: ['photo-2', 'photo-5'],
     photographerNames: ['최작가', '정작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'data',
+    packageName: 'DATA',
     options: ['본식+스냅', '야외촬영', '부모님 메이크업'],
     status: 'reserved',
     travelTimeMinutes: 60,
@@ -454,8 +483,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '16:00',
     photographerIds: ['photo-1'],
     photographerNames: ['박작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'data',
+    packageName: 'DATA',
     options: ['본식+스냅', '해변 촬영'],
     status: 'reserved',
     travelTimeMinutes: 240, // 4 hours to Busan
@@ -480,8 +510,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '18:00',
     photographerIds: ['photo-1'], // Same photographer - CONFLICT
     photographerNames: ['박작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'data',
+    packageName: 'DATA',
     options: ['본식+스냅', '야외촬영', '당일편집'],
     status: 'reserved',
     travelTimeMinutes: 30,
@@ -506,9 +537,10 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '13:00',
     photographerIds: ['photo-3', 'photo-6'],
     photographerNames: ['김작가', '강작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 야외 패키지',
-    options: ['야외 본식', '해변 촬영', '드론촬영'],
+    productType: 'hanbok',
+    packageId: 'hanbok-a2',
+    packageName: 'HANBOK A2',
+    options: [],
     status: 'reserved',
     specialRequests: '일몰 타이밍 맞춰 촬영',
     travelTimeMinutes: 180,
@@ -532,9 +564,10 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '11:00',
     photographerIds: ['photo-2'],
     photographerNames: ['최작가'],
-    packageType: 'basic',
-    packageName: '베이직 스튜디오 패키지',
-    options: ['스튜디오 촬영'],
+    productType: 'dress_shop',
+    packageId: 'dress-shop-1',
+    packageName: '가봉 스냅',
+    options: [],
     status: 'in_progress',
     travelTimeMinutes: 20,
     ...statusColors.in_progress
@@ -558,9 +591,10 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '16:00',
     photographerIds: ['photo-1'],
     photographerNames: ['박작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 야외 패키지',
-    options: ['야외 본식', '정원 촬영'],
+    productType: 'hanbok',
+    packageId: 'hanbok-a2',
+    packageName: 'HANBOK A2',
+    options: [],
     status: 'editing',
     travelTimeMinutes: 90,
     ...statusColors.editing
@@ -584,8 +618,9 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '15:00',
     photographerIds: ['photo-2'],
     photographerNames: ['최작가'],
-    packageType: 'premium',
-    packageName: '프리미엄 웨딩 패키지',
+    productType: 'wedding',
+    packageId: 'data',
+    packageName: 'DATA',
     options: ['본식+스냅', '야외촬영'],
     status: 'completed',
     travelTimeMinutes: 25,
@@ -613,7 +648,8 @@ export const mockScheduleEvents: ScheduleEvent[] = [
     ceremonyTime: '12:00 (정오)',
     photographerIds: [],
     photographerNames: [],
-    packageType: 'standard',
+    productType: 'wedding',
+    packageId: 'new-data',
     packageName: '돌잔치 행사',
     options: ['2인 촬영팀', '13x10인치 앨범 50p', '14x14인치 액자', '최종본 50장', '전체원본 제공'],
     status: 'reserved',
@@ -626,7 +662,7 @@ export const mockScheduleEvents: ScheduleEvent[] = [
 
 // Helper functions
 export const getPhotographerById = (id: string) => {
-  return mockPhotographers.find(p => p.id === id)
+  return mockSchedulePhotographers.find(p => p.id === id)
 }
 
 export const getEventsByPhotographer = (photographerId: string) => {
@@ -641,8 +677,8 @@ export const getEventsByVenueType = (venueType: VenueType) => {
   return mockScheduleEvents.filter(e => e.venueType === venueType)
 }
 
-export const getEventsByPackage = (packageType: PackageType) => {
-  return mockScheduleEvents.filter(e => e.packageType === packageType)
+export const getEventsByProductType = (productType: ProductType) => {
+  return mockScheduleEvents.filter(e => e.productType === productType)
 }
 
 // Check for conflicts (overlapping photographers and time)
@@ -682,14 +718,15 @@ export const getStatusLabel = (status: ScheduleStatus): string => {
   return labels[status]
 }
 
-// Get package label
-export const getPackageLabel = (packageType: PackageType): string => {
-  const labels: Record<PackageType, string> = {
-    premium: '프리미엄',
-    standard: '스탠다드',
-    basic: '베이직'
+// Get product type label
+export const getProductTypeLabel = (productType: ProductType): string => {
+  const labels: Record<ProductType, string> = {
+    wedding: '일반 웨딩',
+    hanbok: '한복 & 캐주얼',
+    dress_shop: '가봉 스냅',
+    baby: '돌스냅'
   }
-  return labels[packageType]
+  return labels[productType]
 }
 
 // Get venue type label

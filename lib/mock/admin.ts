@@ -11,7 +11,7 @@ export interface Schedule {
   photographerIds?: string[]  // 복수 작가 지원
   photographerNames?: string[]  // 복수 작가 지원
   status: 'unassigned' | 'assigned' | 'confirmed' | 'completed' | 'cancelled'
-  type: 'wedding' | 'pre_wedding' | 'studio'
+  type: 'wedding' | 'hanbok' | 'dress_shop' | 'baby'  // 고객 페이지 ProductType과 일치
   daysUntil: number
   hasProof: boolean
   proofStatus?: 'pending' | 'ready' | 'selected' | 'completed'
@@ -68,7 +68,7 @@ export const mockSchedules: Schedule[] = [
     photographerIds: [],
     photographerNames: [],
     status: 'unassigned',
-    type: 'pre_wedding',
+    type: 'dress_shop',  // 가봉 스냅
     daysUntil: 0,
     hasProof: false
   },
@@ -99,7 +99,7 @@ export const mockSchedules: Schedule[] = [
     photographerIds: [],
     photographerNames: [],
     status: 'unassigned',
-    type: 'pre_wedding',
+    type: 'hanbok',  // 한복 촬영
     daysUntil: 2,
     hasProof: false
   },
@@ -145,7 +145,7 @@ export const mockSchedules: Schedule[] = [
     photographerIds: ['photo-1', 'photo-6'],
     photographerNames: ['박작가', '강작가'],
     status: 'confirmed',
-    type: 'pre_wedding',
+    type: 'hanbok',  // 한복 촬영
     daysUntil: 5,
     hasProof: false
   },
@@ -159,8 +159,37 @@ export const mockSchedules: Schedule[] = [
     photographerIds: [],
     photographerNames: [],
     status: 'unassigned',
-    type: 'studio',
+    type: 'baby',  // 돌스냅
     daysUntil: 6,
+    hasProof: false
+  },
+  {
+    id: 'schedule-11',
+    projectId: 'project-11',
+    customerName: '장동건 & 고소영',
+    date: format(addDays(today, 8), 'yyyy-MM-dd'),
+    time: '오전 촬영',
+    location: '경복궁 일대',
+    photographerIds: ['photo-1'],
+    photographerNames: ['박작가'],
+    status: 'confirmed',
+    type: 'hanbok',
+    daysUntil: 8,
+    hasProof: false,
+    proofStatus: 'pending'
+  },
+  {
+    id: 'schedule-12',
+    projectId: 'project-12',
+    customerName: '원빈 & 이나영',
+    date: format(addDays(today, 10), 'yyyy-MM-dd'),
+    time: '일몰 촬영',
+    location: '남산 타워',
+    photographerIds: [],
+    photographerNames: [],
+    status: 'assigned',
+    type: 'hanbok',
+    daysUntil: 10,
     hasProof: false
   },
   // Past (completed)
@@ -189,7 +218,7 @@ export const mockSchedules: Schedule[] = [
     photographerIds: ['photo-2'],
     photographerNames: ['최작가'],
     status: 'completed',
-    type: 'pre_wedding',
+    type: 'hanbok',  // 한복 촬영
     daysUntil: -5,
     hasProof: true,
     proofStatus: 'completed'

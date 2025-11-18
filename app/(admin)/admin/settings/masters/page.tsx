@@ -54,6 +54,9 @@ export default function MastersSettingsPage() {
   const [drawerMode, setDrawerMode] = useState<'create' | 'edit'>('create')
   const [selectedItem, setSelectedItem] = useState<Venue | Partner | null>(null)
   const [activeTab, setActiveTab] = useState<'venues' | 'partners'>('venues')
+  
+  // Form state
+  const [formData, setFormData] = useState<any>({})
 
   // Mock search
   const filteredVenues = venues.filter(v =>
@@ -68,20 +71,73 @@ export default function MastersSettingsPage() {
   const handleCreate = () => {
     setDrawerMode('create')
     setSelectedItem(null)
+    setFormData({})
     setDrawerOpen(true)
   }
 
   const handleEdit = (item: Venue | Partner) => {
     setDrawerMode('edit')
     setSelectedItem(item)
+    setFormData(item)
     setDrawerOpen(true)
   }
 
   const handleSave = () => {
+    if (activeTab === 'venues') {
+      // Venue save logic
+      const ballroomsArray = formData.ballrooms 
+        ? formData.ballrooms.split(',').map((b: string) => b.trim()).filter((b: string) => b)
+        : []
+      
+      const venueData: Venue = {
+        id: drawerMode === 'create' ? `venue-${Date.now()}` : formData.id,
+        name: formData.name || '',
+        type: formData.type || 'wedding_hall',
+        address: formData.address || '',
+        phone: formData.phone || '',
+        ballrooms: ballroomsArray,
+        parkingInfo: formData.parkingInfo,
+        notes: formData.notes,
+        isActive: formData.isActive !== undefined ? formData.isActive : true,
+        createdAt: drawerMode === 'create' ? new Date().toISOString().split('T')[0] : formData.createdAt,
+        updatedAt: new Date().toISOString().split('T')[0]
+      }
+      
+      if (drawerMode === 'create') {
+        setVenues([...venues, venueData])
+      } else {
+        setVenues(venues.map(v => v.id === venueData.id ? venueData : v))
+      }
+    } else {
+      // Partner save logic
+      const partnerData: Partner = {
+        id: drawerMode === 'create' ? `partner-${Date.now()}` : formData.id,
+        name: formData.name || '',
+        type: formData.type || 'makeup',
+        contactPerson: formData.contactPerson || '',
+        phone: formData.phone || '',
+        email: formData.email || '',
+        address: formData.address,
+        website: formData.website,
+        commissionRate: formData.commissionRate ? Number(formData.commissionRate) : undefined,
+        notes: formData.notes,
+        isActive: formData.isActive !== undefined ? formData.isActive : true,
+        createdAt: drawerMode === 'create' ? new Date().toISOString().split('T')[0] : formData.createdAt,
+        updatedAt: new Date().toISOString().split('T')[0]
+      }
+      
+      if (drawerMode === 'create') {
+        setPartners([...partners, partnerData])
+      } else {
+        setPartners(partners.map(p => p.id === partnerData.id ? partnerData : p))
+      }
+    }
+    
     toast.success(
       drawerMode === 'create' ? '새 항목이 생성되었습니다' : '변경사항이 저장되었습니다'
     )
     setDrawerOpen(false)
+    setFormData({})
   }
 
   const getVenueTypeLabel = (type: Venue['type']) => {
@@ -263,7 +319,15 @@ export default function MastersSettingsPage() {
                             </a>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">{venue.ballrooms.length}개</Badge>
+                        <div className="space-y-1">
+                          <Badge variant="outline">{venue.ballrooms.length}개</Badge>
+                          {venue.ballrooms.length > 0 && (
+                            <div className="text-xs text-muted-foreground">
+                              {venue.ballrooms.slice(0, 2).join(', ')}
+                              {venue.ballrooms.length > 2 && ` 외 ${venue.ballrooms.length - 2}개`}
+                            </div>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell>
                         {venue.isActive ? (
@@ -469,7 +533,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <Input 
                         placeholder="예: 더 그랜드 웨딩홀" 
-                        defaultValue={selectedItem && 'name' in selectedItem ? selectedItem.name : ''}
+                        value={formData.name || ''}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -478,7 +543,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <select 
                         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                        defaultValue={selectedItem && 'type' in selectedItem ? selectedItem.type : 'wedding_hall'}
+                        value={formData.type || 'wedding_hall'}
+                        onChange={(e) => setFormData({...formData, type: e.target.value})}
                       >
                         <option value="wedding_hall">웨딩홀</option>
                         <option value="hotel">호텔</option>
@@ -496,7 +562,8 @@ export default function MastersSettingsPage() {
                     </label>
                     <Input 
                       placeholder="예: 서울시 강남구 테헤란로 123" 
-                      defaultValue={selectedItem && 'address' in selectedItem ? selectedItem.address : ''}
+                      value={formData.address || ''}
+                      onChange={(e) => setFormData({...formData, address: e.target.value})}
                     />
                   </div>
 
@@ -508,7 +575,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <Input 
                         placeholder="02-1234-5678" 
-                        defaultValue={selectedItem && 'phone' in selectedItem ? selectedItem.phone : ''}
+                        value={formData.phone || ''}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -517,7 +585,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <select 
                         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                        defaultValue={selectedItem && 'isActive' in selectedItem ? String(selectedItem.isActive) : 'true'}
+                        value={String(formData.isActive !== undefined ? formData.isActive : true)}
+                        onChange={(e) => setFormData({...formData, isActive: e.target.value === 'true'})}
                       >
                         <option value="true">활성</option>
                         <option value="false">비활성</option>
@@ -530,16 +599,21 @@ export default function MastersSettingsPage() {
                       보유 홀 (쉼표로 구분)
                     </label>
                     <Input 
-                      placeholder="예: 그랜드홀 (300석), 프리미어홀 (200석)" 
-                      defaultValue={selectedItem && 'ballrooms' in selectedItem ? selectedItem.ballrooms.join(', ') : ''}
+                      placeholder="예: 그랜드홀 (300석), 프리미어홀 (200석), 스위트홀 (100석)" 
+                      value={formData.ballrooms ? (Array.isArray(formData.ballrooms) ? formData.ballrooms.join(', ') : formData.ballrooms) : ''}
+                      onChange={(e) => setFormData({...formData, ballrooms: e.target.value})}
                     />
+                    <p className="text-xs text-muted-foreground">
+                      💡 각 홀을 쉼표로 구분하여 입력하세요. 예: "그랜드홀 (300석), 프리미어홀 (200석)"
+                    </p>
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium">주차 정보</label>
                     <Input 
                       placeholder="예: 지하 3층 주차장, 발렛파킹 가능" 
-                      defaultValue={selectedItem && 'parkingInfo' in selectedItem ? selectedItem.parkingInfo || '' : ''}
+                      value={formData.parkingInfo || ''}
+                      onChange={(e) => setFormData({...formData, parkingInfo: e.target.value})}
                     />
                   </div>
 
@@ -547,7 +621,8 @@ export default function MastersSettingsPage() {
                     <label className="text-sm font-medium">메모</label>
                     <Input 
                       placeholder="예: 천장 높이 5m, 자연광 우수" 
-                      defaultValue={selectedItem && 'notes' in selectedItem ? selectedItem.notes || '' : ''}
+                      value={formData.notes || ''}
+                      onChange={(e) => setFormData({...formData, notes: e.target.value})}
                     />
                   </div>
                 </CardContent>
@@ -568,7 +643,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <Input 
                         placeholder="예: 프리미엄 메이크업샵" 
-                        defaultValue={selectedItem && 'name' in selectedItem ? selectedItem.name : ''}
+                        value={formData.name || ''}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -577,7 +653,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <select 
                         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                        defaultValue={selectedItem && 'type' in selectedItem ? selectedItem.type : 'makeup'}
+                        value={formData.type || 'makeup'}
+                        onChange={(e) => setFormData({...formData, type: e.target.value})}
                       >
                         <option value="makeup">메이크업</option>
                         <option value="dress">드레스</option>
@@ -597,7 +674,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <Input 
                         placeholder="예: 김미연" 
-                        defaultValue={selectedItem && 'contactPerson' in selectedItem ? selectedItem.contactPerson : ''}
+                        value={formData.contactPerson || ''}
+                        onChange={(e) => setFormData({...formData, contactPerson: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -607,7 +685,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <Input 
                         placeholder="010-1234-5678" 
-                        defaultValue={selectedItem && 'phone' in selectedItem ? selectedItem.phone : ''}
+                        value={formData.phone || ''}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       />
                     </div>
                   </div>
@@ -620,7 +699,8 @@ export default function MastersSettingsPage() {
                     <Input 
                       type="email"
                       placeholder="example@email.com" 
-                      defaultValue={selectedItem && 'email' in selectedItem ? selectedItem.email : ''}
+                      value={formData.email || ''}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
                     />
                   </div>
 
@@ -631,7 +711,8 @@ export default function MastersSettingsPage() {
                     </label>
                     <Input 
                       placeholder="예: 서울시 강남구 압구정로 456" 
-                      defaultValue={selectedItem && 'address' in selectedItem ? selectedItem.address || '' : ''}
+                      value={formData.address || ''}
+                      onChange={(e) => setFormData({...formData, address: e.target.value})}
                     />
                   </div>
 
@@ -643,7 +724,8 @@ export default function MastersSettingsPage() {
                       </label>
                       <Input 
                         placeholder="https://example.com" 
-                        defaultValue={selectedItem && 'website' in selectedItem ? selectedItem.website || '' : ''}
+                        value={formData.website || ''}
+                        onChange={(e) => setFormData({...formData, website: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -654,7 +736,8 @@ export default function MastersSettingsPage() {
                       <Input 
                         type="number"
                         placeholder="15" 
-                        defaultValue={selectedItem && 'commissionRate' in selectedItem ? selectedItem.commissionRate || '' : ''}
+                        value={formData.commissionRate || ''}
+                        onChange={(e) => setFormData({...formData, commissionRate: e.target.value})}
                       />
                     </div>
                   </div>
@@ -665,7 +748,8 @@ export default function MastersSettingsPage() {
                     </label>
                     <select 
                       className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                      defaultValue={selectedItem && 'isActive' in selectedItem ? String(selectedItem.isActive) : 'true'}
+                      value={String(formData.isActive !== undefined ? formData.isActive : true)}
+                      onChange={(e) => setFormData({...formData, isActive: e.target.value === 'true'})}
                     >
                       <option value="true">활성</option>
                       <option value="false">비활성</option>
@@ -676,7 +760,8 @@ export default function MastersSettingsPage() {
                     <label className="text-sm font-medium">메모</label>
                     <Input 
                       placeholder="예: 웨딩 전문, 출장 가능" 
-                      defaultValue={selectedItem && 'notes' in selectedItem ? selectedItem.notes || '' : ''}
+                      value={formData.notes || ''}
+                      onChange={(e) => setFormData({...formData, notes: e.target.value})}
                     />
                   </div>
                 </CardContent>

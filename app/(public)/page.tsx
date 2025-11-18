@@ -34,7 +34,7 @@ export default function HomePage() {
         <div className="grid w-full max-w-4xl gap-6 md:grid-cols-2">
           {/* Client Portal Card */}
           <Link 
-            href="/c"
+            href="/c/product-type"
             onClick={() => handlePortalClick('client')}
             data-branch="client"
             data-portal="client-portal"
@@ -51,35 +51,7 @@ export default function HomePage() {
                   Client Portal
                 </CardDescription>
               </CardHeader>
-              <CardContent className="relative space-y-6">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  웨딩 고객님을 위한 전용 포털입니다. 계약부터 사진 선택, 최종 다운로드까지 모든 과정을 한 곳에서 관리하세요.
-                </p>
-                
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="h-2 w-2 rounded-full bg-zinc-900 mt-1.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">토큰 기반 안전한 접근</p>
-                      <p className="text-xs text-muted-foreground">로그인 없이 개인 토큰으로 접속</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="h-2 w-2 rounded-full bg-zinc-900 mt-1.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">프루프 갤러리 & 사진 선택</p>
-                      <p className="text-xs text-muted-foreground">최대 50장까지 원하는 사진 선택</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="h-2 w-2 rounded-full bg-zinc-900 mt-1.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">실시간 진행 상황 확인</p>
-                      <p className="text-xs text-muted-foreground">D-Day부터 배송까지 모든 단계 추적</p>
-                    </div>
-                  </div>
-                </div>
-
+              <CardContent className="relative">
                 <div className="pt-2">
                   <div className={cn(
                     "inline-flex items-center gap-2 font-semibold transition-all",
@@ -88,12 +60,6 @@ export default function HomePage() {
                     고객용 페이지 입장하기
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </div>
-                </div>
-
-                <div className="pt-2 border-t">
-                  <p className="text-xs text-center text-muted-foreground">
-                    🚧 새로운 포털을 준비하고 있습니다
-                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -118,35 +84,7 @@ export default function HomePage() {
                   Back Office
                 </CardDescription>
               </CardHeader>
-              <CardContent className="relative space-y-6">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  사진작가, 편집자, 관리자를 위한 통합 업무 관리 시스템입니다. 스케줄부터 배송까지 전체 워크플로우를 관리하세요.
-                </p>
-                
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="h-2 w-2 rounded-full bg-zinc-900 mt-1.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">스케줄 캘린더</p>
-                      <p className="text-xs text-muted-foreground">드래그 앤 드롭으로 일정 관리</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="h-2 w-2 rounded-full bg-zinc-900 mt-1.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">프로젝트 & 고객 관리</p>
-                      <p className="text-xs text-muted-foreground">CRM부터 계약까지 통합 관리</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="h-2 w-2 rounded-full bg-zinc-900 mt-1.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">사진 편집 & 배송 관리</p>
-                      <p className="text-xs text-muted-foreground">편집 큐부터 최종 배송까지</p>
-                    </div>
-                  </div>
-                </div>
-
+              <CardContent className="relative">
                 <div className="pt-2">
                   <div className={cn(
                     "inline-flex items-center gap-2 font-semibold transition-all",
@@ -155,12 +93,6 @@ export default function HomePage() {
                     내부 시스템 입장하기
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </div>
-                </div>
-
-                <div className="pt-2 border-t">
-                  <p className="text-xs text-center text-muted-foreground">
-                    🔐 로그인이 필요합니다
-                  </p>
                 </div>
               </CardContent>
             </Card>

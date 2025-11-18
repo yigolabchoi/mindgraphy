@@ -8,6 +8,7 @@ import { ProgressBar } from '@/components/common/progress-bar'
 import { DdayBadge } from '@/components/common/dday-badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { mockPhotographers, mockUsers } from '@/lib/mock-data'
+import { mockProducts } from '@/lib/mock/settings'
 import { getStatusColor, getStatusLabel, formatDate } from '@/lib/utils'
 import { 
   Calendar, 
@@ -18,7 +19,10 @@ import {
   Clock, 
   FileText,
   Camera,
-  Edit2
+  Edit2,
+  Tag,
+  Package,
+  Users
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
@@ -310,19 +314,69 @@ export function ProjectDetailDialog({
                 <CardHeader>
                   <CardTitle className="text-base flex items-center gap-2">
                     <FileText className="h-4 w-4" />
-                    계약 정보
+                    상품 정보
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div>
-                    <div className="text-sm text-muted-foreground mb-1">촬영 유형</div>
-                    <div className="font-medium">
-                      {project.projectType === 'wedding' ? '본식 촬영' : '프리웨딩'}
+                  {project.projectType && (
+                    <div>
+                      <div className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
+                        <Tag className="h-3 w-3" />
+                        상품 타입
+                      </div>
+                      <div className="font-medium">
+                        {project.projectType === 'wedding' ? '일반 웨딩' : 
+                         project.projectType === 'hanbok' ? '한복 & 캐주얼' :
+                         project.projectType === 'dress_shop' ? '가봉 스냅' :
+                         project.projectType === 'baby' ? '돌스냅' : project.projectType}
+                      </div>
                     </div>
-                  </div>
-                  <div>
+                  )}
+                  
+                  {project.packageId && (
+                    <div>
+                      <div className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
+                        <Package className="h-3 w-3" />
+                        선택 패키지
+                      </div>
+                      <div className="font-medium">
+                        {mockProducts.find(p => p.id === project.packageId)?.name || project.packageId}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {project.optionIds && project.optionIds.length > 0 && (
+                    <div>
+                      <div className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
+                        <Tag className="h-3 w-3" />
+                        선택 옵션
+                      </div>
+                      <div className="space-y-1">
+                        {project.optionIds.map((optionId: string) => {
+                          const option = mockProducts.find(p => p.id === optionId)
+                          return option ? (
+                            <div key={optionId} className="text-sm font-medium">
+                              • {option.name}
+                            </div>
+                          ) : null
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {project.referralSource && (
+                    <div>
+                      <div className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
+                        <Users className="h-3 w-3" />
+                        유입 경로
+                      </div>
+                      <div className="font-medium">{project.referralSource}</div>
+                    </div>
+                  )}
+                  
+                  <div className="pt-2 border-t">
                     <div className="text-sm text-muted-foreground mb-1">계약 번호</div>
-                    <div className="font-medium text-sm">{project.contractId}</div>
+                    <div className="font-medium text-sm text-muted-foreground">{project.contractId}</div>
                   </div>
                 </CardContent>
               </Card>

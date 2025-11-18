@@ -7,19 +7,36 @@ export interface MySchedule {
   date: string
   startTime: string
   endTime: string
-  title: string
-  venueName: string
-  venueAddress: string
-  ceremonyTime: string
-  packageType: string
-  options: string[]
-  groomPhone: string
-  bridePhone: string
+  
+  // Customer info (from client-facing pages)
+  groomName: string
+  brideName: string
+  groomPhone?: string  // Optional from client input
+  bridePhone?: string  // Optional from client input
+  email?: string  // Optional from client input
+  mainContact?: 'groom' | 'bride'  // Selected main contact
+  
+  // Product & Venue info
+  productType: 'wedding' | 'hanbok' | 'dress_shop' | 'baby'  // From client selection
+  packageId: string  // e.g. 'new-basic', 'hanbok-a1'
+  packageName: string  // e.g. 'new BASIC', 'A-1'
+  optionIds?: string[]  // Selected option IDs (only for wedding)
+  optionNames?: string[]  // Selected option names for display
+  weddingDate: string  // YYYY-MM-DD (or "미정")
+  weddingTime: string  // e.g. "14:00", "오후 2시", or "미정"
+  venueName?: string  // For wedding/hanbok (optional for others)
+  venueAddress?: string  // For wedding/hanbok
+  
+  // Process info
+  referralSource?: string  // How they found us
+  specialRequests?: string  // Free-form requests
+  photographerNames?: string[] // Assigned photographers
+  
+  // Schedule management
   travelTimeMinutes: number
   status: 'upcoming' | 'in_progress' | 'completed'
   checklistCompleted: number
   checklistTotal: number
-  specialRequests?: string
 }
 
 export interface WeeklyAvailability {
@@ -73,19 +90,36 @@ export const getTodaySchedule = (): MySchedule[] => {
       date: format(today, 'yyyy-MM-dd'),
       startTime: '11:00',
       endTime: '16:00',
-      title: '홍길동 & 김영희',
-      venueName: '서울 그랜드 호텔',
-      venueAddress: '서울시 강남구 테헤란로 123',
-      ceremonyTime: '14:00',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '야외촬영', '드론촬영', '당일편집'],
+      
+      // Customer info
+      groomName: '홍길동',
+      brideName: '김영희',
       groomPhone: '010-1234-5678',
       bridePhone: '010-2345-6789',
+      email: 'hong.kim@example.com',
+      mainContact: 'bride',
+      
+      // Product & Venue info
+      productType: 'wedding',
+      packageId: 'new-basic',
+      packageName: 'new BASIC',
+      optionIds: ['early-progress', 'outdoor-photography'],
+      optionNames: ['얼리 진행', '야외 촬영'],
+      weddingDate: format(today, 'yyyy-MM-dd'),
+      weddingTime: '오후 2시',
+      venueName: '서울 그랜드 웨딩홀',
+      venueAddress: '서울시 강남구 테헤란로 123',
+      
+      // Process info
+      referralSource: 'Instagram',
+      specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망',
+      photographerNames: ['박작가', '최작가'],
+      
+      // Schedule management
       travelTimeMinutes: 30,
       status: 'in_progress',
       checklistCompleted: 3,
-      checklistTotal: 5,
-      specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망'
+      checklistTotal: 5
     }
   ]
 }
@@ -93,62 +127,99 @@ export const getTodaySchedule = (): MySchedule[] => {
 // My Week's Schedule
 export const getWeekSchedule = (): MySchedule[] => {
   return [
-    // Today
+    // Today - Wedding
     {
       id: 'my-schedule-1',
       eventId: 'schedule-1',
       date: format(today, 'yyyy-MM-dd'),
       startTime: '11:00',
       endTime: '16:00',
-      title: '홍길동 & 김영희',
-      venueName: '서울 그랜드 호텔',
-      venueAddress: '서울시 강남구 테헤란로 123',
-      ceremonyTime: '14:00',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '야외촬영', '드론촬영'],
+      
+      groomName: '홍길동',
+      brideName: '김영희',
       groomPhone: '010-1234-5678',
       bridePhone: '010-2345-6789',
+      email: 'hong.kim@example.com',
+      mainContact: 'bride',
+      
+      productType: 'wedding',
+      packageId: 'new-basic',
+      packageName: 'new BASIC',
+      optionIds: ['early-progress', 'outdoor-photography'],
+      optionNames: ['얼리 진행', '야외 촬영'],
+      weddingDate: format(today, 'yyyy-MM-dd'),
+      weddingTime: '오후 2시',
+      venueName: '서울 그랜드 웨딩홀',
+      venueAddress: '서울시 강남구 테헤란로 123',
+      
+      referralSource: 'Instagram',
+      specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망',
+      photographerNames: ['박작가', '최작가'],
+      
       travelTimeMinutes: 30,
       status: 'in_progress',
       checklistCompleted: 3,
       checklistTotal: 5
     },
-    // Day after tomorrow
+    // Day after tomorrow - Hanbok
     {
       id: 'my-schedule-2',
       eventId: 'schedule-4',
       date: format(addDays(today, 2), 'yyyy-MM-dd'),
-      startTime: '14:00',
-      endTime: '18:00',
-      title: '정우성 & 한가인',
-      venueName: '부산 해운대 그랜드 호텔',
-      venueAddress: '부산시 해운대구 우동',
-      ceremonyTime: '16:00',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '해변 촬영'],
+      startTime: '10:00',
+      endTime: '14:00',
+      
+      groomName: '정우성',
+      brideName: '한가인',
       groomPhone: '010-1111-2222',
       bridePhone: '010-3333-4444',
-      travelTimeMinutes: 240, // 4 hours to Busan
+      mainContact: 'groom',
+      
+      productType: 'hanbok',
+      packageId: 'hanbok-a2',
+      packageName: 'A-2',
+      weddingDate: format(addDays(today, 2), 'yyyy-MM-dd'),
+      weddingTime: '오전 10시',
+      venueName: '경복궁 일대',
+      venueAddress: '서울시 종로구',
+      
+      referralSource: '지인 추천',
+      specialRequests: '한복 의상은 직접 준비. 경복궁과 북촌 한옥마을 두 곳 촬영 희망',
+      photographerNames: ['박작가'],
+      
+      travelTimeMinutes: 45,
       status: 'upcoming',
       checklistCompleted: 0,
-      checklistTotal: 5,
-      specialRequests: '부산 출장 - 전날 출발 필요'
+      checklistTotal: 5
     },
-    // 3 days later
+    // 5 days later - Wedding
     {
       id: 'my-schedule-3',
       eventId: 'schedule-6',
       date: format(addDays(today, 5), 'yyyy-MM-dd'),
       startTime: '13:00',
       endTime: '18:00',
-      title: '최민수 & 한예슬',
-      venueName: '제이드가든',
-      venueAddress: '경기도 가평군',
-      ceremonyTime: '15:00',
-      packageType: '스탠다드',
-      options: ['본식', '야외 촬영'],
+      
+      groomName: '최민수',
+      brideName: '한예슬',
       groomPhone: '010-5555-6666',
       bridePhone: '010-7777-8888',
+      email: 'choi.han@example.com',
+      mainContact: 'bride',
+      
+      productType: 'wedding',
+      packageId: 'data',
+      packageName: 'DATA',
+      optionIds: ['outdoor-photography'],
+      optionNames: ['야외 촬영'],
+      weddingDate: format(addDays(today, 5), 'yyyy-MM-dd'),
+      weddingTime: '오후 3시',
+      venueName: '경기 럭셔리 컨벤션',
+      venueAddress: '경기도 고양시',
+      
+      referralSource: '웨딩홀 제휴',
+      photographerNames: ['박작가'],
+      
       travelTimeMinutes: 90,
       status: 'upcoming',
       checklistCompleted: 0,
@@ -160,147 +231,226 @@ export const getWeekSchedule = (): MySchedule[] => {
 // All Upcoming Schedules (including future)
 export const getAllUpcomingSchedule = (): MySchedule[] => {
   return [
-    // Today
+    // Today - Wedding
     {
       id: 'my-schedule-1',
       eventId: 'schedule-1',
       date: format(today, 'yyyy-MM-dd'),
       startTime: '11:00',
       endTime: '16:00',
-      title: '홍길동 & 김영희',
-      venueName: '서울 그랜드 호텔',
-      venueAddress: '서울시 강남구 테헤란로 123',
-      ceremonyTime: '14:00',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '야외촬영', '드론촬영'],
+      
+      groomName: '홍길동',
+      brideName: '김영희',
       groomPhone: '010-1234-5678',
       bridePhone: '010-2345-6789',
+      email: 'hong.kim@example.com',
+      mainContact: 'bride',
+      
+      productType: 'wedding',
+      packageId: 'new-basic',
+      packageName: 'new BASIC',
+      optionIds: ['early-progress', 'outdoor-photography'],
+      optionNames: ['얼리 진행', '야외 촬영'],
+      weddingDate: format(today, 'yyyy-MM-dd'),
+      weddingTime: '오후 2시',
+      venueName: '서울 그랜드 웨딩홀',
+      venueAddress: '서울시 강남구 테헤란로 123',
+      
+      referralSource: 'Instagram',
+      specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망',
+      photographerNames: ['박작가', '최작가'],
+      
       travelTimeMinutes: 30,
       status: 'in_progress',
       checklistCompleted: 3,
       checklistTotal: 5
     },
-    // Day after tomorrow
+    // Day after tomorrow - Hanbok
     {
       id: 'my-schedule-2',
       eventId: 'schedule-4',
       date: format(addDays(today, 2), 'yyyy-MM-dd'),
-      startTime: '14:00',
-      endTime: '18:00',
-      title: '정우성 & 한가인',
-      venueName: '부산 해운대 그랜드 호텔',
-      venueAddress: '부산시 해운대구 우동',
-      ceremonyTime: '16:00',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '해변 촬영'],
+      startTime: '10:00',
+      endTime: '14:00',
+      
+      groomName: '정우성',
+      brideName: '한가인',
       groomPhone: '010-1111-2222',
       bridePhone: '010-3333-4444',
-      travelTimeMinutes: 240,
+      mainContact: 'groom',
+      
+      productType: 'hanbok',
+      packageId: 'hanbok-a2',
+      packageName: 'A-2',
+      weddingDate: format(addDays(today, 2), 'yyyy-MM-dd'),
+      weddingTime: '오전 10시',
+      venueName: '경복궁 일대',
+      venueAddress: '서울시 종로구',
+      
+      referralSource: '지인 추천',
+      specialRequests: '한복 의상은 직접 준비. 경복궁과 북촌 한옥마을 두 곳 촬영 희망',
+      photographerNames: ['박작가'],
+      
+      travelTimeMinutes: 45,
       status: 'upcoming',
       checklistCompleted: 0,
-      checklistTotal: 5,
-      specialRequests: '부산 출장 - 전날 출발 필요'
+      checklistTotal: 5
     },
-    // 5 days later
+    // 5 days later - Wedding
     {
       id: 'my-schedule-3',
       eventId: 'schedule-6',
       date: format(addDays(today, 5), 'yyyy-MM-dd'),
       startTime: '13:00',
       endTime: '18:00',
-      title: '최민수 & 한예슬',
-      venueName: '제이드가든',
-      venueAddress: '경기도 가평군',
-      ceremonyTime: '15:00',
-      packageType: '스탠다드',
-      options: ['본식', '야외 촬영'],
+      
+      groomName: '최민수',
+      brideName: '한예슬',
       groomPhone: '010-5555-6666',
       bridePhone: '010-7777-8888',
+      email: 'choi.han@example.com',
+      mainContact: 'bride',
+      
+      productType: 'wedding',
+      packageId: 'data',
+      packageName: 'DATA',
+      optionIds: ['outdoor-photography'],
+      optionNames: ['야외 촬영'],
+      weddingDate: format(addDays(today, 5), 'yyyy-MM-dd'),
+      weddingTime: '오후 3시',
+      venueName: '경기 럭셔리 컨벤션',
+      venueAddress: '경기도 고양시',
+      
+      referralSource: '웨딩홀 제휴',
+      photographerNames: ['박작가'],
+      
       travelTimeMinutes: 90,
       status: 'upcoming',
       checklistCompleted: 0,
       checklistTotal: 5
     },
-    // 10 days later
+    // 10 days later - Dress Shop
     {
       id: 'my-schedule-4',
       eventId: 'schedule-7',
       date: format(addDays(today, 10), 'yyyy-MM-dd'),
-      startTime: '12:00',
+      startTime: '14:00',
       endTime: '17:00',
-      title: '이병헌 & 이민정',
-      venueName: '신라호텔',
-      venueAddress: '서울시 중구 동호로',
-      ceremonyTime: '14:30',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '야외촬영', '당일편집'],
+      
+      groomName: '이병헌',
+      brideName: '이민정',
       groomPhone: '010-9999-0000',
-      bridePhone: '010-8888-7777',
+      mainContact: 'bride',
+      
+      productType: 'dress_shop',
+      packageId: 'dress-shop-basic',
+      packageName: 'DRESS SHOP 기본',
+      weddingDate: format(addDays(today, 10), 'yyyy-MM-dd'),
+      weddingTime: '오후 2시',
+      
+      referralSource: 'Naver 블로그',
+      specialRequests: '가봉 과정도 자세히 찍어주세요',
+      photographerNames: ['최작가'],
+      
       travelTimeMinutes: 40,
       status: 'upcoming',
       checklistCompleted: 0,
       checklistTotal: 5
     },
-    // 14 days later
+    // 14 days later - Baby
     {
       id: 'my-schedule-5',
       eventId: 'schedule-8',
       date: format(addDays(today, 14), 'yyyy-MM-dd'),
-      startTime: '11:30',
-      endTime: '16:30',
-      title: '송중기 & 송혜교',
-      venueName: '파크하얏트 서울',
-      venueAddress: '서울시 강남구 테헤란로',
-      ceremonyTime: '14:00',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '드론촬영', '영상촬영'],
-      groomPhone: '010-1010-2020',
+      startTime: '11:00',
+      endTime: '13:00',
+      
+      groomName: '송중기',
+      brideName: '송혜교',
       bridePhone: '010-3030-4040',
+      email: 'song.song@example.com',
+      mainContact: 'bride',
+      
+      productType: 'baby',
+      packageId: 'baby-basic',
+      packageName: 'BABY 돌스냅',
+      weddingDate: format(addDays(today, 14), 'yyyy-MM-dd'),
+      weddingTime: '오전 11시',
+      
+      referralSource: 'Instagram',
+      specialRequests: '아이가 낮잠을 오전에 자기 때문에 11시 이후 시작 부탁드립니다',
+      photographerNames: ['김작가'],
+      
       travelTimeMinutes: 35,
       status: 'upcoming',
       checklistCompleted: 0,
       checklistTotal: 5
     },
-    // 21 days later
+    // 21 days later - Wedding
     {
       id: 'my-schedule-6',
       eventId: 'schedule-9',
       date: format(addDays(today, 21), 'yyyy-MM-dd'),
       startTime: '13:30',
       endTime: '18:30',
-      title: '현빈 & 손예진',
-      venueName: '아나타라 스위트',
-      venueAddress: '서울시 중구 소공로',
-      ceremonyTime: '16:00',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '야외촬영', '드론촬영', '당일편집'],
+      
+      groomName: '현빈',
+      brideName: '손예진',
       groomPhone: '010-5050-6060',
       bridePhone: '010-7070-8080',
+      mainContact: 'groom',
+      
+      productType: 'wedding',
+      packageId: 'new-basic',
+      packageName: 'new BASIC',
+      optionIds: ['outdoor-photography', 'drone-photography', 'same-day-edit'],
+      optionNames: ['야외 촬영', '드론 촬영', '당일 속편집'],
+      weddingDate: format(addDays(today, 21), 'yyyy-MM-dd'),
+      weddingTime: '오후 4시',
+      venueName: '서울 신라호텔',
+      venueAddress: '서울시 중구 동호로',
+      
+      referralSource: '지인 추천',
+      photographerNames: ['박작가', '최작가', '김작가'],
+      
       travelTimeMinutes: 45,
       status: 'upcoming',
       checklistCompleted: 0,
       checklistTotal: 5
     },
-    // 28 days later
+    // 28 days later - Wedding (Jeju)
     {
       id: 'my-schedule-7',
       eventId: 'schedule-10',
       date: format(addDays(today, 28), 'yyyy-MM-dd'),
       startTime: '14:00',
       endTime: '19:00',
-      title: '공유 & 정유미',
-      venueName: '제주 롯데호텔',
-      venueAddress: '제주시 탑동로',
-      ceremonyTime: '16:30',
-      packageType: '프리미엄',
-      options: ['본식+스냅', '해변 촬영', '드론촬영'],
+      
+      groomName: '공유',
+      brideName: '정유미',
       groomPhone: '010-1212-3434',
       bridePhone: '010-5656-7878',
+      email: 'gong.jung@example.com',
+      mainContact: 'bride',
+      
+      productType: 'wedding',
+      packageId: 'basic',
+      packageName: 'BASIC',
+      optionIds: ['outdoor-photography', 'drone-photography'],
+      optionNames: ['야외 촬영', '드론 촬영'],
+      weddingDate: format(addDays(today, 28), 'yyyy-MM-dd'),
+      weddingTime: '오후 4시 30분',
+      venueName: '제주 롯데호텔',
+      venueAddress: '제주시 탑동로',
+      
+      referralSource: 'Facebook',
+      specialRequests: '제주 출장 - 전날 출발 필요. 해변 일몰 촬영 중점 부탁드립니다',
+      photographerNames: ['박작가', '김작가'],
+      
       travelTimeMinutes: 180,
       status: 'upcoming',
       checklistCompleted: 0,
-      checklistTotal: 5,
-      specialRequests: '제주 출장 - 전날 출발 필요'
+      checklistTotal: 5
     }
   ]
 }

@@ -1,10 +1,14 @@
-import { ReactNode } from 'react'
+import { ClientFooter } from '@/components/client/client-footer'
 
-export default function ClientPortalEntryLayout({
+export default function ClientLayout({
   children,
 }: {
-  children: ReactNode
+  children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      <ClientFooter />
+    </>
+  )
 }
-

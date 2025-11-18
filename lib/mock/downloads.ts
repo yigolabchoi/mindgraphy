@@ -138,44 +138,31 @@ export const getDaysUntilExpiry = (expiresAt: string): number => {
   return diffDays
 }
 
-// Mock download attempt (logs to console)
+// Mock download attempt - validates file access and returns download URL
 export const mockDownloadFile = (file: DownloadFile, password?: string): {
   success: boolean
   message: string
   downloadUrl?: string
 } => {
-  console.log('=== Download Attempt ===')
-  console.log('File:', file.name)
-  console.log('Type:', file.type)
-  console.log('Size:', file.size)
-  console.log('Format:', file.format)
-  console.log('Requires Password:', file.requiresPassword)
-  
+  // Check if file has expired
   if (file.isExpired) {
-    console.log('Status: FAILED - File expired')
-    console.log('Expired on:', file.expiresAt)
     return {
       success: false,
       message: '파일이 만료되었습니다'
     }
   }
   
+  // Check if download limit exceeded
   if (file.maxDownloads && file.downloadCount >= file.maxDownloads) {
-    console.log('Status: FAILED - Max downloads exceeded')
-    console.log(`Download count: ${file.downloadCount} / ${file.maxDownloads}`)
     return {
       success: false,
       message: '다운로드 횟수를 초과했습니다'
     }
   }
   
+  // Validate password if required
   if (file.requiresPassword) {
-    console.log('Password required:', true)
-    console.log('Entered password:', password || '(none)')
-    console.log('Expected password:', file.password || '(not set)')
-    
     if (!password) {
-      console.log('Status: FAILED - No password provided')
       return {
         success: false,
         message: '비밀번호를 입력해주세요'
@@ -183,17 +170,12 @@ export const mockDownloadFile = (file: DownloadFile, password?: string): {
     }
     
     if (password !== file.password) {
-      console.log('Status: FAILED - Incorrect password')
       return {
         success: false,
         message: '비밀번호가 올바르지 않습니다'
       }
     }
   }
-  
-  console.log('Status: SUCCESS')
-  console.log('Download URL: (mock) https://download.mindgraphy.com/files/' + file.id)
-  console.log('========================')
   
   return {
     success: true,

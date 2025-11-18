@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react'
 import { AdminLayout } from '@/components/layout/admin-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { mockScheduleEvents, mockPhotographers } from '@/lib/mock/schedules'
+import { mockScheduleEvents, mockSchedulePhotographers } from '@/lib/mock/schedules'
 import {
   Activity,
   Clock,
@@ -18,7 +17,8 @@ import {
   Users,
   UserCheck,
   Coffee,
-  RefreshCw
+  RefreshCw,
+  Phone
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
@@ -63,12 +63,12 @@ export default function LiveStatusPage() {
 
   // Find available photographers (no schedule today and status is 'available')
   const photographersWithSchedules = todaySchedules.flatMap(s => s.photographerIds || []).filter(Boolean)
-  const availablePhotographers = mockPhotographers.filter(
+  const availablePhotographers = mockSchedulePhotographers.filter(
     p => !photographersWithSchedules.includes(p.id) && p.availabilityStatus === 'available'
   )
   
   // Photographers on leave
-  const photographersOnLeave = mockPhotographers.filter(
+  const photographersOnLeave = mockSchedulePhotographers.filter(
     p => p.availabilityStatus === 'on_leave'
   )
 
@@ -76,18 +76,11 @@ export default function LiveStatusPage() {
     if (!photographerIds || photographerIds.length === 0) return '미배정'
     return photographerIds
       .map(id => {
-        const photographer = mockPhotographers.find(p => p.id === id)
+        const photographer = mockSchedulePhotographers.find(p => p.id === id)
         return photographer?.name || ''
       })
       .filter(Boolean)
       .join(', ')
-  }
-
-  const getPhotographerInitials = (photographerIds?: string[]) => {
-    if (!photographerIds || photographerIds.length === 0) return '?'
-    const names = getPhotographerNames(photographerIds).split(', ')
-    if (names.length === 1) return names[0].charAt(0).toUpperCase()
-    return names.length.toString() // 여러 명일 경우 숫자로 표시
   }
 
   const getStatusColor = (status: string) => {
@@ -220,11 +213,9 @@ export default function LiveStatusPage() {
                     <div className="flex flex-col md:flex-row md:items-center gap-4">
                       {/* Left: Photographer(s) */}
                       <div className="flex items-center gap-3 md:w-48 flex-shrink-0">
-                        <Avatar className="h-12 w-12 border-2 border-green-600">
-                          <AvatarFallback className="bg-green-600 text-white font-bold">
-                            {getPhotographerInitials(schedule.photographerIds)}
-                          </AvatarFallback>
-                        </Avatar>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-600 text-white flex-shrink-0">
+                          <User className="h-6 w-6" />
+                        </div>
                         <div>
                           <div className="font-semibold">{getPhotographerNames(schedule.photographerIds)}</div>
                           <Badge className={cn("text-xs pulse-badge", getStatusColor(schedule.status))}>
@@ -263,7 +254,7 @@ export default function LiveStatusPage() {
                       {/* Right: Package Info */}
                       <div className="flex flex-col gap-1 md:w-32 text-sm">
                         <Badge variant="outline" className="text-xs">
-                          {schedule.packageType}
+                          {schedule.packageName}
                         </Badge>
                       </div>
                     </div>
@@ -316,7 +307,7 @@ export default function LiveStatusPage() {
                           </div>
                           <div className="flex items-center gap-1">
                             <Badge variant="outline" className="text-xs">
-                              {schedule.packageType}
+                              {schedule.packageName}
                             </Badge>
                           </div>
                         </div>
@@ -324,11 +315,9 @@ export default function LiveStatusPage() {
 
                       {/* Right: Photographer(s) */}
                       <div className="flex items-center gap-2 md:w-36">
-                        <Avatar className="h-10 w-10 border-2 border-blue-200">
-                          <AvatarFallback className="bg-blue-600 text-white text-sm font-bold">
-                            {getPhotographerInitials(schedule.photographerIds)}
-                          </AvatarFallback>
-                        </Avatar>
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white flex-shrink-0">
+                          <User className="h-5 w-5" />
+                        </div>
                         <div className="text-sm">
                           <div className="font-medium">{getPhotographerNames(schedule.photographerIds)}</div>
                           <div className="text-xs text-muted-foreground">담당 작가</div>
@@ -356,11 +345,9 @@ export default function LiveStatusPage() {
                 <Card key={schedule.id} className="opacity-75 hover:opacity-100 transition-opacity">
                   <CardContent className="p-3">
                     <div className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8 bg-gray-600">
-                        <AvatarFallback className="bg-gray-600 text-white text-xs">
-                          {getPhotographerInitials(schedule.photographerIds)}
-                        </AvatarFallback>
-                      </Avatar>
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-600 text-white flex-shrink-0">
+                        <CheckCircle2 className="h-4 w-4" />
+                      </div>
                       <div className="flex-1 min-w-0">
                         <div className="font-medium text-sm truncate">
                           {schedule.groomName} & {schedule.brideName}
@@ -371,7 +358,6 @@ export default function LiveStatusPage() {
                         <div className="text-xs text-muted-foreground flex items-center gap-2 mt-1">
                           <Clock className="h-3 w-3" />
                           <span>{format(new Date(schedule.start), 'HH:mm')}</span>
-                          <CheckCircle2 className="h-3 w-3 text-green-600" />
                         </div>
                       </div>
                     </div>
@@ -386,38 +372,47 @@ export default function LiveStatusPage() {
         {availablePhotographers.length > 0 && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold flex items-center gap-2">
-                <UserCheck className="h-5 w-5 text-emerald-600" />
-                촬영 가능한 작가
-                <Badge className="bg-emerald-600">{availablePhotographers.length}</Badge>
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                오늘 일정이 없는 작가
-              </p>
+              <div>
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <UserCheck className="h-5 w-5 text-emerald-600" />
+                  촬영 가능한 작가
+                  <Badge className="bg-emerald-600">{availablePhotographers.length}</Badge>
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  오늘 스케줄 없음 • 즉시 연락 가능
+                </p>
+              </div>
             </div>
 
             {/* 횡 스크롤 리스트 */}
             <div className="relative">
-              <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+              <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory custom-scrollbar">
                 {availablePhotographers.map((photographer) => (
                   <Card 
                     key={photographer.id} 
-                    className="border-2 border-emerald-200 bg-emerald-50/50 flex-shrink-0 w-[200px] snap-start hover:shadow-md transition-shadow"
+                    className="border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white flex-shrink-0 w-[240px] snap-start hover:shadow-lg hover:scale-105 hover:border-emerald-400 transition-all duration-200"
                   >
-                    <CardContent className="p-4">
-                      <div className="flex flex-col items-center gap-3 text-center">
-                        <Avatar className="h-16 w-16" style={{ backgroundColor: photographer.color }}>
-                          <AvatarFallback style={{ backgroundColor: photographer.color }} className="text-white text-2xl font-semibold">
-                            {photographer.name.charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
+                    <CardContent className="p-5">
+                      <div className="space-y-3">
+                        {/* 이름과 상태 */}
                         <div>
-                          <div className="font-semibold text-base">{photographer.name}</div>
-                          <div className="flex items-center justify-center gap-1 text-xs text-emerald-700 mt-1">
-                            <CheckCircle2 className="h-3 w-3" />
+                          <div className="font-bold text-lg text-zinc-900 mb-2">{photographer.name}</div>
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-100 px-2 py-1 rounded-full w-fit">
+                            <CheckCircle2 className="h-3.5 w-3.5" />
                             <span>촬영 가능</span>
                           </div>
                         </div>
+                        
+                        {/* 연락처 */}
+                        {photographer.phone && (
+                          <a 
+                            href={`tel:${photographer.phone}`}
+                            className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 -mx-2 rounded-lg transition-all font-medium group"
+                          >
+                            <Phone className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                            <span>{photographer.phone}</span>
+                          </a>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -431,38 +426,44 @@ export default function LiveStatusPage() {
         {photographersOnLeave.length > 0 && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold flex items-center gap-2">
-                <Coffee className="h-5 w-5 text-amber-600" />
-                휴가/휴무 작가
-                <Badge variant="outline" className="border-amber-600 text-amber-700">{photographersOnLeave.length}</Badge>
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                현재 휴무중인 작가
-              </p>
+              <div>
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <Coffee className="h-5 w-5 text-amber-600" />
+                  휴가/휴무 작가
+                  <Badge variant="outline" className="border-amber-600 text-amber-700">{photographersOnLeave.length}</Badge>
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  현재 휴무 중 • 연락 불가
+                </p>
+              </div>
             </div>
 
             {/* 횡 스크롤 리스트 */}
             <div className="relative">
-              <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+              <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory custom-scrollbar">
                 {photographersOnLeave.map((photographer) => (
                   <Card 
                     key={photographer.id} 
-                    className="border-amber-200 bg-amber-50/50 flex-shrink-0 w-[200px] snap-start hover:shadow-md transition-shadow opacity-75"
+                    className="border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-white flex-shrink-0 w-[240px] snap-start hover:shadow-md transition-all duration-200 opacity-75 hover:opacity-100"
                   >
-                    <CardContent className="p-4">
-                      <div className="flex flex-col items-center gap-3 text-center">
-                        <Avatar className="h-16 w-16" style={{ backgroundColor: photographer.color }}>
-                          <AvatarFallback style={{ backgroundColor: photographer.color }} className="text-white text-2xl font-semibold">
-                            {photographer.name.charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
+                    <CardContent className="p-5">
+                      <div className="space-y-3">
+                        {/* 이름과 상태 */}
                         <div>
-                          <div className="font-semibold text-base">{photographer.name}</div>
-                          <div className="flex items-center justify-center gap-1 text-xs text-amber-700 mt-1">
-                            <Coffee className="h-3 w-3" />
+                          <div className="font-bold text-lg text-zinc-900 mb-2">{photographer.name}</div>
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-100 px-2 py-1 rounded-full w-fit">
+                            <Coffee className="h-3.5 w-3.5" />
                             <span>휴무 중</span>
                           </div>
                         </div>
+                        
+                        {/* 연락처 (비활성화) */}
+                        {photographer.phone && (
+                          <div className="flex items-center gap-2 text-sm text-zinc-400 p-2 -mx-2 rounded-lg">
+                            <Phone className="h-4 w-4" />
+                            <span>{photographer.phone}</span>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>

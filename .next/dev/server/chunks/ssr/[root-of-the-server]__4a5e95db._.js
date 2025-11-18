@@ -66,7 +66,6 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$dashboard$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutDashboard$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/layout-dashboard.js [app-ssr] (ecmascript) <export default as LayoutDashboard>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$folder$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FolderOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/folder-open.js [app-ssr] (ecmascript) <export default as FolderOpen>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/bell.js [app-ssr] (ecmascript) <export default as Bell>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/settings.js [app-ssr] (ecmascript) <export default as Settings>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/camera.js [app-ssr] (ecmascript) <export default as Camera>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clipboard$2d$list$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ClipboardList$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clipboard-list.js [app-ssr] (ecmascript) <export default as ClipboardList>");
@@ -154,15 +153,6 @@ const navigationItems = [
         title: '소통게시판',
         href: '/admin/board',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageSquare$3e$__["MessageSquare"],
-        roles: [
-            'admin',
-            'photographer'
-        ]
-    },
-    {
-        title: '알림',
-        href: '/admin/notifications',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"],
         roles: [
             'admin',
             'photographer'
@@ -993,14 +983,17 @@ function getNextStatuses(currentStatus) {
     const statusFlow = {
         'scheduled': [
             'in_progress',
+            'cancelled',
             'archived'
         ],
         'in_progress': [
             'proof_ready',
+            'cancelled',
             'archived'
         ],
         'proof_ready': [
             'editing',
+            'cancelled',
             'archived'
         ],
         'editing': [
@@ -1011,6 +1004,9 @@ function getNextStatuses(currentStatus) {
             'delivered'
         ],
         'delivered': [
+            'archived'
+        ],
+        'cancelled': [
             'archived'
         ],
         'archived': []
@@ -1029,6 +1025,7 @@ function getStatusProgress(status) {
         'editing': 60,
         'completed': 80,
         'delivered': 100,
+        'cancelled': 0,
         'archived': 100
     };
     return progressMap[status] || 0;
@@ -1545,16 +1542,22 @@ DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 
 // Demo token for development
 __turbopack_context__.s([
+    "CLIENT_TYPES",
+    ()=>CLIENT_TYPES,
     "CONTRACT_STATUSES",
     ()=>CONTRACT_STATUSES,
     "DATE_FORMATS",
     ()=>DATE_FORMATS,
     "DEMO_TOKEN",
     ()=>DEMO_TOKEN,
+    "PRODUCT_TYPES",
+    ()=>PRODUCT_TYPES,
     "PROJECT_STATUSES",
     ()=>PROJECT_STATUSES,
     "ROUTES",
     ()=>ROUTES,
+    "SESSION_KEYS",
+    ()=>SESSION_KEYS,
     "SETTINGS",
     ()=>SETTINGS,
     "STATIC_TOKENS",
@@ -1584,9 +1587,9 @@ const ROUTES = {
     ADMIN_DASHBOARD: '/admin/dashboard',
     ADMIN_LIVE_STATUS: '/admin/live-status',
     ADMIN_CALENDAR: '/admin/calendar',
+    ADMIN_SCHEDULE: '/admin/schedule',
     ADMIN_MY: '/admin/my',
     ADMIN_TEAM: '/admin/team',
-    ADMIN_NOTIFICATIONS: '/admin/notifications',
     // Admin - Management
     ADMIN_PROJECTS: '/admin/projects',
     ADMIN_CUSTOMERS: '/admin/customers',
@@ -1599,7 +1602,6 @@ const ROUTES = {
     // Admin - Settings
     ADMIN_SETTINGS: '/admin/settings',
     ADMIN_SETTINGS_PRODUCTS: '/admin/settings/products',
-    ADMIN_SETTINGS_NOTIFICATIONS: '/admin/settings/notifications',
     ADMIN_SETTINGS_MASTERS: '/admin/settings/masters'
 };
 const PROJECT_STATUSES = [
@@ -1628,6 +1630,43 @@ const DATE_FORMATS = {
     DISPLAY: 'yyyy년 MM월 dd일',
     DISPLAY_WITH_TIME: 'yyyy년 MM월 dd일 HH:mm',
     ISO: "yyyy-MM-dd'T'HH:mm:ss'Z'"
+};
+const SESSION_KEYS = {
+    // Product Selection
+    PRODUCT_TYPE: 'mindgraphy_product_type',
+    CLIENT_TYPE: 'mindgraphy_client_type',
+    PACKAGE: 'mindgraphy_package',
+    OPTIONS: 'mindgraphy_options',
+    // Customer Information
+    BRIDE_NAME: 'mindgraphy_bride_name',
+    GROOM_NAME: 'mindgraphy_groom_name',
+    BRIDE_PHONE: 'mindgraphy_bride_phone',
+    GROOM_PHONE: 'mindgraphy_groom_phone',
+    PHONE: 'mindgraphy_phone',
+    EMAIL: 'mindgraphy_email',
+    MAIN_CONTACT: 'mindgraphy_main_contact',
+    // Event Details
+    WEDDING_DATE: 'mindgraphy_wedding_date',
+    WEDDING_TIME: 'mindgraphy_wedding_time',
+    WEDDING_DATE_INFO: 'mindgraphy_wedding_date_info',
+    VENUE: 'mindgraphy_venue',
+    VENUE_REQUEST: 'mindgraphy_venue_request',
+    // Referral & Misc
+    REFERRAL_SOURCE: 'mindgraphy_referral_source',
+    REFERRER_PAGE: 'mindgraphy_referrer_page',
+    // Auth
+    CLIENT_PHONE: 'mindgraphy_client_phone',
+    CLIENT_LOGGED_IN: 'mindgraphy_client_logged_in'
+};
+const PRODUCT_TYPES = {
+    WEDDING: 'wedding',
+    HANBOK: 'hanbok',
+    DRESS_SHOP: 'dress_shop',
+    BABY: 'baby'
+};
+const CLIENT_TYPES = {
+    DIRECT: 'direct',
+    VENUE_AFFILIATED: 'venue_affiliated'
 };
 }),
 "[project]/components/layout/admin-nav.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
@@ -1717,16 +1756,16 @@ function AdminNav({ onNavigate }) {
         }, this);
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex h-screen w-64 flex-col border-r bg-zinc-50",
+        className: "flex h-screen w-64 flex-col border-r bg-gradient-to-b from-zinc-50 to-white shadow-sm",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex h-16 items-center border-b px-6",
+                className: "flex h-16 items-center border-b px-6 bg-white/80 backdrop-blur-sm",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                     href: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ROUTES"].HOME,
-                    className: "flex items-center gap-2",
+                    className: "flex items-center gap-2 group",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm",
+                            className: "flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm transition-transform group-hover:scale-105",
                             children: "M"
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
@@ -1753,20 +1792,20 @@ function AdminNav({ onNavigate }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
-                className: "flex-1 space-y-1 px-3 py-4 overflow-y-auto",
+                className: "flex-1 space-y-1 px-3 py-4 overflow-y-auto custom-scrollbar",
                 children: navigation.map((item)=>{
                     // Check if the current path matches this navigation item
                     const isActive = pathname === item.href || pathname.startsWith(item.href) && item.href !== __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ROUTES"].HOME;
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                         href: item.href,
                         onClick: onNavigate,
-                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])('flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors', isActive ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900'),
+                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])('flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200', isActive ? 'bg-zinc-900 text-white shadow-md scale-[1.02]' : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 hover:scale-[1.01]', 'focus-ring'),
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(item.icon, {
                                 className: "h-5 w-5 flex-shrink-0"
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 100,
+                                lineNumber: 101,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1774,16 +1813,16 @@ function AdminNav({ onNavigate }) {
                                 children: item.title
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 101,
+                                lineNumber: 102,
                                 columnNumber: 15
                             }, this),
                             item.badge && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                 variant: "secondary",
-                                className: "ml-auto",
+                                className: "ml-auto text-xs",
                                 children: item.badge
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 103,
+                                lineNumber: 104,
                                 columnNumber: 17
                             }, this)
                         ]
@@ -1799,26 +1838,27 @@ function AdminNav({ onNavigate }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "border-t p-4 space-y-3",
+                className: "border-t p-4 space-y-3 bg-white/50 backdrop-blur-sm",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenu"], {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuTrigger"], {
                             asChild: true,
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                className: "flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-colors",
+                                className: "flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-all duration-200 hover:shadow-sm focus-ring",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Avatar"], {
+                                        className: "ring-2 ring-white",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                             className: "bg-zinc-900 text-white text-sm font-medium",
                                             children: getInitials(user.name)
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 118,
+                                            lineNumber: 119,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                        lineNumber: 117,
+                                        lineNumber: 118,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1832,14 +1872,14 @@ function AdminNav({ onNavigate }) {
                                                         children: user.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                                        lineNumber: 124,
+                                                        lineNumber: 125,
                                                         columnNumber: 19
                                                     }, this),
                                                     getRoleBadge()
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                                lineNumber: 123,
+                                                lineNumber: 124,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1847,24 +1887,24 @@ function AdminNav({ onNavigate }) {
                                                 children: user.email
                                             }, void 0, false, {
                                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                                lineNumber: 129,
+                                                lineNumber: 130,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 123,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 116,
+                                lineNumber: 117,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
-                            lineNumber: 115,
+                            lineNumber: 116,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -1875,103 +1915,105 @@ function AdminNav({ onNavigate }) {
                                     children: "내 계정"
                                 }, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 136,
+                                    lineNumber: 137,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 137,
+                                    lineNumber: 138,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
+                                    className: "focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 139,
+                                            lineNumber: 140,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "프로필"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 140,
+                                            lineNumber: 141,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 138,
+                                    lineNumber: 139,
                                     columnNumber: 13
                                 }, this),
                                 user.role === 'admin' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
                                     onClick: ()=>router.push('/admin/settings'),
+                                    className: "focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 144,
+                                            lineNumber: 145,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "설정"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 145,
+                                            lineNumber: 146,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 143,
+                                    lineNumber: 144,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 149,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
                                     onClick: handleLogout,
-                                    className: "text-red-600",
+                                    className: "text-red-600 focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__["LogOut"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 150,
+                                            lineNumber: 151,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "로그아웃"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 151,
+                                            lineNumber: 152,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 149,
+                                    lineNumber: 150,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
-                            lineNumber: 135,
+                            lineNumber: 136,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/layout/admin-nav.tsx",
-                    lineNumber: 114,
+                    lineNumber: 115,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-nav.tsx",
-                lineNumber: 113,
+                lineNumber: 114,
                 columnNumber: 7
             }, this)
         ]
@@ -2196,7 +2238,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$layout$2f$admi
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/sheet.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/menu.js [app-ssr] (ecmascript) <export default as Menu>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-ssr] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils/index.ts [app-ssr] (ecmascript)");
 'use client';
+;
 ;
 ;
 ;
@@ -2212,12 +2257,12 @@ function AdminLayout({ children, align = 'center' }) {
                 className: "hidden lg:flex",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$layout$2f$admin$2d$nav$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AdminNav"], {}, void 0, false, {
                     fileName: "[project]/components/layout/admin-layout.tsx",
-                    lineNumber: 21,
+                    lineNumber: 22,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 20,
+                lineNumber: 21,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Sheet"], {
@@ -2230,40 +2275,40 @@ function AdminLayout({ children, align = 'center' }) {
                         onNavigate: ()=>setMobileMenuOpen(false)
                     }, void 0, false, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 27,
+                        lineNumber: 28,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/layout/admin-layout.tsx",
-                    lineNumber: 26,
+                    lineNumber: 27,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 25,
+                lineNumber: 26,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex-1 flex flex-col overflow-hidden",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                        className: "lg:hidden flex items-center justify-between h-14 px-4 border-b bg-white sticky top-0 z-10",
+                        className: "lg:hidden flex items-center justify-between h-14 px-4 border-b bg-white sticky top-0 z-10 shadow-sm",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                 variant: "ghost",
                                 size: "sm",
                                 onClick: ()=>setMobileMenuOpen(true),
-                                className: "flex items-center gap-2",
+                                className: "flex items-center gap-2 focus-ring",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/layout/admin-layout.tsx",
-                                    lineNumber: 41,
+                                    lineNumber: 42,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 35,
+                                lineNumber: 36,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2274,7 +2319,7 @@ function AdminLayout({ children, align = 'center' }) {
                                         children: "M"
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-layout.tsx",
-                                        lineNumber: 44,
+                                        lineNumber: 45,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2282,54 +2327,54 @@ function AdminLayout({ children, align = 'center' }) {
                                         children: "MindGraphy"
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-layout.tsx",
-                                        lineNumber: 47,
+                                        lineNumber: 48,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 43,
+                                lineNumber: 44,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "w-10"
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 49,
+                                lineNumber: 50,
                                 columnNumber: 11
                             }, this),
                             " "
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 34,
+                        lineNumber: 35,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-                        className: "flex-1 overflow-y-auto",
+                        className: "flex-1 overflow-y-auto bg-zinc-50/50 custom-scrollbar",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: align === 'left' ? 'p-4 md:p-6' : 'container mx-auto p-4 md:p-6 max-w-7xl',
+                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])(align === 'left' ? 'p-4 md:p-6 lg:p-8' : 'container mx-auto p-4 md:p-6 lg:p-8 max-w-7xl', 'animate-in fade-in slide-in-from-bottom duration-300'),
                             children: children
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-layout.tsx",
-                            lineNumber: 54,
+                            lineNumber: 55,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 53,
+                        lineNumber: 54,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 32,
+                lineNumber: 33,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/layout/admin-layout.tsx",
-        lineNumber: 18,
+        lineNumber: 19,
         columnNumber: 5
     }, this);
 }
@@ -2616,6 +2661,16 @@ const DialogDescription = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$proje
     }, ("TURBOPACK compile-time value", void 0)));
 DialogDescription.displayName = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$dialog$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Description"].displayName;
 ;
+ // For accessibility, always include a DialogTitle in DialogContent
+ // If you need to hide it visually, use VisuallyHidden:
+ // import { VisuallyHidden } from "@/components/ui/visually-hidden"
+ // 
+ // <DialogContent>
+ //   <VisuallyHidden>
+ //     <DialogTitle>Hidden Title</DialogTitle>
+ //   </VisuallyHidden>
+ //   {/* rest of content */}
+ // </DialogContent>
 }),
 "[project]/components/common/dday-badge.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -2689,53 +2744,75 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts_
 ;
 ;
 ;
-function EmptyState({ icon: Icon, title, description, action, className }) {
+function EmptyState({ icon: Icon, title, description, action, secondaryAction, className, iconClassName }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])('flex flex-col items-center justify-center py-12', className),
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])('flex flex-col items-center justify-center py-12 px-4 animate-in fade-in slide-in-from-bottom duration-300', className),
         children: [
             Icon && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-zinc-100",
+                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-zinc-100 transition-all hover:scale-105", iconClassName),
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
                     className: "h-8 w-8 text-zinc-400"
                 }, void 0, false, {
                     fileName: "[project]/components/common/empty-state.tsx",
-                    lineNumber: 27,
+                    lineNumber: 42,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/common/empty-state.tsx",
-                lineNumber: 26,
+                lineNumber: 38,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                className: "mb-2 text-lg font-semibold text-zinc-900",
+                className: "mb-2 text-lg md:text-xl font-semibold text-zinc-900",
                 children: title
             }, void 0, false, {
                 fileName: "[project]/components/common/empty-state.tsx",
-                lineNumber: 30,
+                lineNumber: 45,
                 columnNumber: 7
             }, this),
             description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "mb-6 max-w-sm text-center text-sm text-muted-foreground",
+                className: "mb-6 max-w-md text-center text-sm md:text-base text-muted-foreground leading-relaxed",
                 children: description
             }, void 0, false, {
                 fileName: "[project]/components/common/empty-state.tsx",
-                lineNumber: 32,
+                lineNumber: 47,
                 columnNumber: 9
             }, this),
-            action && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                onClick: action.onClick,
-                size: "sm",
-                children: action.label
-            }, void 0, false, {
+            (action || secondaryAction) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex flex-col sm:flex-row items-center gap-3",
+                children: [
+                    action && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                        onClick: action.onClick,
+                        variant: action.variant || 'default',
+                        size: "sm",
+                        className: "w-full sm:w-auto",
+                        children: action.label
+                    }, void 0, false, {
+                        fileName: "[project]/components/common/empty-state.tsx",
+                        lineNumber: 54,
+                        columnNumber: 13
+                    }, this),
+                    secondaryAction && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                        onClick: secondaryAction.onClick,
+                        variant: secondaryAction.variant || 'outline',
+                        size: "sm",
+                        className: "w-full sm:w-auto",
+                        children: secondaryAction.label
+                    }, void 0, false, {
+                        fileName: "[project]/components/common/empty-state.tsx",
+                        lineNumber: 64,
+                        columnNumber: 13
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/components/common/empty-state.tsx",
-                lineNumber: 37,
+                lineNumber: 52,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/common/empty-state.tsx",
-        lineNumber: 24,
+        lineNumber: 33,
         columnNumber: 5
     }, this);
 }
@@ -2758,13 +2835,14 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$common$2f$empt
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clock.js [app-ssr] (ecmascript) <export default as Clock>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-ssr] (ecmascript) <export default as MapPin>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/phone.js [app-ssr] (ecmascript) <export default as Phone>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check.js [app-ssr] (ecmascript) <export default as CheckCircle2>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle.js [app-ssr] (ecmascript) <export default as Circle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-ssr] (ecmascript) <export default as Package>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-ssr] (ecmascript) <export default as AlertCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar.js [app-ssr] (ecmascript) <export default as Calendar>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/play.js [app-ssr] (ecmascript) <export default as Play>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCheck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/check-check.js [app-ssr] (ecmascript) <export default as CheckCheck>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/camera.js [app-ssr] (ecmascript) <export default as Camera>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/mail.js [app-ssr] (ecmascript) <export default as Mail>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/tag.js [app-ssr] (ecmascript) <export default as Tag>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-ssr] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils/index.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/sonner/dist/index.mjs [app-ssr] (ecmascript)");
@@ -2780,7 +2858,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$di
 ;
 ;
 ;
-function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
+function MyDay({ schedule, onStatusChange }) {
     const [confirmDialog, setConfirmDialog] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         open: false,
         scheduleId: '',
@@ -2792,7 +2870,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
             open: true,
             scheduleId: item.id,
             action,
-            title: item.title
+            title: `${item.groomName} & ${item.brideName}`
         });
     };
     const handleConfirm = ()=>{
@@ -2814,7 +2892,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
             description: "편안한 하루 보내세요!"
         }, void 0, false, {
             fileName: "[project]/components/my/my-day.tsx",
-            lineNumber: 81,
+            lineNumber: 80,
             columnNumber: 7
         }, this);
     }
@@ -2834,6 +2912,24 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
         };
         return labels[status] || status;
     };
+    const getProductTypeLabel = (type)=>{
+        const labels = {
+            wedding: '일반 웨딩 촬영',
+            hanbok: 'HANBOK & CASUAL',
+            dress_shop: 'DRESS SHOP',
+            baby: 'BABY 돌스냅'
+        };
+        return labels[type] || type;
+    };
+    const getProductTypeBadgeColor = (type)=>{
+        const colors = {
+            wedding: 'bg-blue-100 text-blue-800 border-blue-200',
+            hanbok: 'bg-purple-100 text-purple-800 border-purple-200',
+            dress_shop: 'bg-pink-100 text-pink-800 border-pink-200',
+            baby: 'bg-green-100 text-green-800 border-green-200'
+        };
+        return colors[type] || 'bg-gray-100 text-gray-800';
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-6",
         children: [
@@ -2847,14 +2943,14 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                 className: "h-5 w-5"
                             }, void 0, false, {
                                 fileName: "[project]/components/my/my-day.tsx",
-                                lineNumber: 112,
+                                lineNumber: 131,
                                 columnNumber: 11
                             }, this),
                             "오늘의 일정"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/my/my-day.tsx",
-                        lineNumber: 111,
+                        lineNumber: 130,
                         columnNumber: 9
                     }, this),
                     schedule.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -2870,24 +2966,46 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardTitle"], {
                                                         className: "text-xl",
-                                                        children: item.title
-                                                    }, void 0, false, {
+                                                        children: [
+                                                            item.groomName,
+                                                            " & ",
+                                                            item.brideName
+                                                        ]
+                                                    }, void 0, true, {
                                                         fileName: "[project]/components/my/my-day.tsx",
-                                                        lineNumber: 121,
+                                                        lineNumber: 140,
                                                         columnNumber: 19
                                                     }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-sm text-muted-foreground",
-                                                        children: item.venueName
-                                                    }, void 0, false, {
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex items-center gap-2",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                                variant: "outline",
+                                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("text-xs", getProductTypeBadgeColor(item.productType)),
+                                                                children: getProductTypeLabel(item.productType)
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/my/my-day.tsx",
+                                                                lineNumber: 142,
+                                                                columnNumber: 21
+                                                            }, this),
+                                                            item.venueName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-sm text-muted-foreground",
+                                                                children: item.venueName
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/my/my-day.tsx",
+                                                                lineNumber: 146,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
                                                         fileName: "[project]/components/my/my-day.tsx",
-                                                        lineNumber: 122,
+                                                        lineNumber: 141,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 120,
+                                                lineNumber: 139,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2895,18 +3013,18 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                 children: getStatusLabel(item.status)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 126,
+                                                lineNumber: 152,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/my/my-day.tsx",
-                                        lineNumber: 119,
+                                        lineNumber: 138,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 118,
+                                    lineNumber: 137,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2922,7 +3040,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                             className: "h-4 w-4 text-muted-foreground"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/my/my-day.tsx",
-                                                            lineNumber: 135,
+                                                            lineNumber: 161,
                                                             columnNumber: 19
                                                         }, this),
                                                         item.startTime,
@@ -2931,7 +3049,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 134,
+                                                    lineNumber: 160,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2939,17 +3057,18 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                     children: "·"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 138,
+                                                    lineNumber: 164,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: [
-                                                        "예식 ",
-                                                        item.ceremonyTime
+                                                        item.productType === 'wedding' ? '예식' : '촬영',
+                                                        " ",
+                                                        item.weddingTime
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 139,
+                                                    lineNumber: 165,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$common$2f$dday$2d$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DdayBadge"], {
@@ -2957,24 +3076,24 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                     showIcon: false
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 140,
+                                                    lineNumber: 166,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 133,
+                                            lineNumber: 159,
                                             columnNumber: 15
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        item.venueName && item.venueAddress && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex items-start gap-2 text-sm",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
                                                     className: "h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 145,
-                                                    columnNumber: 17
+                                                    lineNumber: 172,
+                                                    columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     children: [
@@ -2983,28 +3102,28 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                             children: item.venueName
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/my/my-day.tsx",
-                                                            lineNumber: 147,
-                                                            columnNumber: 19
+                                                            lineNumber: 174,
+                                                            columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: "text-muted-foreground",
                                                             children: item.venueAddress
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/my/my-day.tsx",
-                                                            lineNumber: 148,
-                                                            columnNumber: 19
+                                                            lineNumber: 175,
+                                                            columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 146,
-                                                    columnNumber: 17
+                                                    lineNumber: 173,
+                                                    columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 144,
-                                            columnNumber: 15
+                                            lineNumber: 171,
+                                            columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex items-start gap-2 text-sm",
@@ -3013,7 +3132,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                     className: "h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 154,
+                                                    lineNumber: 182,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3021,32 +3140,242 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                                             variant: "secondary",
-                                                            children: item.packageType
+                                                            children: item.packageName
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/my/my-day.tsx",
-                                                            lineNumber: 156,
+                                                            lineNumber: 184,
                                                             columnNumber: 19
                                                         }, this),
-                                                        item.options.map((option, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                        item.optionNames && item.optionNames.map((option, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                                                 variant: "outline",
                                                                 className: "text-xs",
                                                                 children: option
                                                             }, idx, false, {
                                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                                lineNumber: 158,
+                                                                lineNumber: 186,
                                                                 columnNumber: 21
                                                             }, this))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 155,
+                                                    lineNumber: 183,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 153,
+                                            lineNumber: 181,
                                             columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-start gap-2 text-sm bg-zinc-50 border border-zinc-200 rounded-lg p-3",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
+                                                    className: "h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                    lineNumber: 195,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "space-y-1 text-xs",
+                                                    children: [
+                                                        item.groomPhone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex items-center gap-2",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-muted-foreground",
+                                                                    children: "신랑:"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                                    lineNumber: 199,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "font-medium",
+                                                                    children: item.groomPhone
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                                    lineNumber: 200,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                item.mainContact === 'groom' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                                    variant: "outline",
+                                                                    className: "text-xs bg-blue-50 text-blue-700 border-blue-200",
+                                                                    children: "메인"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                                    lineNumber: 202,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/components/my/my-day.tsx",
+                                                            lineNumber: 198,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        item.bridePhone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex items-center gap-2",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-muted-foreground",
+                                                                    children: "신부:"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                                    lineNumber: 208,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "font-medium",
+                                                                    children: item.bridePhone
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                                    lineNumber: 209,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                item.mainContact === 'bride' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                                    variant: "outline",
+                                                                    className: "text-xs bg-blue-50 text-blue-700 border-blue-200",
+                                                                    children: "메인"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                                    lineNumber: 211,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/components/my/my-day.tsx",
+                                                            lineNumber: 207,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        item.email && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex items-center gap-2",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"], {
+                                                                    className: "h-3 w-3"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                                    lineNumber: 217,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "font-medium",
+                                                                    children: item.email
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                                    lineNumber: 218,
+                                                                    columnNumber: 23
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/components/my/my-day.tsx",
+                                                            lineNumber: 216,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                    lineNumber: 196,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/components/my/my-day.tsx",
+                                            lineNumber: 194,
+                                            columnNumber: 15
+                                        }, this),
+                                        item.photographerNames && item.photographerNames.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-start gap-2 text-sm",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__["Camera"], {
+                                                    className: "h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                    lineNumber: 227,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex flex-wrap gap-1",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "font-medium",
+                                                            children: "담당 작가:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/my/my-day.tsx",
+                                                            lineNumber: 229,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-muted-foreground",
+                                                            children: item.photographerNames.join(', ')
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/my/my-day.tsx",
+                                                            lineNumber: 230,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                            variant: "outline",
+                                                            className: "text-xs bg-blue-50 text-blue-700 border-blue-200",
+                                                            children: [
+                                                                item.photographerNames.length,
+                                                                "명"
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/components/my/my-day.tsx",
+                                                            lineNumber: 233,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                    lineNumber: 228,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/components/my/my-day.tsx",
+                                            lineNumber: 226,
+                                            columnNumber: 17
+                                        }, this),
+                                        item.referralSource && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-start gap-2 text-sm",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__["Tag"], {
+                                                    className: "h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                    lineNumber: 243,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-muted-foreground",
+                                                            children: "유입 경로:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/my/my-day.tsx",
+                                                            lineNumber: 245,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "ml-2 font-medium",
+                                                            children: item.referralSource
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/my/my-day.tsx",
+                                                            lineNumber: 246,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/components/my/my-day.tsx",
+                                                    lineNumber: 244,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/components/my/my-day.tsx",
+                                            lineNumber: 242,
+                                            columnNumber: 17
                                         }, this),
                                         item.specialRequests && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex items-start gap-2 text-sm bg-yellow-50 border border-yellow-200 rounded-lg p-3",
@@ -3055,7 +3384,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                     className: "h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 168,
+                                                    lineNumber: 254,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3063,19 +3392,19 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                     children: item.specialRequests
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 169,
+                                                    lineNumber: 255,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 167,
+                                            lineNumber: 253,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex gap-2 pt-2",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                item.groomPhone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                                     href: `tel:${item.groomPhone}`,
                                                     className: "flex-1",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3087,22 +3416,22 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                                 className: "mr-2 h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                                lineNumber: 177,
-                                                                columnNumber: 21
+                                                                lineNumber: 264,
+                                                                columnNumber: 23
                                                             }, this),
                                                             "신랑"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/my/my-day.tsx",
-                                                        lineNumber: 176,
-                                                        columnNumber: 19
+                                                        lineNumber: 263,
+                                                        columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 175,
-                                                    columnNumber: 17
+                                                    lineNumber: 262,
+                                                    columnNumber: 19
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                item.bridePhone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                                     href: `tel:${item.bridePhone}`,
                                                     className: "flex-1",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3114,22 +3443,22 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                                 className: "mr-2 h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                                lineNumber: 183,
-                                                                columnNumber: 21
+                                                                lineNumber: 272,
+                                                                columnNumber: 23
                                                             }, this),
                                                             "신부"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/my/my-day.tsx",
-                                                        lineNumber: 182,
-                                                        columnNumber: 19
+                                                        lineNumber: 271,
+                                                        columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 181,
-                                                    columnNumber: 17
+                                                    lineNumber: 270,
+                                                    columnNumber: 19
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                item.venueAddress && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                                     href: `https://map.kakao.com/?q=${encodeURIComponent(item.venueAddress)}`,
                                                     target: "_blank",
                                                     rel: "noopener noreferrer",
@@ -3143,25 +3472,25 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                                 className: "mr-2 h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                                lineNumber: 194,
-                                                                columnNumber: 21
+                                                                lineNumber: 285,
+                                                                columnNumber: 23
                                                             }, this),
                                                             "지도"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/my/my-day.tsx",
-                                                        lineNumber: 193,
-                                                        columnNumber: 19
+                                                        lineNumber: 284,
+                                                        columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 187,
-                                                    columnNumber: 17
+                                                    lineNumber: 278,
+                                                    columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 174,
+                                            lineNumber: 260,
                                             columnNumber: 15
                                         }, this),
                                         item.status !== 'completed' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3175,14 +3504,14 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                         className: "mr-2 h-5 w-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/my/my-day.tsx",
-                                                        lineNumber: 209,
+                                                        lineNumber: 301,
                                                         columnNumber: 23
                                                     }, this),
                                                     "촬영 시작"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 204,
+                                                lineNumber: 296,
                                                 columnNumber: 21
                                             }, this) : item.status === 'in_progress' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                                 onClick: ()=>handleStatusChangeClick(item, 'complete'),
@@ -3193,200 +3522,37 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                         className: "mr-2 h-5 w-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/my/my-day.tsx",
-                                                        lineNumber: 218,
+                                                        lineNumber: 310,
                                                         columnNumber: 23
                                                     }, this),
                                                     "촬영 완료"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 213,
+                                                lineNumber: 305,
                                                 columnNumber: 21
                                             }, this) : null
                                         }, void 0, false, {
                                             fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 202,
+                                            lineNumber: 294,
                                             columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "pt-2 border-t",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center justify-between text-sm",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-muted-foreground",
-                                                            children: "체크리스트"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/my/my-day.tsx",
-                                                            lineNumber: 228,
-                                                            columnNumber: 19
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "font-medium",
-                                                            children: [
-                                                                item.checklistCompleted,
-                                                                " / ",
-                                                                item.checklistTotal
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/components/my/my-day.tsx",
-                                                            lineNumber: 229,
-                                                            columnNumber: 19
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 227,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "mt-2 h-2 bg-gray-200 rounded-full overflow-hidden",
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-full bg-green-500 transition-all",
-                                                        style: {
-                                                            width: `${item.checklistCompleted / item.checklistTotal * 100}%`
-                                                        }
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/components/my/my-day.tsx",
-                                                        lineNumber: 234,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/my/my-day.tsx",
-                                                    lineNumber: 233,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 226,
-                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 131,
+                                    lineNumber: 157,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, item.id, true, {
                             fileName: "[project]/components/my/my-day.tsx",
-                            lineNumber: 117,
+                            lineNumber: 136,
                             columnNumber: 11
                         }, this))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/my/my-day.tsx",
-                lineNumber: 110,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardHeader"], {
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardTitle"], {
-                            className: "flex items-center justify-between",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    children: "내 체크리스트"
-                                }, void 0, false, {
-                                    fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 251,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
-                                    variant: "secondary",
-                                    children: [
-                                        checklist.filter((item)=>item.completed).length,
-                                        " / ",
-                                        checklist.length
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 252,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/components/my/my-day.tsx",
-                            lineNumber: 250,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/components/my/my-day.tsx",
-                        lineNumber: 249,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "space-y-2",
-                            children: checklist.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors", "hover:bg-zinc-50 dark:hover:bg-zinc-800", item.completed && "opacity-60"),
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: ()=>onChecklistToggle(item.id),
-                                            className: "flex-shrink-0",
-                                            children: item.completed ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                                                className: "h-5 w-5 text-green-600"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 274,
-                                                columnNumber: 21
-                                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"], {
-                                                className: "h-5 w-5 text-gray-400"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 276,
-                                                columnNumber: 21
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 268,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("text-sm flex-1", item.completed && "line-through text-muted-foreground"),
-                                            children: item.text
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 279,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
-                                            variant: "outline",
-                                            className: "text-xs",
-                                            children: [
-                                                item.category === 'equipment' && '장비',
-                                                item.category === 'preparation' && '준비',
-                                                item.category === 'travel' && '이동',
-                                                item.category === 'post' && '사후'
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/components/my/my-day.tsx",
-                                            lineNumber: 287,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, item.id, true, {
-                                    fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 260,
-                                    columnNumber: 15
-                                }, this))
-                        }, void 0, false, {
-                            fileName: "[project]/components/my/my-day.tsx",
-                            lineNumber: 258,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/components/my/my-day.tsx",
-                        lineNumber: 257,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/my/my-day.tsx",
-                lineNumber: 248,
+                lineNumber: 129,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -3407,7 +3573,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                 className: "h-5 w-5 text-green-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 306,
+                                                lineNumber: 329,
                                                 columnNumber: 19
                                             }, this),
                                             "촬영 시작 확인"
@@ -3418,7 +3584,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                 className: "h-5 w-5 text-blue-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 311,
+                                                lineNumber: 334,
                                                 columnNumber: 19
                                             }, this),
                                             "촬영 완료 확인"
@@ -3426,7 +3592,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 303,
+                                    lineNumber: 326,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
@@ -3436,13 +3602,13 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                 children: confirmDialog.title
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 319,
+                                                lineNumber: 342,
                                                 columnNumber: 19
                                             }, this),
-                                            " 촬영을 시작하시겠습니까?",
+                                            " 고객님의 촬영을 시작하시겠습니까?",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 320,
+                                                lineNumber: 343,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3450,7 +3616,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                 children: "시작 시간이 기록되며 실시간 현황판에 표시됩니다."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 321,
+                                                lineNumber: 344,
                                                 columnNumber: 19
                                             }, this)
                                         ]
@@ -3460,13 +3626,13 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                 children: confirmDialog.title
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 327,
+                                                lineNumber: 350,
                                                 columnNumber: 19
                                             }, this),
-                                            " 촬영을 완료하시겠습니까?",
+                                            " 고객님의 촬영을 완료하시겠습니까?",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 328,
+                                                lineNumber: 351,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3474,20 +3640,20 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                                 children: "완료 시간이 기록되며 일정이 종료됩니다."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-day.tsx",
-                                                lineNumber: 329,
+                                                lineNumber: 352,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 316,
+                                    lineNumber: 339,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/my/my-day.tsx",
-                            lineNumber: 302,
+                            lineNumber: 325,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -3502,7 +3668,7 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                     children: "취소"
                                 }, void 0, false, {
                                     fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 337,
+                                    lineNumber: 360,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3511,30 +3677,30 @@ function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }) {
                                     children: confirmDialog.action === 'start' ? '시작하기' : '완료하기'
                                 }, void 0, false, {
                                     fileName: "[project]/components/my/my-day.tsx",
-                                    lineNumber: 343,
+                                    lineNumber: 366,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/my/my-day.tsx",
-                            lineNumber: 336,
+                            lineNumber: 359,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/my/my-day.tsx",
-                    lineNumber: 301,
+                    lineNumber: 324,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/my/my-day.tsx",
-                lineNumber: 300,
+                lineNumber: 323,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/my/my-day.tsx",
-        lineNumber: 108,
+        lineNumber: 127,
         columnNumber: 5
     }, this);
 }
@@ -3552,7 +3718,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar.js [app-ssr] (ecmascript) <export default as Calendar>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clock.js [app-ssr] (ecmascript) <export default as Clock>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-ssr] (ecmascript) <export default as MapPin>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2d$check$2d$big$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckSquare$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/square-check-big.js [app-ssr] (ecmascript) <export default as CheckSquare>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/camera.js [app-ssr] (ecmascript) <export default as Camera>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/tag.js [app-ssr] (ecmascript) <export default as Tag>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/date-fns/format.js [app-ssr] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$parseISO$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/parseISO.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$ko$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/locale/ko.js [app-ssr] (ecmascript)");
@@ -3564,14 +3731,24 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$
 ;
 ;
 function MyWeek({ schedule }) {
-    // Group schedules by date
-    const schedulesByDate = schedule.reduce((acc, item)=>{
-        if (!acc[item.date]) {
-            acc[item.date] = [];
-        }
-        acc[item.date].push(item);
-        return acc;
-    }, {});
+    const getProductTypeLabel = (type)=>{
+        const labels = {
+            wedding: '일반 웨딩 촬영',
+            hanbok: 'HANBOK & CASUAL',
+            dress_shop: 'DRESS SHOP',
+            baby: 'BABY 돌스냅'
+        };
+        return labels[type] || type;
+    };
+    const getProductTypeBadgeColor = (type)=>{
+        const colors = {
+            wedding: 'bg-blue-100 text-blue-800 border-blue-200',
+            hanbok: 'bg-purple-100 text-purple-800 border-purple-200',
+            dress_shop: 'bg-pink-100 text-pink-800 border-pink-200',
+            baby: 'bg-green-100 text-green-800 border-green-200'
+        };
+        return colors[type] || 'bg-gray-100 text-gray-800';
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-6",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3584,14 +3761,14 @@ function MyWeek({ schedule }) {
                             className: "h-5 w-5"
                         }, void 0, false, {
                             fileName: "[project]/components/my/my-week.tsx",
-                            lineNumber: 34,
+                            lineNumber: 46,
                             columnNumber: 11
                         }, this),
                         "예정된 일정"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/my/my-week.tsx",
-                    lineNumber: 33,
+                    lineNumber: 45,
                     columnNumber: 9
                 }, this),
                 schedule.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -3600,12 +3777,12 @@ function MyWeek({ schedule }) {
                         children: "예정된 일정이 없습니다"
                     }, void 0, false, {
                         fileName: "[project]/components/my/my-week.tsx",
-                        lineNumber: 40,
+                        lineNumber: 52,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/my/my-week.tsx",
-                    lineNumber: 39,
+                    lineNumber: 51,
                     columnNumber: 11
                 }, this) : schedule.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
                         children: [
@@ -3619,26 +3796,48 @@ function MyWeek({ schedule }) {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardTitle"], {
                                                     className: "text-lg",
-                                                    children: item.title
-                                                }, void 0, false, {
+                                                    children: [
+                                                        item.groomName,
+                                                        " & ",
+                                                        item.brideName
+                                                    ]
+                                                }, void 0, true, {
                                                     fileName: "[project]/components/my/my-week.tsx",
-                                                    lineNumber: 50,
+                                                    lineNumber: 62,
                                                     columnNumber: 21
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-sm text-muted-foreground",
-                                                    children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$parseISO$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["parseISO"])(item.date), 'M월 d일 (EEE)', {
-                                                        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$ko$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ko"]
-                                                    })
-                                                }, void 0, false, {
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-2 flex-wrap",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                            variant: "outline",
+                                                            className: `text-xs ${getProductTypeBadgeColor(item.productType)}`,
+                                                            children: getProductTypeLabel(item.productType)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/my/my-week.tsx",
+                                                            lineNumber: 64,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-sm text-muted-foreground",
+                                                            children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$parseISO$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["parseISO"])(item.date), 'M월 d일 (EEE)', {
+                                                                locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$ko$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ko"]
+                                                            })
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/my/my-week.tsx",
+                                                            lineNumber: 67,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
                                                     fileName: "[project]/components/my/my-week.tsx",
-                                                    lineNumber: 51,
+                                                    lineNumber: 63,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/my/my-week.tsx",
-                                            lineNumber: 49,
+                                            lineNumber: 61,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3646,18 +3845,18 @@ function MyWeek({ schedule }) {
                                             children: item.status === 'upcoming' ? '예정' : item.status === 'in_progress' ? '진행중' : '완료'
                                         }, void 0, false, {
                                             fileName: "[project]/components/my/my-week.tsx",
-                                            lineNumber: 55,
+                                            lineNumber: 72,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/my/my-week.tsx",
-                                    lineNumber: 48,
+                                    lineNumber: 60,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/my/my-week.tsx",
-                                lineNumber: 47,
+                                lineNumber: 59,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3670,7 +3869,7 @@ function MyWeek({ schedule }) {
                                                 className: "h-4 w-4 text-muted-foreground"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 62,
+                                                lineNumber: 79,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3682,7 +3881,7 @@ function MyWeek({ schedule }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 63,
+                                                lineNumber: 80,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3690,115 +3889,163 @@ function MyWeek({ schedule }) {
                                                 children: "·"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 66,
+                                                lineNumber: 83,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: [
-                                                    "예식 ",
-                                                    item.ceremonyTime
+                                                    item.productType === 'wedding' ? '예식' : '촬영',
+                                                    " ",
+                                                    item.weddingTime
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 67,
+                                                lineNumber: 84,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/my/my-week.tsx",
-                                        lineNumber: 61,
+                                        lineNumber: 78,
                                         columnNumber: 17
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    item.venueName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-start gap-2 text-sm",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
                                                 className: "h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 71,
-                                                columnNumber: 19
+                                                lineNumber: 89,
+                                                columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: item.venueName
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 72,
-                                                columnNumber: 19
+                                                lineNumber: 90,
+                                                columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/my/my-week.tsx",
-                                        lineNumber: 70,
-                                        columnNumber: 17
+                                        lineNumber: 88,
+                                        columnNumber: 19
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center gap-2 text-sm",
+                                    item.photographerNames && item.photographerNames.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-start gap-2 text-sm",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2d$check$2d$big$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckSquare$3e$__["CheckSquare"], {
-                                                className: "h-4 w-4 text-muted-foreground"
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__["Camera"], {
+                                                className: "h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 76,
-                                                columnNumber: 19
+                                                lineNumber: 96,
+                                                columnNumber: 21
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "text-muted-foreground",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-2 flex-wrap",
                                                 children: [
-                                                    "준비 상태: ",
-                                                    item.checklistCompleted,
-                                                    "/",
-                                                    item.checklistTotal
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "font-medium",
+                                                        children: "담당 작가:"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/my/my-week.tsx",
+                                                        lineNumber: 98,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-muted-foreground",
+                                                        children: item.photographerNames.join(', ')
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/my/my-week.tsx",
+                                                        lineNumber: 99,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                        variant: "outline",
+                                                        className: "text-xs bg-blue-50 text-blue-700 border-blue-200",
+                                                        children: [
+                                                            item.photographerNames.length,
+                                                            "명"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/my/my-week.tsx",
+                                                        lineNumber: 102,
+                                                        columnNumber: 23
+                                                    }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 77,
-                                                columnNumber: 19
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden ml-2",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "h-full bg-green-500",
-                                                    style: {
-                                                        width: `${item.checklistCompleted / item.checklistTotal * 100}%`
-                                                    }
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/my/my-week.tsx",
-                                                    lineNumber: 81,
-                                                    columnNumber: 21
-                                                }, this)
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/my/my-week.tsx",
-                                                lineNumber: 80,
-                                                columnNumber: 19
+                                                lineNumber: 97,
+                                                columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/my/my-week.tsx",
-                                        lineNumber: 75,
-                                        columnNumber: 17
+                                        lineNumber: 95,
+                                        columnNumber: 19
+                                    }, this),
+                                    item.referralSource && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-start gap-2 text-sm",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__["Tag"], {
+                                                className: "h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/my/my-week.tsx",
+                                                lineNumber: 111,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-muted-foreground",
+                                                        children: "유입 경로:"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/my/my-week.tsx",
+                                                        lineNumber: 113,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "ml-2 font-medium",
+                                                        children: item.referralSource
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/my/my-week.tsx",
+                                                        lineNumber: 114,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/components/my/my-week.tsx",
+                                                lineNumber: 112,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/components/my/my-week.tsx",
+                                        lineNumber: 110,
+                                        columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/my/my-week.tsx",
-                                lineNumber: 60,
+                                lineNumber: 77,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, item.id, true, {
                         fileName: "[project]/components/my/my-week.tsx",
-                        lineNumber: 46,
+                        lineNumber: 58,
                         columnNumber: 13
                     }, this))
             ]
         }, void 0, true, {
             fileName: "[project]/components/my/my-week.tsx",
-            lineNumber: 32,
+            lineNumber: 44,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/my/my-week.tsx",
-        lineNumber: 30,
+        lineNumber: 42,
         columnNumber: 5
     }, this);
 }
@@ -4262,95 +4509,144 @@ const getTodaySchedule = ()=>{
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(today, 'yyyy-MM-dd'),
             startTime: '11:00',
             endTime: '16:00',
-            title: '홍길동 & 김영희',
-            venueName: '서울 그랜드 호텔',
-            venueAddress: '서울시 강남구 테헤란로 123',
-            ceremonyTime: '14:00',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '야외촬영',
-                '드론촬영',
-                '당일편집'
-            ],
+            // Customer info
+            groomName: '홍길동',
+            brideName: '김영희',
             groomPhone: '010-1234-5678',
             bridePhone: '010-2345-6789',
+            email: 'hong.kim@example.com',
+            mainContact: 'bride',
+            // Product & Venue info
+            productType: 'wedding',
+            packageId: 'new-basic',
+            packageName: 'new BASIC',
+            optionIds: [
+                'early-progress',
+                'outdoor-photography'
+            ],
+            optionNames: [
+                '얼리 진행',
+                '야외 촬영'
+            ],
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(today, 'yyyy-MM-dd'),
+            weddingTime: '오후 2시',
+            venueName: '서울 그랜드 웨딩홀',
+            venueAddress: '서울시 강남구 테헤란로 123',
+            // Process info
+            referralSource: 'Instagram',
+            specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망',
+            photographerNames: [
+                '박작가',
+                '최작가'
+            ],
+            // Schedule management
             travelTimeMinutes: 30,
             status: 'in_progress',
             checklistCompleted: 3,
-            checklistTotal: 5,
-            specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망'
+            checklistTotal: 5
         }
     ];
 };
 const getWeekSchedule = ()=>{
     return [
-        // Today
+        // Today - Wedding
         {
             id: 'my-schedule-1',
             eventId: 'schedule-1',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(today, 'yyyy-MM-dd'),
             startTime: '11:00',
             endTime: '16:00',
-            title: '홍길동 & 김영희',
-            venueName: '서울 그랜드 호텔',
-            venueAddress: '서울시 강남구 테헤란로 123',
-            ceremonyTime: '14:00',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '야외촬영',
-                '드론촬영'
-            ],
+            groomName: '홍길동',
+            brideName: '김영희',
             groomPhone: '010-1234-5678',
             bridePhone: '010-2345-6789',
+            email: 'hong.kim@example.com',
+            mainContact: 'bride',
+            productType: 'wedding',
+            packageId: 'new-basic',
+            packageName: 'new BASIC',
+            optionIds: [
+                'early-progress',
+                'outdoor-photography'
+            ],
+            optionNames: [
+                '얼리 진행',
+                '야외 촬영'
+            ],
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(today, 'yyyy-MM-dd'),
+            weddingTime: '오후 2시',
+            venueName: '서울 그랜드 웨딩홀',
+            venueAddress: '서울시 강남구 테헤란로 123',
+            referralSource: 'Instagram',
+            specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망',
+            photographerNames: [
+                '박작가',
+                '최작가'
+            ],
             travelTimeMinutes: 30,
             status: 'in_progress',
             checklistCompleted: 3,
             checklistTotal: 5
         },
-        // Day after tomorrow
+        // Day after tomorrow - Hanbok
         {
             id: 'my-schedule-2',
             eventId: 'schedule-4',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 2), 'yyyy-MM-dd'),
-            startTime: '14:00',
-            endTime: '18:00',
-            title: '정우성 & 한가인',
-            venueName: '부산 해운대 그랜드 호텔',
-            venueAddress: '부산시 해운대구 우동',
-            ceremonyTime: '16:00',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '해변 촬영'
-            ],
+            startTime: '10:00',
+            endTime: '14:00',
+            groomName: '정우성',
+            brideName: '한가인',
             groomPhone: '010-1111-2222',
             bridePhone: '010-3333-4444',
-            travelTimeMinutes: 240,
+            mainContact: 'groom',
+            productType: 'hanbok',
+            packageId: 'hanbok-a2',
+            packageName: 'A-2',
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 2), 'yyyy-MM-dd'),
+            weddingTime: '오전 10시',
+            venueName: '경복궁 일대',
+            venueAddress: '서울시 종로구',
+            referralSource: '지인 추천',
+            specialRequests: '한복 의상은 직접 준비. 경복궁과 북촌 한옥마을 두 곳 촬영 희망',
+            photographerNames: [
+                '박작가'
+            ],
+            travelTimeMinutes: 45,
             status: 'upcoming',
             checklistCompleted: 0,
-            checklistTotal: 5,
-            specialRequests: '부산 출장 - 전날 출발 필요'
+            checklistTotal: 5
         },
-        // 3 days later
+        // 5 days later - Wedding
         {
             id: 'my-schedule-3',
             eventId: 'schedule-6',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 5), 'yyyy-MM-dd'),
             startTime: '13:00',
             endTime: '18:00',
-            title: '최민수 & 한예슬',
-            venueName: '제이드가든',
-            venueAddress: '경기도 가평군',
-            ceremonyTime: '15:00',
-            packageType: '스탠다드',
-            options: [
-                '본식',
-                '야외 촬영'
-            ],
+            groomName: '최민수',
+            brideName: '한예슬',
             groomPhone: '010-5555-6666',
             bridePhone: '010-7777-8888',
+            email: 'choi.han@example.com',
+            mainContact: 'bride',
+            productType: 'wedding',
+            packageId: 'data',
+            packageName: 'DATA',
+            optionIds: [
+                'outdoor-photography'
+            ],
+            optionNames: [
+                '야외 촬영'
+            ],
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 5), 'yyyy-MM-dd'),
+            weddingTime: '오후 3시',
+            venueName: '경기 럭셔리 컨벤션',
+            venueAddress: '경기도 고양시',
+            referralSource: '웨딩홀 제휴',
+            photographerNames: [
+                '박작가'
+            ],
             travelTimeMinutes: 90,
             status: 'upcoming',
             checklistCompleted: 0,
@@ -4360,174 +4656,240 @@ const getWeekSchedule = ()=>{
 };
 const getAllUpcomingSchedule = ()=>{
     return [
-        // Today
+        // Today - Wedding
         {
             id: 'my-schedule-1',
             eventId: 'schedule-1',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(today, 'yyyy-MM-dd'),
             startTime: '11:00',
             endTime: '16:00',
-            title: '홍길동 & 김영희',
-            venueName: '서울 그랜드 호텔',
-            venueAddress: '서울시 강남구 테헤란로 123',
-            ceremonyTime: '14:00',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '야외촬영',
-                '드론촬영'
-            ],
+            groomName: '홍길동',
+            brideName: '김영희',
             groomPhone: '010-1234-5678',
             bridePhone: '010-2345-6789',
+            email: 'hong.kim@example.com',
+            mainContact: 'bride',
+            productType: 'wedding',
+            packageId: 'new-basic',
+            packageName: 'new BASIC',
+            optionIds: [
+                'early-progress',
+                'outdoor-photography'
+            ],
+            optionNames: [
+                '얼리 진행',
+                '야외 촬영'
+            ],
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(today, 'yyyy-MM-dd'),
+            weddingTime: '오후 2시',
+            venueName: '서울 그랜드 웨딩홀',
+            venueAddress: '서울시 강남구 테헤란로 123',
+            referralSource: 'Instagram',
+            specialRequests: '야외 정원에서 가족 단체 사진 촬영 희망',
+            photographerNames: [
+                '박작가',
+                '최작가'
+            ],
             travelTimeMinutes: 30,
             status: 'in_progress',
             checklistCompleted: 3,
             checklistTotal: 5
         },
-        // Day after tomorrow
+        // Day after tomorrow - Hanbok
         {
             id: 'my-schedule-2',
             eventId: 'schedule-4',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 2), 'yyyy-MM-dd'),
-            startTime: '14:00',
-            endTime: '18:00',
-            title: '정우성 & 한가인',
-            venueName: '부산 해운대 그랜드 호텔',
-            venueAddress: '부산시 해운대구 우동',
-            ceremonyTime: '16:00',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '해변 촬영'
-            ],
+            startTime: '10:00',
+            endTime: '14:00',
+            groomName: '정우성',
+            brideName: '한가인',
             groomPhone: '010-1111-2222',
             bridePhone: '010-3333-4444',
-            travelTimeMinutes: 240,
+            mainContact: 'groom',
+            productType: 'hanbok',
+            packageId: 'hanbok-a2',
+            packageName: 'A-2',
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 2), 'yyyy-MM-dd'),
+            weddingTime: '오전 10시',
+            venueName: '경복궁 일대',
+            venueAddress: '서울시 종로구',
+            referralSource: '지인 추천',
+            specialRequests: '한복 의상은 직접 준비. 경복궁과 북촌 한옥마을 두 곳 촬영 희망',
+            photographerNames: [
+                '박작가'
+            ],
+            travelTimeMinutes: 45,
             status: 'upcoming',
             checklistCompleted: 0,
-            checklistTotal: 5,
-            specialRequests: '부산 출장 - 전날 출발 필요'
+            checklistTotal: 5
         },
-        // 5 days later
+        // 5 days later - Wedding
         {
             id: 'my-schedule-3',
             eventId: 'schedule-6',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 5), 'yyyy-MM-dd'),
             startTime: '13:00',
             endTime: '18:00',
-            title: '최민수 & 한예슬',
-            venueName: '제이드가든',
-            venueAddress: '경기도 가평군',
-            ceremonyTime: '15:00',
-            packageType: '스탠다드',
-            options: [
-                '본식',
-                '야외 촬영'
-            ],
+            groomName: '최민수',
+            brideName: '한예슬',
             groomPhone: '010-5555-6666',
             bridePhone: '010-7777-8888',
+            email: 'choi.han@example.com',
+            mainContact: 'bride',
+            productType: 'wedding',
+            packageId: 'data',
+            packageName: 'DATA',
+            optionIds: [
+                'outdoor-photography'
+            ],
+            optionNames: [
+                '야외 촬영'
+            ],
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 5), 'yyyy-MM-dd'),
+            weddingTime: '오후 3시',
+            venueName: '경기 럭셔리 컨벤션',
+            venueAddress: '경기도 고양시',
+            referralSource: '웨딩홀 제휴',
+            photographerNames: [
+                '박작가'
+            ],
             travelTimeMinutes: 90,
             status: 'upcoming',
             checklistCompleted: 0,
             checklistTotal: 5
         },
-        // 10 days later
+        // 10 days later - Dress Shop
         {
             id: 'my-schedule-4',
             eventId: 'schedule-7',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 10), 'yyyy-MM-dd'),
-            startTime: '12:00',
+            startTime: '14:00',
             endTime: '17:00',
-            title: '이병헌 & 이민정',
-            venueName: '신라호텔',
-            venueAddress: '서울시 중구 동호로',
-            ceremonyTime: '14:30',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '야외촬영',
-                '당일편집'
-            ],
+            groomName: '이병헌',
+            brideName: '이민정',
             groomPhone: '010-9999-0000',
-            bridePhone: '010-8888-7777',
+            mainContact: 'bride',
+            productType: 'dress_shop',
+            packageId: 'dress-shop-basic',
+            packageName: 'DRESS SHOP 기본',
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 10), 'yyyy-MM-dd'),
+            weddingTime: '오후 2시',
+            referralSource: 'Naver 블로그',
+            specialRequests: '가봉 과정도 자세히 찍어주세요',
+            photographerNames: [
+                '최작가'
+            ],
             travelTimeMinutes: 40,
             status: 'upcoming',
             checklistCompleted: 0,
             checklistTotal: 5
         },
-        // 14 days later
+        // 14 days later - Baby
         {
             id: 'my-schedule-5',
             eventId: 'schedule-8',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 14), 'yyyy-MM-dd'),
-            startTime: '11:30',
-            endTime: '16:30',
-            title: '송중기 & 송혜교',
-            venueName: '파크하얏트 서울',
-            venueAddress: '서울시 강남구 테헤란로',
-            ceremonyTime: '14:00',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '드론촬영',
-                '영상촬영'
-            ],
-            groomPhone: '010-1010-2020',
+            startTime: '11:00',
+            endTime: '13:00',
+            groomName: '송중기',
+            brideName: '송혜교',
             bridePhone: '010-3030-4040',
+            email: 'song.song@example.com',
+            mainContact: 'bride',
+            productType: 'baby',
+            packageId: 'baby-basic',
+            packageName: 'BABY 돌스냅',
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 14), 'yyyy-MM-dd'),
+            weddingTime: '오전 11시',
+            referralSource: 'Instagram',
+            specialRequests: '아이가 낮잠을 오전에 자기 때문에 11시 이후 시작 부탁드립니다',
+            photographerNames: [
+                '김작가'
+            ],
             travelTimeMinutes: 35,
             status: 'upcoming',
             checklistCompleted: 0,
             checklistTotal: 5
         },
-        // 21 days later
+        // 21 days later - Wedding
         {
             id: 'my-schedule-6',
             eventId: 'schedule-9',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 21), 'yyyy-MM-dd'),
             startTime: '13:30',
             endTime: '18:30',
-            title: '현빈 & 손예진',
-            venueName: '아나타라 스위트',
-            venueAddress: '서울시 중구 소공로',
-            ceremonyTime: '16:00',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '야외촬영',
-                '드론촬영',
-                '당일편집'
-            ],
+            groomName: '현빈',
+            brideName: '손예진',
             groomPhone: '010-5050-6060',
             bridePhone: '010-7070-8080',
+            mainContact: 'groom',
+            productType: 'wedding',
+            packageId: 'new-basic',
+            packageName: 'new BASIC',
+            optionIds: [
+                'outdoor-photography',
+                'drone-photography',
+                'same-day-edit'
+            ],
+            optionNames: [
+                '야외 촬영',
+                '드론 촬영',
+                '당일 속편집'
+            ],
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 21), 'yyyy-MM-dd'),
+            weddingTime: '오후 4시',
+            venueName: '서울 신라호텔',
+            venueAddress: '서울시 중구 동호로',
+            referralSource: '지인 추천',
+            photographerNames: [
+                '박작가',
+                '최작가',
+                '김작가'
+            ],
             travelTimeMinutes: 45,
             status: 'upcoming',
             checklistCompleted: 0,
             checklistTotal: 5
         },
-        // 28 days later
+        // 28 days later - Wedding (Jeju)
         {
             id: 'my-schedule-7',
             eventId: 'schedule-10',
             date: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 28), 'yyyy-MM-dd'),
             startTime: '14:00',
             endTime: '19:00',
-            title: '공유 & 정유미',
-            venueName: '제주 롯데호텔',
-            venueAddress: '제주시 탑동로',
-            ceremonyTime: '16:30',
-            packageType: '프리미엄',
-            options: [
-                '본식+스냅',
-                '해변 촬영',
-                '드론촬영'
-            ],
+            groomName: '공유',
+            brideName: '정유미',
             groomPhone: '010-1212-3434',
             bridePhone: '010-5656-7878',
+            email: 'gong.jung@example.com',
+            mainContact: 'bride',
+            productType: 'wedding',
+            packageId: 'basic',
+            packageName: 'BASIC',
+            optionIds: [
+                'outdoor-photography',
+                'drone-photography'
+            ],
+            optionNames: [
+                '야외 촬영',
+                '드론 촬영'
+            ],
+            weddingDate: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addDays"])(today, 28), 'yyyy-MM-dd'),
+            weddingTime: '오후 4시 30분',
+            venueName: '제주 롯데호텔',
+            venueAddress: '제주시 탑동로',
+            referralSource: 'Facebook',
+            specialRequests: '제주 출장 - 전날 출발 필요. 해변 일몰 촬영 중점 부탁드립니다',
+            photographerNames: [
+                '박작가',
+                '김작가'
+            ],
             travelTimeMinutes: 180,
             status: 'upcoming',
             checklistCompleted: 0,
-            checklistTotal: 5,
-            specialRequests: '제주 출장 - 전날 출발 필요'
+            checklistTotal: 5
         }
     ];
 };
@@ -4699,9 +5061,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$me$2e$ts__$5b
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar.js [app-ssr] (ecmascript) <export default as Calendar>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user.js [app-ssr] (ecmascript) <export default as User>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2d$check$2d$big$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckSquare$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/square-check-big.js [app-ssr] (ecmascript) <export default as CheckSquare>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/sonner/dist/index.mjs [app-ssr] (ecmascript)");
 'use client';
-;
 ;
 ;
 ;
@@ -4716,15 +5076,6 @@ function MyPage() {
     const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('day');
     const [todaySchedule, setTodaySchedule] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$me$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTodaySchedule"])());
     const [upcomingSchedule] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$me$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getAllUpcomingSchedule"])());
-    const [checklist, setChecklist] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$me$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getMyChecklist"])());
-    // Handlers
-    const handleChecklistToggle = (id)=>{
-        setChecklist((prev)=>(0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$me$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toggleChecklistItem"])(id, prev));
-        const item = checklist.find((c)=>c.id === id);
-        if (item) {
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].success(item.completed ? '체크리스트 항목 미완료로 변경됨' : '체크리스트 항목 완료!');
-        }
-    };
     const handleStatusChange = (scheduleId, newStatus)=>{
         setTodaySchedule((prev)=>prev.map((schedule)=>schedule.id === scheduleId ? {
                     ...schedule,
@@ -4747,7 +5098,7 @@ function MyPage() {
                                         className: "h-8 w-8"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                        lineNumber: 53,
+                                        lineNumber: 39,
                                         columnNumber: 15
                                     }, this),
                                     __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$me$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["currentUser"].name,
@@ -4755,7 +5106,7 @@ function MyPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                lineNumber: 52,
+                                lineNumber: 38,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4763,18 +5114,18 @@ function MyPage() {
                                 children: "나의 스케줄과 일정을 관리하세요"
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                lineNumber: 56,
+                                lineNumber: 42,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                        lineNumber: 51,
+                        lineNumber: 37,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                    lineNumber: 50,
+                    lineNumber: 36,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tabs"], {
@@ -4789,7 +5140,7 @@ function MyPage() {
                                     children: "오늘"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                    lineNumber: 65,
+                                    lineNumber: 51,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -4797,7 +5148,7 @@ function MyPage() {
                                     children: "예정된 일정"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                    lineNumber: 66,
+                                    lineNumber: 52,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -4805,13 +5156,13 @@ function MyPage() {
                                     children: "일정 관리"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                    lineNumber: 67,
+                                    lineNumber: 53,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                            lineNumber: 64,
+                            lineNumber: 50,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -4819,17 +5170,15 @@ function MyPage() {
                             className: "mt-6",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$my$2f$my$2d$day$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["MyDay"], {
                                 schedule: todaySchedule,
-                                checklist: checklist,
-                                onChecklistToggle: handleChecklistToggle,
                                 onStatusChange: handleStatusChange
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                lineNumber: 71,
+                                lineNumber: 57,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                            lineNumber: 70,
+                            lineNumber: 56,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -4839,12 +5188,12 @@ function MyPage() {
                                 schedule: upcomingSchedule
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                lineNumber: 80,
+                                lineNumber: 64,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                            lineNumber: 79,
+                            lineNumber: 63,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -4852,18 +5201,18 @@ function MyPage() {
                             className: "mt-6",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$my$2f$availability$2d$tab$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AvailabilityTab"], {}, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                lineNumber: 86,
+                                lineNumber: 70,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                            lineNumber: 85,
+                            lineNumber: 69,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                    lineNumber: 63,
+                    lineNumber: 49,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4879,7 +5228,7 @@ function MyPage() {
                                         className: "h-5 w-5 mb-1"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                        lineNumber: 101,
+                                        lineNumber: 85,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4887,13 +5236,13 @@ function MyPage() {
                                         children: "오늘"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                        lineNumber: 102,
+                                        lineNumber: 86,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                lineNumber: 93,
+                                lineNumber: 77,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4904,7 +5253,7 @@ function MyPage() {
                                         className: "h-5 w-5 mb-1"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                        lineNumber: 113,
+                                        lineNumber: 97,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4912,13 +5261,13 @@ function MyPage() {
                                         children: "예정"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                        lineNumber: 114,
+                                        lineNumber: 98,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                lineNumber: 105,
+                                lineNumber: 89,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4929,7 +5278,7 @@ function MyPage() {
                                         className: "h-5 w-5 mb-1"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                        lineNumber: 125,
+                                        lineNumber: 109,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4937,35 +5286,35 @@ function MyPage() {
                                         children: "일정"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                        lineNumber: 126,
+                                        lineNumber: 110,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                                lineNumber: 117,
+                                lineNumber: 101,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                        lineNumber: 92,
+                        lineNumber: 76,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/(admin)/admin/my/page.tsx",
-                    lineNumber: 91,
+                    lineNumber: 75,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/(admin)/admin/my/page.tsx",
-            lineNumber: 48,
+            lineNumber: 34,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/(admin)/admin/my/page.tsx",
-        lineNumber: 47,
+        lineNumber: 33,
         columnNumber: 5
     }, this);
 }

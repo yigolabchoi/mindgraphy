@@ -14,18 +14,19 @@ import {
 } from '@/components/ui/dialog'
 import { DdayBadge } from '@/components/common/dday-badge'
 import { EmptyState } from '@/components/common/empty-state'
-import type { MySchedule, ChecklistItem } from '@/lib/mock/me'
+import type { MySchedule } from '@/lib/mock/me'
 import {
   Clock,
   MapPin,
   Phone,
-  CheckCircle2,
-  Circle,
   Package,
   AlertCircle,
   Calendar,
   Play,
-  CheckCheck
+  CheckCheck,
+  Camera,
+  Mail,
+  Tag
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
@@ -34,12 +35,10 @@ import { toast } from 'sonner'
 
 interface MyDayProps {
   schedule: MySchedule[]
-  checklist: ChecklistItem[]
-  onChecklistToggle: (id: string) => void
   onStatusChange?: (scheduleId: string, newStatus: 'in_progress' | 'completed') => void
 }
 
-export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }: MyDayProps) {
+export function MyDay({ schedule, onStatusChange }: MyDayProps) {
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean
     scheduleId: string
@@ -57,7 +56,7 @@ export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }
       open: true,
       scheduleId: item.id,
       action,
-      title: item.title
+      title: `${item.groomName} & ${item.brideName}`
     })
   }
 
@@ -104,6 +103,26 @@ export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }
     return labels[status as keyof typeof labels] || status
   }
 
+  const getProductTypeLabel = (type: string) => {
+    const labels = {
+      wedding: '일반 웨딩 촬영',
+      hanbok: 'HANBOK & CASUAL',
+      dress_shop: 'DRESS SHOP',
+      baby: 'BABY 돌스냅'
+    }
+    return labels[type as keyof typeof labels] || type
+  }
+
+  const getProductTypeBadgeColor = (type: string) => {
+    const colors = {
+      wedding: 'bg-blue-100 text-blue-800 border-blue-200',
+      hanbok: 'bg-purple-100 text-purple-800 border-purple-200',
+      dress_shop: 'bg-pink-100 text-pink-800 border-pink-200',
+      baby: 'bg-green-100 text-green-800 border-green-200'
+    }
+    return colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+  }
+
   return (
     <div className="space-y-6">
       {/* Today's Schedule */}
@@ -118,10 +137,17 @@ export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <CardTitle className="text-xl">{item.title}</CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    {item.venueName}
-                  </p>
+                  <CardTitle className="text-xl">{item.groomName} & {item.brideName}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className={cn("text-xs", getProductTypeBadgeColor(item.productType))}>
+                      {getProductTypeLabel(item.productType)}
+                    </Badge>
+                    {item.venueName && (
+                      <p className="text-sm text-muted-foreground">
+                        {item.venueName}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <Badge className={cn("border", getStatusColor(item.status))}>
                   {getStatusLabel(item.status)}
@@ -136,31 +162,91 @@ export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }
                   {item.startTime} - {item.endTime}
                 </div>
                 <span className="text-muted-foreground">·</span>
-                <span>예식 {item.ceremonyTime}</span>
+                <span>{item.productType === 'wedding' ? '예식' : '촬영'} {item.weddingTime}</span>
                 <DdayBadge targetDate={item.date} showIcon={false} />
               </div>
 
               {/* Venue */}
-              <div className="flex items-start gap-2 text-sm">
-                <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-medium">{item.venueName}</p>
-                  <p className="text-muted-foreground">{item.venueAddress}</p>
+              {item.venueName && item.venueAddress && (
+                <div className="flex items-start gap-2 text-sm">
+                  <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium">{item.venueName}</p>
+                    <p className="text-muted-foreground">{item.venueAddress}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Package & Options */}
               <div className="flex items-start gap-2 text-sm">
                 <Package className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <div className="flex flex-wrap gap-1">
-                  <Badge variant="secondary">{item.packageType}</Badge>
-                  {item.options.map((option, idx) => (
+                  <Badge variant="secondary">{item.packageName}</Badge>
+                  {item.optionNames && item.optionNames.map((option, idx) => (
                     <Badge key={idx} variant="outline" className="text-xs">
                       {option}
                     </Badge>
                   ))}
                 </div>
               </div>
+
+              {/* Contact Info */}
+              <div className="flex items-start gap-2 text-sm bg-zinc-50 border border-zinc-200 rounded-lg p-3">
+                <Phone className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <div className="space-y-1 text-xs">
+                  {item.groomPhone && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground">신랑:</span>
+                      <span className="font-medium">{item.groomPhone}</span>
+                      {item.mainContact === 'groom' && (
+                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">메인</Badge>
+                      )}
+                    </div>
+                  )}
+                  {item.bridePhone && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground">신부:</span>
+                      <span className="font-medium">{item.bridePhone}</span>
+                      {item.mainContact === 'bride' && (
+                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">메인</Badge>
+                      )}
+                    </div>
+                  )}
+                  {item.email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-3 w-3" />
+                      <span className="font-medium">{item.email}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Photographers */}
+              {item.photographerNames && item.photographerNames.length > 0 && (
+                <div className="flex items-start gap-2 text-sm">
+                  <Camera className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <div className="flex flex-wrap gap-1">
+                    <span className="font-medium">담당 작가:</span>
+                    <span className="text-muted-foreground">
+                      {item.photographerNames.join(', ')}
+                    </span>
+                    <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                      {item.photographerNames.length}명
+                    </Badge>
+                  </div>
+                </div>
+              )}
+
+              {/* Referral Source */}
+              {item.referralSource && (
+                <div className="flex items-start gap-2 text-sm">
+                  <Tag className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <div>
+                    <span className="text-muted-foreground">유입 경로:</span>
+                    <span className="ml-2 font-medium">{item.referralSource}</span>
+                  </div>
+                </div>
+              )}
 
               {/* Special Requests */}
               {item.specialRequests && (
@@ -172,29 +258,35 @@ export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }
 
               {/* Quick Actions */}
               <div className="flex gap-2 pt-2">
-                <a href={`tel:${item.groomPhone}`} className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Phone className="mr-2 h-4 w-4" />
-                    신랑
-                  </Button>
-                </a>
-                <a href={`tel:${item.bridePhone}`} className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Phone className="mr-2 h-4 w-4" />
-                    신부
-                  </Button>
-                </a>
-                <a
-                  href={`https://map.kakao.com/?q=${encodeURIComponent(item.venueAddress)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1"
-                >
-                  <Button variant="outline" size="sm" className="w-full">
-                    <MapPin className="mr-2 h-4 w-4" />
-                    지도
-                  </Button>
-                </a>
+                {item.groomPhone && (
+                  <a href={`tel:${item.groomPhone}`} className="flex-1">
+                    <Button variant="outline" size="sm" className="w-full">
+                      <Phone className="mr-2 h-4 w-4" />
+                      신랑
+                    </Button>
+                  </a>
+                )}
+                {item.bridePhone && (
+                  <a href={`tel:${item.bridePhone}`} className="flex-1">
+                    <Button variant="outline" size="sm" className="w-full">
+                      <Phone className="mr-2 h-4 w-4" />
+                      신부
+                    </Button>
+                  </a>
+                )}
+                {item.venueAddress && (
+                  <a
+                    href={`https://map.kakao.com/?q=${encodeURIComponent(item.venueAddress)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1"
+                  >
+                    <Button variant="outline" size="sm" className="w-full">
+                      <MapPin className="mr-2 h-4 w-4" />
+                      지도
+                    </Button>
+                  </a>
+                )}
               </div>
 
               {/* Start/Complete Button */}
@@ -222,79 +314,10 @@ export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }
                 </div>
               )}
 
-              {/* Checklist Progress */}
-              <div className="pt-2 border-t">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">체크리스트</span>
-                  <span className="font-medium">
-                    {item.checklistCompleted} / {item.checklistTotal}
-                  </span>
-                </div>
-                <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-green-500 transition-all"
-                    style={{
-                      width: `${(item.checklistCompleted / item.checklistTotal) * 100}%`
-                    }}
-                  />
-                </div>
-              </div>
             </CardContent>
           </Card>
         ))}
       </div>
-
-      {/* My Checklist */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>내 체크리스트</span>
-            <Badge variant="secondary">
-              {checklist.filter(item => item.completed).length} / {checklist.length}
-            </Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {checklist.map((item) => (
-              <label
-                key={item.id}
-                className={cn(
-                  "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors",
-                  "hover:bg-zinc-50 dark:hover:bg-zinc-800",
-                  item.completed && "opacity-60"
-                )}
-              >
-                <button
-                  type="button"
-                  onClick={() => onChecklistToggle(item.id)}
-                  className="flex-shrink-0"
-                >
-                  {item.completed ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
-                  ) : (
-                    <Circle className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
-                <span
-                  className={cn(
-                    "text-sm flex-1",
-                    item.completed && "line-through text-muted-foreground"
-                  )}
-                >
-                  {item.text}
-                </span>
-                <Badge variant="outline" className="text-xs">
-                  {item.category === 'equipment' && '장비'}
-                  {item.category === 'preparation' && '준비'}
-                  {item.category === 'travel' && '이동'}
-                  {item.category === 'post' && '사후'}
-                </Badge>
-              </label>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Confirmation Dialog */}
       <Dialog open={confirmDialog.open} onOpenChange={(open) => setConfirmDialog({...confirmDialog, open})}>
@@ -316,7 +339,7 @@ export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }
             <DialogDescription>
               {confirmDialog.action === 'start' ? (
                 <>
-                  <strong>{confirmDialog.title}</strong> 촬영을 시작하시겠습니까?
+                  <strong>{confirmDialog.title}</strong> 고객님의 촬영을 시작하시겠습니까?
                   <br />
                   <span className="text-xs text-muted-foreground mt-2 block">
                     시작 시간이 기록되며 실시간 현황판에 표시됩니다.
@@ -324,7 +347,7 @@ export function MyDay({ schedule, checklist, onChecklistToggle, onStatusChange }
                 </>
               ) : (
                 <>
-                  <strong>{confirmDialog.title}</strong> 촬영을 완료하시겠습니까?
+                  <strong>{confirmDialog.title}</strong> 고객님의 촬영을 완료하시겠습니까?
                   <br />
                   <span className="text-xs text-muted-foreground mt-2 block">
                     완료 시간이 기록되며 일정이 종료됩니다.

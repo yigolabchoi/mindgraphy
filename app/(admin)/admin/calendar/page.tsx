@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { AdminLayout } from '@/components/layout/admin-layout'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -19,29 +19,27 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
-import type { EventClickArg, DateSelectArg, EventDropArg } from '@fullcalendar/core'
+import type { EventClickArg, EventDropArg } from '@fullcalendar/core'
 import { 
   mockScheduleEvents, 
-  mockPhotographers,
   getStatusLabel,
-  getPackageLabel,
+  getProductTypeLabel,
   checkConflicts,
   type ScheduleEvent,
   type ScheduleStatus,
-  type PackageType
+  type ProductType
 } from '@/lib/mock/schedules'
 import { 
   Plus, 
-  Filter as FilterIcon, 
   Calendar as CalendarIcon,
   Users,
-  Package,
   AlertTriangle,
   X,
   Clock,
   Phone,
   Building2,
-  Search
+  Search,
+  Camera
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { format } from 'date-fns'
@@ -53,6 +51,7 @@ export default function CalendarPage() {
   const calendarRef = useRef<FullCalendar>(null)
   const [selectedEvent, setSelectedEvent] = useState<ScheduleEvent | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [view, setView] = useState<'month' | 'week' | 'day'>('month')
   const [events, setEvents] = useState<ScheduleEvent[]>(mockScheduleEvents)
   
@@ -67,8 +66,10 @@ export default function CalendarPage() {
   
   // Filters
   const [photographerSearch, setPhotographerSearch] = useState('')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [statusFilter, setStatusFilter] = useState<ScheduleStatus | 'all'>('all')
-  const [packageFilter, setPackageFilter] = useState<PackageType | 'all'>('all')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [productTypeFilter, setProductTypeFilter] = useState<ProductType | 'all'>('all')
   
   // Conflict warning
   const [conflictWarning, setConflictWarning] = useState<{
@@ -90,7 +91,7 @@ export default function CalendarPage() {
     if (statusFilter !== 'all' && event.status !== statusFilter) {
       return false
     }
-    if (packageFilter !== 'all' && event.packageType !== packageFilter) {
+    if (productTypeFilter !== 'all' && event.productType !== productTypeFilter) {
       return false
     }
     return true
@@ -121,11 +122,6 @@ export default function CalendarPage() {
     setDateDialogOpen(true)
   }
 
-  // Handle date select (for creating new event)
-  const handleDateSelect = (selectInfo: DateSelectArg) => {
-    setDefaultDate(selectInfo.start)
-    setCreateDialogOpen(true)
-  }
 
   // Handle create schedule
   const handleCreateSchedule = (schedule: Partial<ScheduleEvent>) => {
@@ -179,11 +175,8 @@ export default function CalendarPage() {
       })
     )
 
-    console.log('Event dropped:', {
-      eventId,
-      newStart,
-      newEnd
-    })
+    // Event successfully moved
+    // TODO: Send update to backend API when integrated
   }
 
   // Change view
@@ -197,23 +190,42 @@ export default function CalendarPage() {
         day: 'timeGridDay'
       }
       calendarApi.changeView(viewMap[newView])
+      
+      // Update button active states
+      const toolbar = document.querySelector('.fc-toolbar-chunk:last-child')
+      if (toolbar) {
+        const buttons = toolbar.querySelectorAll('.fc-viewSelector-button')
+        buttons.forEach(btn => {
+          btn.classList.remove('fc-button-active')
+        })
+        
+        const activeButtonMap = {
+          month: 'monthView',
+          week: 'weekView',
+          day: 'dayView'
+        }
+        const activeButton = toolbar.querySelector(`.fc-${activeButtonMap[newView]}-button`)
+        if (activeButton) {
+          activeButton.classList.add('fc-button-active')
+        }
+      }
     }
   }
 
-  // Clear all filters
-  const clearFilters = () => {
-    setPhotographerSearch('')
-    setStatusFilter('all')
-    setPackageFilter('all')
-  }
-
-  const hasActiveFilters = photographerSearch.trim() !== '' || 
-                          statusFilter !== 'all' || 
-                          packageFilter !== 'all'
+  // Set initial active button on mount
+  useEffect(() => {
+    const toolbar = document.querySelector('.fc-toolbar-chunk:last-child')
+    if (toolbar) {
+      const monthButton = toolbar.querySelector('.fc-monthView-button')
+      if (monthButton) {
+        monthButton.classList.add('fc-button-active')
+      }
+    }
+  }, [])
 
   return (
     <AdminLayout align="left">
-      <div className="space-y-4 md:space-y-6">
+      <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -223,15 +235,46 @@ export default function CalendarPage() {
             </p>
           </div>
           {user?.role === 'admin' && (
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">내 일정</span>
+            <Button size="sm" onClick={openCreateDialog}>
+              <Plus className="mr-2 h-4 w-4" />
+              새 일정
+            </Button>
+          )}
+        </div>
+
+        {/* Mobile Search */}
+        <div className="md:hidden">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Camera className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="작가명으로 검색..."
+              value={photographerSearch}
+              onChange={(e) => setPhotographerSearch(e.target.value)}
+              className="pl-9 pr-9 focus-ring"
+            />
+            {photographerSearch && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute right-8 top-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:bg-transparent"
+                onClick={() => setPhotographerSearch('')}
+              >
+                <X className="h-3 w-3" />
               </Button>
-              <Button size="sm" className="flex-1 sm:flex-none" onClick={openCreateDialog}>
-                <Plus className="mr-2 h-4 w-4" />
-                새 일정
-              </Button>
+            )}
+          </div>
+          
+          {/* Active Search Info - Mobile */}
+          {photographerSearch && (
+            <div className="flex items-center gap-2 text-sm mt-2">
+              <Badge variant="secondary" className="gap-1">
+                <Camera className="h-3 w-3" />
+                {photographerSearch}
+              </Badge>
+              <span className="text-muted-foreground text-xs">
+                {filteredEvents.length}개의 일정
+              </span>
             </div>
           )}
         </div>
@@ -275,162 +318,45 @@ export default function CalendarPage() {
           </Card>
         )}
 
-        {/* Filters & View Toggle */}
-        <div className="bg-zinc-50/50 border border-zinc-200 rounded-lg p-4 space-y-4">
-          {/* Top Bar: Title, View Toggle, Event Count */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <h3 className="font-semibold flex items-center gap-2">
-                <FilterIcon className="h-4 w-4" />
-                필터 & 보기
-              </h3>
-              {hasActiveFilters && (
-                <Badge variant="secondary">
-                  {[photographerSearch !== '', statusFilter !== 'all', packageFilter !== 'all'].filter(Boolean).length}
-                </Badge>
+        {/* Calendar */}
+        <div className="bg-white rounded-lg p-3 md:p-6 relative">
+          {/* Photographer Search - Top Right */}
+          <div className="hidden md:flex absolute top-6 right-6 z-10 flex-col items-end gap-2">
+            <div className="relative w-64">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Camera className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="작가명으로 검색..."
+                value={photographerSearch}
+                onChange={(e) => setPhotographerSearch(e.target.value)}
+                className="pl-9 pr-9 focus-ring bg-white shadow-sm"
+              />
+              {photographerSearch && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-8 top-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:bg-transparent"
+                  onClick={() => setPhotographerSearch('')}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
               )}
             </div>
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full lg:w-auto">
-              {/* View Toggle */}
-              <div className="flex gap-1 bg-white p-1 rounded-lg border border-zinc-200 w-full sm:w-auto">
-                <Button
-                  variant={view === 'month' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => changeView('month')}
-                  className="flex-1 sm:flex-none"
-                >
-                  월
-                </Button>
-                <Button
-                  variant={view === 'week' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => changeView('week')}
-                  className="flex-1 sm:flex-none"
-                >
-                  주
-                </Button>
-                <Button
-                  variant={view === 'day' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => changeView('day')}
-                  className="flex-1 sm:flex-none"
-                >
-                  일
-                </Button>
+            {/* Active Search Info */}
+            {photographerSearch && (
+              <div className="flex items-center gap-2 text-sm bg-white px-3 py-1.5 rounded-md shadow-sm border border-zinc-200">
+                <Badge variant="secondary" className="gap-1">
+                  <Camera className="h-3 w-3" />
+                  {photographerSearch}
+                </Badge>
+                <span className="text-muted-foreground text-xs">
+                  {filteredEvents.length}개
+                </span>
               </div>
-
-              {/* Event Count & Clear */}
-              <div className="flex items-center gap-2">
-                <div className="text-sm text-muted-foreground whitespace-nowrap">
-                  {filteredEvents.length}개의 일정
-                </div>
-                {hasActiveFilters && (
-                  <Button variant="ghost" size="sm" onClick={clearFilters}>
-                    <X className="mr-1 h-3 w-3" />
-                    초기화
-                  </Button>
-                )}
-              </div>
-            </div>
+            )}
           </div>
 
-          {/* Filters Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-zinc-200">
-            {/* Status Filter */}
-            <div>
-              <label className="text-sm font-medium mb-2 block">상태</label>
-              <div className="flex flex-wrap gap-1">
-                <Button
-                  variant={statusFilter === 'all' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setStatusFilter('all')}
-                >
-                  전체
-                </Button>
-                {(['reserved', 'in_progress', 'editing', 'completed'] as ScheduleStatus[]).map(status => (
-                  <Button
-                    key={status}
-                    variant={statusFilter === status ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setStatusFilter(status)}
-                  >
-                    {getStatusLabel(status)}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Package Filter */}
-            <div>
-              <label className="text-sm font-medium mb-2 flex items-center gap-1">
-                <Package className="h-3 w-3" />
-                패키지
-              </label>
-              <div className="flex flex-wrap gap-1">
-                <Button
-                  variant={packageFilter === 'all' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setPackageFilter('all')}
-                >
-                  전체
-                </Button>
-                {(['premium', 'standard', 'basic'] as PackageType[]).map(pkg => (
-                  <Button
-                    key={pkg}
-                    variant={packageFilter === pkg ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setPackageFilter(pkg)}
-                  >
-                    {getPackageLabel(pkg)}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Photographer Search */}
-            <div>
-              <label className="text-sm font-medium mb-2 flex items-center gap-1">
-                <Users className="h-3 w-3" />
-                사진작가 검색
-              </label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="작가명으로 검색..."
-                  value={photographerSearch}
-                  onChange={(e) => setPhotographerSearch(e.target.value)}
-                  className="pl-9"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Active Filters Summary */}
-          {hasActiveFilters && (
-            <div className="flex items-center gap-2 flex-wrap pt-3 border-t border-zinc-200">
-              <span className="text-sm text-muted-foreground">적용된 필터:</span>
-              {statusFilter !== 'all' && (
-                <Badge variant="secondary" className="gap-1">
-                  상태: {getStatusLabel(statusFilter)}
-                </Badge>
-              )}
-              {packageFilter !== 'all' && (
-                <Badge variant="secondary" className="gap-1">
-                  패키지: {getPackageLabel(packageFilter)}
-                </Badge>
-              )}
-              {photographerSearch.trim() !== '' && (
-                <Badge variant="secondary" className="gap-1">
-                  작가: {photographerSearch}
-                </Badge>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Calendar */}
-        <div className="bg-white border border-zinc-200 rounded-lg p-3 md:p-6">
           <style jsx global>{`
             .fc {
               font-family: inherit;
@@ -454,6 +380,74 @@ export default function CalendarPage() {
             .fc .fc-toolbar-title {
               font-size: 1.5rem;
               font-weight: 700;
+            }
+            .fc .fc-toolbar.fc-header-toolbar {
+              margin-bottom: 1.5em;
+              padding-right: 280px;
+              gap: 12px;
+            }
+            @media (max-width: 768px) {
+              .fc .fc-toolbar.fc-header-toolbar {
+                padding-right: 0;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+              }
+              .fc .fc-toolbar-chunk {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+              }
+              .fc .fc-toolbar-chunk:first-child {
+                order: 2;
+              }
+              .fc .fc-toolbar-chunk:nth-child(2) {
+                order: 1;
+                margin-bottom: 8px;
+              }
+              .fc .fc-toolbar-chunk:last-child {
+                order: 3;
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: center;
+              }
+              .fc .fc-toolbar-title {
+                font-size: 1.25rem;
+              }
+              .fc .fc-button {
+                font-size: 13px;
+                padding: 6px 12px;
+              }
+            }
+            .fc .fc-toolbar-chunk:last-child {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            }
+            .fc .fc-viewSelector-button {
+              background-color: white !important;
+              border: 1px solid #e4e4e7 !important;
+              color: #18181b !important;
+              font-size: 14px !important;
+              padding: 8px 16px !important;
+              margin-left: 4px !important;
+            }
+            .fc .fc-viewSelector-button:hover {
+              background-color: #fafafa !important;
+              border-color: #d4d4d8 !important;
+            }
+            .fc .fc-viewSelector-button.fc-button-active {
+              background-color: #18181b !important;
+              border-color: #18181b !important;
+              color: white !important;
+            }
+            @media (max-width: 768px) {
+              .fc .fc-viewSelector-button {
+                font-size: 12px !important;
+                padding: 6px 10px !important;
+                margin-left: 2px !important;
+              }
             }
             .fc-theme-standard td,
             .fc-theme-standard th {
@@ -505,6 +499,23 @@ export default function CalendarPage() {
             .fc .fc-daygrid-day-frame {
               min-height: 100px;
             }
+            @media (max-width: 768px) {
+              .fc .fc-daygrid-day-frame {
+                min-height: 80px;
+              }
+              .fc .fc-daygrid-day-number {
+                padding: 6px;
+                font-size: 13px;
+              }
+              .fc .fc-col-header-cell {
+                font-size: 12px;
+                padding: 8px 2px;
+              }
+              .fc-event {
+                font-size: 11px;
+                padding: 2px 4px;
+              }
+            }
             @media (min-width: 768px) {
               .fc .fc-daygrid-day-frame {
                 min-height: 120px;
@@ -536,7 +547,21 @@ export default function CalendarPage() {
             headerToolbar={{
               left: 'prev,next today',
               center: 'title',
-              right: ''
+              right: 'monthView,weekView,dayView'
+            }}
+            customButtons={{
+              monthView: {
+                text: '월',
+                click: () => changeView('month')
+              },
+              weekView: {
+                text: '주',
+                click: () => changeView('week')
+              },
+              dayView: {
+                text: '일',
+                click: () => changeView('day')
+              }
             }}
             locale="ko"
             buttonText={{
@@ -547,13 +572,11 @@ export default function CalendarPage() {
             }}
             events={filteredEvents}
             editable={true}
-            selectable={true}
-            selectMirror={true}
+            selectable={false}
             dayMaxEvents={3}
             weekends={true}
             eventClick={handleEventClick}
             dateClick={handleDateClick}
-            select={handleDateSelect}
             eventDrop={handleEventDrop}
             eventDisplay="block"
             height="auto"
@@ -656,7 +679,7 @@ export default function CalendarPage() {
                               {getStatusLabel(event.status)}
                             </Badge>
                             <Badge variant="outline" className="text-xs">
-                              {getPackageLabel(event.packageType)}
+                              {getProductTypeLabel(event.productType)}
                             </Badge>
                           </div>
                         </div>

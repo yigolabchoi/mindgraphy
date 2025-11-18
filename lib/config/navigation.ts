@@ -3,7 +3,6 @@ import {
   LayoutDashboard, 
   Calendar, 
   FolderOpen, 
-  Bell, 
   Settings,
   Camera,
   ClipboardList,
@@ -92,13 +91,6 @@ export const navigationItems: NavItem[] = [
     title: '소통게시판',
     href: '/admin/board',
     icon: MessageSquare,
-    roles: ['admin', 'photographer'],
-  },
-  
-  {
-    title: '알림',
-    href: '/admin/notifications',
-    icon: Bell,
     roles: ['admin', 'photographer'],
   },
   

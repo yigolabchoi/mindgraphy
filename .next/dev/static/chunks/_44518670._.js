@@ -51,7 +51,6 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$dashboard$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutDashboard$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/layout-dashboard.js [app-client] (ecmascript) <export default as LayoutDashboard>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$folder$2d$open$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FolderOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/folder-open.js [app-client] (ecmascript) <export default as FolderOpen>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/bell.js [app-client] (ecmascript) <export default as Bell>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/settings.js [app-client] (ecmascript) <export default as Settings>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/camera.js [app-client] (ecmascript) <export default as Camera>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clipboard$2d$list$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ClipboardList$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clipboard-list.js [app-client] (ecmascript) <export default as ClipboardList>");
@@ -139,15 +138,6 @@ const navigationItems = [
         title: '소통게시판',
         href: '/admin/board',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$square$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageSquare$3e$__["MessageSquare"],
-        roles: [
-            'admin',
-            'photographer'
-        ]
-    },
-    {
-        title: '알림',
-        href: '/admin/notifications',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"],
         roles: [
             'admin',
             'photographer'
@@ -994,14 +984,17 @@ function getNextStatuses(currentStatus) {
     const statusFlow = {
         'scheduled': [
             'in_progress',
+            'cancelled',
             'archived'
         ],
         'in_progress': [
             'proof_ready',
+            'cancelled',
             'archived'
         ],
         'proof_ready': [
             'editing',
+            'cancelled',
             'archived'
         ],
         'editing': [
@@ -1012,6 +1005,9 @@ function getNextStatuses(currentStatus) {
             'delivered'
         ],
         'delivered': [
+            'archived'
+        ],
+        'cancelled': [
             'archived'
         ],
         'archived': []
@@ -1030,6 +1026,7 @@ function getStatusProgress(status) {
         'editing': 60,
         'completed': 80,
         'delivered': 100,
+        'cancelled': 0,
         'archived': 100
     };
     return progressMap[status] || 0;
@@ -1604,16 +1601,22 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 
 // Demo token for development
 __turbopack_context__.s([
+    "CLIENT_TYPES",
+    ()=>CLIENT_TYPES,
     "CONTRACT_STATUSES",
     ()=>CONTRACT_STATUSES,
     "DATE_FORMATS",
     ()=>DATE_FORMATS,
     "DEMO_TOKEN",
     ()=>DEMO_TOKEN,
+    "PRODUCT_TYPES",
+    ()=>PRODUCT_TYPES,
     "PROJECT_STATUSES",
     ()=>PROJECT_STATUSES,
     "ROUTES",
     ()=>ROUTES,
+    "SESSION_KEYS",
+    ()=>SESSION_KEYS,
     "SETTINGS",
     ()=>SETTINGS,
     "STATIC_TOKENS",
@@ -1643,9 +1646,9 @@ const ROUTES = {
     ADMIN_DASHBOARD: '/admin/dashboard',
     ADMIN_LIVE_STATUS: '/admin/live-status',
     ADMIN_CALENDAR: '/admin/calendar',
+    ADMIN_SCHEDULE: '/admin/schedule',
     ADMIN_MY: '/admin/my',
     ADMIN_TEAM: '/admin/team',
-    ADMIN_NOTIFICATIONS: '/admin/notifications',
     // Admin - Management
     ADMIN_PROJECTS: '/admin/projects',
     ADMIN_CUSTOMERS: '/admin/customers',
@@ -1658,7 +1661,6 @@ const ROUTES = {
     // Admin - Settings
     ADMIN_SETTINGS: '/admin/settings',
     ADMIN_SETTINGS_PRODUCTS: '/admin/settings/products',
-    ADMIN_SETTINGS_NOTIFICATIONS: '/admin/settings/notifications',
     ADMIN_SETTINGS_MASTERS: '/admin/settings/masters'
 };
 const PROJECT_STATUSES = [
@@ -1687,6 +1689,43 @@ const DATE_FORMATS = {
     DISPLAY: 'yyyy년 MM월 dd일',
     DISPLAY_WITH_TIME: 'yyyy년 MM월 dd일 HH:mm',
     ISO: "yyyy-MM-dd'T'HH:mm:ss'Z'"
+};
+const SESSION_KEYS = {
+    // Product Selection
+    PRODUCT_TYPE: 'mindgraphy_product_type',
+    CLIENT_TYPE: 'mindgraphy_client_type',
+    PACKAGE: 'mindgraphy_package',
+    OPTIONS: 'mindgraphy_options',
+    // Customer Information
+    BRIDE_NAME: 'mindgraphy_bride_name',
+    GROOM_NAME: 'mindgraphy_groom_name',
+    BRIDE_PHONE: 'mindgraphy_bride_phone',
+    GROOM_PHONE: 'mindgraphy_groom_phone',
+    PHONE: 'mindgraphy_phone',
+    EMAIL: 'mindgraphy_email',
+    MAIN_CONTACT: 'mindgraphy_main_contact',
+    // Event Details
+    WEDDING_DATE: 'mindgraphy_wedding_date',
+    WEDDING_TIME: 'mindgraphy_wedding_time',
+    WEDDING_DATE_INFO: 'mindgraphy_wedding_date_info',
+    VENUE: 'mindgraphy_venue',
+    VENUE_REQUEST: 'mindgraphy_venue_request',
+    // Referral & Misc
+    REFERRAL_SOURCE: 'mindgraphy_referral_source',
+    REFERRER_PAGE: 'mindgraphy_referrer_page',
+    // Auth
+    CLIENT_PHONE: 'mindgraphy_client_phone',
+    CLIENT_LOGGED_IN: 'mindgraphy_client_logged_in'
+};
+const PRODUCT_TYPES = {
+    WEDDING: 'wedding',
+    HANBOK: 'hanbok',
+    DRESS_SHOP: 'dress_shop',
+    BABY: 'baby'
+};
+const CLIENT_TYPES = {
+    DIRECT: 'direct',
+    VENUE_AFFILIATED: 'venue_affiliated'
 };
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
@@ -1783,16 +1822,16 @@ function AdminNav({ onNavigate }) {
         }, this);
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex h-screen w-64 flex-col border-r bg-zinc-50",
+        className: "flex h-screen w-64 flex-col border-r bg-gradient-to-b from-zinc-50 to-white shadow-sm",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex h-16 items-center border-b px-6",
+                className: "flex h-16 items-center border-b px-6 bg-white/80 backdrop-blur-sm",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                     href: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$constants$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ROUTES"].HOME,
-                    className: "flex items-center gap-2",
+                    className: "flex items-center gap-2 group",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm",
+                            className: "flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm transition-transform group-hover:scale-105",
                             children: "M"
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
@@ -1819,20 +1858,20 @@ function AdminNav({ onNavigate }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
-                className: "flex-1 space-y-1 px-3 py-4 overflow-y-auto",
+                className: "flex-1 space-y-1 px-3 py-4 overflow-y-auto custom-scrollbar",
                 children: navigation.map((item)=>{
                     // Check if the current path matches this navigation item
                     const isActive = pathname === item.href || pathname.startsWith(item.href) && item.href !== __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$constants$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ROUTES"].HOME;
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: item.href,
                         onClick: onNavigate,
-                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])('flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors', isActive ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900'),
+                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])('flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200', isActive ? 'bg-zinc-900 text-white shadow-md scale-[1.02]' : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 hover:scale-[1.01]', 'focus-ring'),
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(item.icon, {
                                 className: "h-5 w-5 flex-shrink-0"
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 100,
+                                lineNumber: 101,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1840,16 +1879,16 @@ function AdminNav({ onNavigate }) {
                                 children: item.title
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 101,
+                                lineNumber: 102,
                                 columnNumber: 15
                             }, this),
                             item.badge && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                 variant: "secondary",
-                                className: "ml-auto",
+                                className: "ml-auto text-xs",
                                 children: item.badge
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 103,
+                                lineNumber: 104,
                                 columnNumber: 17
                             }, this)
                         ]
@@ -1865,26 +1904,27 @@ function AdminNav({ onNavigate }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "border-t p-4 space-y-3",
+                className: "border-t p-4 space-y-3 bg-white/50 backdrop-blur-sm",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenu"], {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuTrigger"], {
                             asChild: true,
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                className: "flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-colors",
+                                className: "flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-all duration-200 hover:shadow-sm focus-ring",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
+                                        className: "ring-2 ring-white",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                             className: "bg-zinc-900 text-white text-sm font-medium",
                                             children: getInitials(user.name)
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 118,
+                                            lineNumber: 119,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                        lineNumber: 117,
+                                        lineNumber: 118,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1898,14 +1938,14 @@ function AdminNav({ onNavigate }) {
                                                         children: user.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                                        lineNumber: 124,
+                                                        lineNumber: 125,
                                                         columnNumber: 19
                                                     }, this),
                                                     getRoleBadge()
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                                lineNumber: 123,
+                                                lineNumber: 124,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1913,24 +1953,24 @@ function AdminNav({ onNavigate }) {
                                                 children: user.email
                                             }, void 0, false, {
                                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                                lineNumber: 129,
+                                                lineNumber: 130,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/layout/admin-nav.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 123,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/layout/admin-nav.tsx",
-                                lineNumber: 116,
+                                lineNumber: 117,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
-                            lineNumber: 115,
+                            lineNumber: 116,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -1941,103 +1981,105 @@ function AdminNav({ onNavigate }) {
                                     children: "내 계정"
                                 }, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 136,
+                                    lineNumber: 137,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 137,
+                                    lineNumber: 138,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
+                                    className: "focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 139,
+                                            lineNumber: 140,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "프로필"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 140,
+                                            lineNumber: 141,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 138,
+                                    lineNumber: 139,
                                     columnNumber: 13
                                 }, this),
                                 user.role === 'admin' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
                                     onClick: ()=>router.push('/admin/settings'),
+                                    className: "focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 144,
+                                            lineNumber: 145,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "설정"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 145,
+                                            lineNumber: 146,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 143,
+                                    lineNumber: 144,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 149,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
                                     onClick: handleLogout,
-                                    className: "text-red-600",
+                                    className: "text-red-600 focus-ring cursor-pointer",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__["LogOut"], {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 150,
+                                            lineNumber: 151,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "로그아웃"
                                         }, void 0, false, {
                                             fileName: "[project]/components/layout/admin-nav.tsx",
-                                            lineNumber: 151,
+                                            lineNumber: 152,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/layout/admin-nav.tsx",
-                                    lineNumber: 149,
+                                    lineNumber: 150,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/layout/admin-nav.tsx",
-                            lineNumber: 135,
+                            lineNumber: 136,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/layout/admin-nav.tsx",
-                    lineNumber: 114,
+                    lineNumber: 115,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-nav.tsx",
-                lineNumber: 113,
+                lineNumber: 114,
                 columnNumber: 7
             }, this)
         ]
@@ -2301,9 +2343,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$layout$2f$admi
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/sheet.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/menu.js [app-client] (ecmascript) <export default as Menu>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils/index.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
+;
 ;
 ;
 ;
@@ -2319,12 +2364,12 @@ function AdminLayout({ children, align = 'center' }) {
                 className: "hidden lg:flex",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$layout$2f$admin$2d$nav$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AdminNav"], {}, void 0, false, {
                     fileName: "[project]/components/layout/admin-layout.tsx",
-                    lineNumber: 21,
+                    lineNumber: 22,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 20,
+                lineNumber: 21,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Sheet"], {
@@ -2337,40 +2382,40 @@ function AdminLayout({ children, align = 'center' }) {
                         onNavigate: ()=>setMobileMenuOpen(false)
                     }, void 0, false, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 27,
+                        lineNumber: 28,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/layout/admin-layout.tsx",
-                    lineNumber: 26,
+                    lineNumber: 27,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 25,
+                lineNumber: 26,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex-1 flex flex-col overflow-hidden",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                        className: "lg:hidden flex items-center justify-between h-14 px-4 border-b bg-white sticky top-0 z-10",
+                        className: "lg:hidden flex items-center justify-between h-14 px-4 border-b bg-white sticky top-0 z-10 shadow-sm",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                 variant: "ghost",
                                 size: "sm",
                                 onClick: ()=>setMobileMenuOpen(true),
-                                className: "flex items-center gap-2",
+                                className: "flex items-center gap-2 focus-ring",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/layout/admin-layout.tsx",
-                                    lineNumber: 41,
+                                    lineNumber: 42,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 35,
+                                lineNumber: 36,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2381,7 +2426,7 @@ function AdminLayout({ children, align = 'center' }) {
                                         children: "M"
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-layout.tsx",
-                                        lineNumber: 44,
+                                        lineNumber: 45,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2389,54 +2434,54 @@ function AdminLayout({ children, align = 'center' }) {
                                         children: "MindGraphy"
                                     }, void 0, false, {
                                         fileName: "[project]/components/layout/admin-layout.tsx",
-                                        lineNumber: 47,
+                                        lineNumber: 48,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 43,
+                                lineNumber: 44,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "w-10"
                             }, void 0, false, {
                                 fileName: "[project]/components/layout/admin-layout.tsx",
-                                lineNumber: 49,
+                                lineNumber: 50,
                                 columnNumber: 11
                             }, this),
                             " "
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 34,
+                        lineNumber: 35,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-                        className: "flex-1 overflow-y-auto",
+                        className: "flex-1 overflow-y-auto bg-zinc-50/50 custom-scrollbar",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: align === 'left' ? 'p-4 md:p-6' : 'container mx-auto p-4 md:p-6 max-w-7xl',
+                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])(align === 'left' ? 'p-4 md:p-6 lg:p-8' : 'container mx-auto p-4 md:p-6 lg:p-8 max-w-7xl', 'animate-in fade-in slide-in-from-bottom duration-300'),
                             children: children
                         }, void 0, false, {
                             fileName: "[project]/components/layout/admin-layout.tsx",
-                            lineNumber: 54,
+                            lineNumber: 55,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/layout/admin-layout.tsx",
-                        lineNumber: 53,
+                        lineNumber: 54,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/layout/admin-layout.tsx",
-                lineNumber: 32,
+                lineNumber: 33,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/layout/admin-layout.tsx",
-        lineNumber: 18,
+        lineNumber: 19,
         columnNumber: 5
     }, this);
 }
@@ -2562,121 +2607,136 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 __turbopack_context__.s([
     "checkConflicts",
     ()=>checkConflicts,
-    "getEventsByPackage",
-    ()=>getEventsByPackage,
     "getEventsByPhotographer",
     ()=>getEventsByPhotographer,
+    "getEventsByProductType",
+    ()=>getEventsByProductType,
     "getEventsByStatus",
     ()=>getEventsByStatus,
     "getEventsByVenueType",
     ()=>getEventsByVenueType,
-    "getPackageLabel",
-    ()=>getPackageLabel,
     "getPhotographerById",
     ()=>getPhotographerById,
+    "getProductTypeLabel",
+    ()=>getProductTypeLabel,
     "getStatusLabel",
     ()=>getStatusLabel,
     "getVenueTypeLabel",
     ()=>getVenueTypeLabel,
-    "mockPhotographers",
-    ()=>mockPhotographers,
     "mockScheduleEvents",
-    ()=>mockScheduleEvents
+    ()=>mockScheduleEvents,
+    "mockSchedulePhotographers",
+    ()=>mockSchedulePhotographers
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$addDays$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/addDays.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$subDays$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/subDays.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/date-fns/format.js [app-client] (ecmascript) <locals>");
 ;
-const mockPhotographers = [
+const mockSchedulePhotographers = [
     {
         id: 'photo-1',
         name: '박작가',
         color: '#3b82f6',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-1234-5678'
     },
     {
         id: 'photo-2',
         name: '최작가',
         color: '#8b5cf6',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-2345-6789'
     },
     {
         id: 'photo-3',
         name: '김작가',
         color: '#10b981',
-        availabilityStatus: 'busy'
+        availabilityStatus: 'busy',
+        phone: '010-3456-7890'
     },
     {
         id: 'photo-4',
         name: '이작가',
         color: '#f59e0b',
-        availabilityStatus: 'on_leave'
+        availabilityStatus: 'on_leave',
+        phone: '010-4567-8901'
     },
     {
         id: 'photo-5',
         name: '정작가',
         color: '#ec4899',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-5678-9012'
     },
     {
         id: 'photo-6',
         name: '강작가',
         color: '#14b8a6',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-6789-0123'
     },
     {
         id: 'photo-7',
         name: '조작가',
         color: '#f97316',
-        availabilityStatus: 'on_leave'
+        availabilityStatus: 'on_leave',
+        phone: '010-7890-1234'
     },
     {
         id: 'photo-8',
         name: '윤작가',
         color: '#06b6d4',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-8901-2345'
     },
     {
         id: 'photo-9',
         name: '장작가',
         color: '#8b5cf6',
-        availabilityStatus: 'on_leave'
+        availabilityStatus: 'on_leave',
+        phone: '010-9012-3456'
     },
     {
         id: 'photo-10',
         name: '한작가',
         color: '#84cc16',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-0123-4567'
     },
     {
         id: 'photo-11',
         name: '신작가',
         color: '#3b82f6',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-1122-3344'
     },
     {
         id: 'photo-12',
         name: '오작가',
         color: '#ef4444',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-2233-4455'
     },
     {
         id: 'photo-13',
         name: '배작가',
         color: '#06b6d4',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-3344-5566'
     },
     {
         id: 'photo-14',
         name: '임작가',
         color: '#8b5cf6',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-4455-6677'
     },
     {
         id: 'photo-15',
         name: '황작가',
         color: '#10b981',
-        availabilityStatus: 'available'
+        availabilityStatus: 'available',
+        phone: '010-5566-7788'
     }
 ];
 // Status color mapping
@@ -2733,11 +2793,11 @@ const mockScheduleEvents = [
         photographerNames: [
             '한작가'
         ],
-        packageType: 'standard',
-        packageName: '스탠다드 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'new-data',
+        packageName: 'new DATA',
         options: [
-            '본식',
-            '스냅'
+            '메이크업샵 촬영'
         ],
         status: 'completed',
         travelTimeMinutes: 20,
@@ -2769,11 +2829,12 @@ const mockScheduleEvents = [
             '이작가',
             '신작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'basic',
+        packageName: 'BASIC',
         options: [
-            '본식+스냅',
-            '야외촬영'
+            '2인 작가',
+            '원본 초고화질 다운로드'
         ],
         status: 'completed',
         travelTimeMinutes: 30,
@@ -2808,8 +2869,9 @@ const mockScheduleEvents = [
             '최작가'
         ],
         assistantIds: [],
-        packageType: 'premium',
-        packageName: '프리미엄 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'data',
+        packageName: 'DATA',
         options: [
             '본식+스냅',
             '야외촬영',
@@ -2849,8 +2911,9 @@ const mockScheduleEvents = [
             '정작가',
             '강작가'
         ],
-        packageType: 'standard',
-        packageName: '스탠다드 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'new-data',
+        packageName: 'new DATA',
         options: [
             '본식',
             '메이크업 촬영'
@@ -2888,8 +2951,9 @@ const mockScheduleEvents = [
             '한작가',
             '오작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'data',
+        packageName: 'DATA',
         options: [
             '본식+스냅',
             '야외촬영',
@@ -2929,8 +2993,9 @@ const mockScheduleEvents = [
             '김작가',
             '배작가'
         ],
-        packageType: 'premium',
-        packageName: '럭셔리 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'data',
+        packageName: 'DATA',
         options: [
             '본식+스냅',
             '야외촬영',
@@ -2969,8 +3034,9 @@ const mockScheduleEvents = [
             '임작가',
             '황작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'data',
+        packageName: 'DATA',
         options: [
             '본식+스냅',
             '야외촬영'
@@ -3004,8 +3070,9 @@ const mockScheduleEvents = [
         photographerNames: [
             '신작가'
         ],
-        packageType: 'standard',
-        packageName: '스탠다드 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'new-data',
+        packageName: 'new DATA',
         options: [
             '본식',
             '스냅'
@@ -3042,8 +3109,9 @@ const mockScheduleEvents = [
             '최작가',
             '정작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'data',
+        packageName: 'DATA',
         options: [
             '본식+스냅',
             '야외촬영',
@@ -3076,8 +3144,9 @@ const mockScheduleEvents = [
         photographerNames: [
             '박작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'data',
+        packageName: 'DATA',
         options: [
             '본식+스냅',
             '해변 촬영'
@@ -3108,8 +3177,9 @@ const mockScheduleEvents = [
         photographerNames: [
             '박작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'data',
+        packageName: 'DATA',
         options: [
             '본식+스냅',
             '야외촬영',
@@ -3143,13 +3213,10 @@ const mockScheduleEvents = [
             '김작가',
             '강작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 야외 패키지',
-        options: [
-            '야외 본식',
-            '해변 촬영',
-            '드론촬영'
-        ],
+        productType: 'hanbok',
+        packageId: 'hanbok-a2',
+        packageName: 'HANBOK A2',
+        options: [],
         status: 'reserved',
         specialRequests: '일몰 타이밍 맞춰 촬영',
         travelTimeMinutes: 180,
@@ -3176,11 +3243,10 @@ const mockScheduleEvents = [
         photographerNames: [
             '최작가'
         ],
-        packageType: 'basic',
-        packageName: '베이직 스튜디오 패키지',
-        options: [
-            '스튜디오 촬영'
-        ],
+        productType: 'dress_shop',
+        packageId: 'dress-shop-1',
+        packageName: '가봉 스냅',
+        options: [],
         status: 'in_progress',
         travelTimeMinutes: 20,
         ...statusColors.in_progress
@@ -3207,12 +3273,10 @@ const mockScheduleEvents = [
         photographerNames: [
             '박작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 야외 패키지',
-        options: [
-            '야외 본식',
-            '정원 촬영'
-        ],
+        productType: 'hanbok',
+        packageId: 'hanbok-a2',
+        packageName: 'HANBOK A2',
+        options: [],
         status: 'editing',
         travelTimeMinutes: 90,
         ...statusColors.editing
@@ -3239,8 +3303,9 @@ const mockScheduleEvents = [
         photographerNames: [
             '최작가'
         ],
-        packageType: 'premium',
-        packageName: '프리미엄 웨딩 패키지',
+        productType: 'wedding',
+        packageId: 'data',
+        packageName: 'DATA',
         options: [
             '본식+스냅',
             '야외촬영'
@@ -3270,7 +3335,8 @@ const mockScheduleEvents = [
         ceremonyTime: '12:00 (정오)',
         photographerIds: [],
         photographerNames: [],
-        packageType: 'standard',
+        productType: 'wedding',
+        packageId: 'new-data',
         packageName: '돌잔치 행사',
         options: [
             '2인 촬영팀',
@@ -3287,7 +3353,7 @@ const mockScheduleEvents = [
     }
 ];
 const getPhotographerById = (id)=>{
-    return mockPhotographers.find((p)=>p.id === id);
+    return mockSchedulePhotographers.find((p)=>p.id === id);
 };
 const getEventsByPhotographer = (photographerId)=>{
     return mockScheduleEvents.filter((e)=>e.photographerIds?.includes(photographerId));
@@ -3298,8 +3364,8 @@ const getEventsByStatus = (status)=>{
 const getEventsByVenueType = (venueType)=>{
     return mockScheduleEvents.filter((e)=>e.venueType === venueType);
 };
-const getEventsByPackage = (packageType)=>{
-    return mockScheduleEvents.filter((e)=>e.packageType === packageType);
+const getEventsByProductType = (productType)=>{
+    return mockScheduleEvents.filter((e)=>e.productType === productType);
 };
 const checkConflicts = (event)=>{
     if (!event.photographerIds || event.photographerIds.length === 0) return [];
@@ -3327,13 +3393,14 @@ const getStatusLabel = (status)=>{
     };
     return labels[status];
 };
-const getPackageLabel = (packageType)=>{
+const getProductTypeLabel = (productType)=>{
     const labels = {
-        premium: '프리미엄',
-        standard: '스탠다드',
-        basic: '베이직'
+        wedding: '일반 웨딩',
+        hanbok: '한복 & 캐주얼',
+        dress_shop: '가봉 스냅',
+        baby: '돌스냅'
     };
-    return labels[packageType];
+    return labels[productType];
 };
 const getVenueTypeLabel = (venueType)=>{
     const labels = {
@@ -3361,7 +3428,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$layout$2f$admin$2d$layout$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/layout/admin-layout.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/card.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/badge.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/avatar.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$schedules$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/mock/schedules.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/activity.js [app-client] (ecmascript) <export default as Activity>");
@@ -3374,6 +3440,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserCheck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user-check.js [app-client] (ecmascript) <export default as UserCheck>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/coffee.js [app-client] (ecmascript) <export default as Coffee>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$refresh$2d$cw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RefreshCw$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/refresh-cw.js [app-client] (ecmascript) <export default as RefreshCw>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/phone.js [app-client] (ecmascript) <export default as Phone>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/date-fns/format.js [app-client] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$ko$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/locale/ko.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-client] (ecmascript) <locals>");
@@ -3382,7 +3449,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$di
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
-;
 ;
 ;
 ;
@@ -3434,22 +3500,15 @@ function LiveStatusPage() {
     const completedSchedules = todaySchedules.filter((s)=>s.status === 'completed');
     // Find available photographers (no schedule today and status is 'available')
     const photographersWithSchedules = todaySchedules.flatMap((s)=>s.photographerIds || []).filter(Boolean);
-    const availablePhotographers = __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$schedules$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockPhotographers"].filter((p)=>!photographersWithSchedules.includes(p.id) && p.availabilityStatus === 'available');
+    const availablePhotographers = __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$schedules$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockSchedulePhotographers"].filter((p)=>!photographersWithSchedules.includes(p.id) && p.availabilityStatus === 'available');
     // Photographers on leave
-    const photographersOnLeave = __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$schedules$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockPhotographers"].filter((p)=>p.availabilityStatus === 'on_leave');
+    const photographersOnLeave = __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$schedules$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockSchedulePhotographers"].filter((p)=>p.availabilityStatus === 'on_leave');
     const getPhotographerNames = (photographerIds)=>{
         if (!photographerIds || photographerIds.length === 0) return '미배정';
         return photographerIds.map((id)=>{
-            const photographer = __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$schedules$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockPhotographers"].find((p)=>p.id === id);
+            const photographer = __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$mock$2f$schedules$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockSchedulePhotographers"].find((p)=>p.id === id);
             return photographer?.name || '';
         }).filter(Boolean).join(', ');
-    };
-    const getPhotographerInitials = (photographerIds)=>{
-        if (!photographerIds || photographerIds.length === 0) return '?';
-        const names = getPhotographerNames(photographerIds).split(', ');
-        if (names.length === 1) return names[0].charAt(0).toUpperCase();
-        return names.length.toString() // 여러 명일 경우 숫자로 표시
-        ;
     };
     const getStatusColor = (status)=>{
         const colors = {
@@ -3488,14 +3547,14 @@ function LiveStatusPage() {
                                                 className: "h-8 w-8 text-green-600 animate-pulse"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 120,
+                                                lineNumber: 113,
                                                 columnNumber: 15
                                             }, this),
                                             "실시간 현황판"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 119,
+                                        lineNumber: 112,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3503,13 +3562,13 @@ function LiveStatusPage() {
                                         children: "오늘의 촬영 현황을 실시간으로 확인하세요"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 123,
+                                        lineNumber: 116,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 118,
+                                lineNumber: 111,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3522,7 +3581,7 @@ function LiveStatusPage() {
                                                 className: "h-5 w-5 text-muted-foreground"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 129,
+                                                lineNumber: 122,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3533,7 +3592,7 @@ function LiveStatusPage() {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(currentTime, 'HH:mm:ss')
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 131,
+                                                        lineNumber: 124,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3543,19 +3602,19 @@ function LiveStatusPage() {
                                                         })
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 134,
+                                                        lineNumber: 127,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 130,
+                                                lineNumber: 123,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 128,
+                                        lineNumber: 121,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3569,7 +3628,7 @@ function LiveStatusPage() {
                                                 className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$index$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("h-5 w-5", isRefreshing && "animate-spin")
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 146,
+                                                lineNumber: 139,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3577,25 +3636,25 @@ function LiveStatusPage() {
                                                 children: "새로고침"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 147,
+                                                lineNumber: 140,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 139,
+                                        lineNumber: 132,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 127,
+                                lineNumber: 120,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                        lineNumber: 117,
+                        lineNumber: 110,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3612,20 +3671,20 @@ function LiveStatusPage() {
                                                 children: "전체 일정"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 156,
+                                                lineNumber: 149,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {
                                                 className: "h-4 w-4 text-muted-foreground"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 157,
+                                                lineNumber: 150,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 155,
+                                        lineNumber: 148,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3635,7 +3694,7 @@ function LiveStatusPage() {
                                                 children: todaySchedules.length
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 160,
+                                                lineNumber: 153,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3643,19 +3702,19 @@ function LiveStatusPage() {
                                                 children: "오늘 총 일정 수"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 161,
+                                                lineNumber: 154,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 159,
+                                        lineNumber: 152,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 154,
+                                lineNumber: 147,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -3669,20 +3728,20 @@ function LiveStatusPage() {
                                                 children: "진행중"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 169,
+                                                lineNumber: 162,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
                                                 className: "h-4 w-4 text-green-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 170,
+                                                lineNumber: 163,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 168,
+                                        lineNumber: 161,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3692,7 +3751,7 @@ function LiveStatusPage() {
                                                 children: inProgressSchedules.length
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 173,
+                                                lineNumber: 166,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3700,19 +3759,19 @@ function LiveStatusPage() {
                                                 children: "현재 촬영중"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 174,
+                                                lineNumber: 167,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 172,
+                                        lineNumber: 165,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 167,
+                                lineNumber: 160,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -3726,20 +3785,20 @@ function LiveStatusPage() {
                                                 children: "예정"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 182,
+                                                lineNumber: 175,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
                                                 className: "h-4 w-4 text-blue-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 183,
+                                                lineNumber: 176,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 181,
+                                        lineNumber: 174,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3749,7 +3808,7 @@ function LiveStatusPage() {
                                                 children: upcomingSchedules.length
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 186,
+                                                lineNumber: 179,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3757,19 +3816,19 @@ function LiveStatusPage() {
                                                 children: "대기중인 일정"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 187,
+                                                lineNumber: 180,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 185,
+                                        lineNumber: 178,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 180,
+                                lineNumber: 173,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -3783,20 +3842,20 @@ function LiveStatusPage() {
                                                 children: "완료"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 195,
+                                                lineNumber: 188,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                                                 className: "h-4 w-4 text-gray-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 196,
+                                                lineNumber: 189,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 194,
+                                        lineNumber: 187,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3806,7 +3865,7 @@ function LiveStatusPage() {
                                                 children: completedSchedules.length
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 199,
+                                                lineNumber: 192,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3814,25 +3873,25 @@ function LiveStatusPage() {
                                                 children: "촬영 완료"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 200,
+                                                lineNumber: 193,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 198,
+                                        lineNumber: 191,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 193,
+                                lineNumber: 186,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                        lineNumber: 153,
+                        lineNumber: 146,
                         columnNumber: 9
                     }, this),
                     inProgressSchedules.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3845,7 +3904,7 @@ function LiveStatusPage() {
                                         className: "h-5 w-5 text-green-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 211,
+                                        lineNumber: 204,
                                         columnNumber: 15
                                     }, this),
                                     "진행중인 촬영",
@@ -3854,13 +3913,13 @@ function LiveStatusPage() {
                                         children: inProgressSchedules.length
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 213,
+                                        lineNumber: 206,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 210,
+                                lineNumber: 203,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3875,19 +3934,18 @@ function LiveStatusPage() {
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center gap-3 md:w-48 flex-shrink-0",
                                                         children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
-                                                                className: "h-12 w-12 border-2 border-green-600",
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
-                                                                    className: "bg-green-600 text-white font-bold",
-                                                                    children: getPhotographerInitials(schedule.photographerIds)
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "jsx-5d5e20ac9e349db4" + " " + "flex h-12 w-12 items-center justify-center rounded-full bg-green-600 text-white flex-shrink-0",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
+                                                                    className: "h-6 w-6"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                    lineNumber: 224,
+                                                                    lineNumber: 217,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 223,
+                                                                lineNumber: 216,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3898,7 +3956,7 @@ function LiveStatusPage() {
                                                                         children: getPhotographerNames(schedule.photographerIds)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 229,
+                                                                        lineNumber: 220,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3908,33 +3966,33 @@ function LiveStatusPage() {
                                                                                 className: "mr-1 h-3 w-3"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                                lineNumber: 231,
+                                                                                lineNumber: 222,
                                                                                 columnNumber: 29
                                                                             }, this),
                                                                             "촬영중"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 230,
+                                                                        lineNumber: 221,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 228,
+                                                                lineNumber: 219,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 222,
+                                                        lineNumber: 215,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "jsx-5d5e20ac9e349db4" + " " + "hidden md:block h-12 w-px bg-gray-200"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 238,
+                                                        lineNumber: 229,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3947,7 +4005,7 @@ function LiveStatusPage() {
                                                                         className: "h-4 w-4 text-muted-foreground"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 243,
+                                                                        lineNumber: 234,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3959,13 +4017,13 @@ function LiveStatusPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 244,
+                                                                        lineNumber: 235,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 242,
+                                                                lineNumber: 233,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3978,7 +4036,7 @@ function LiveStatusPage() {
                                                                                 className: "h-4 w-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                                lineNumber: 248,
+                                                                                lineNumber: 239,
                                                                                 columnNumber: 29
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3990,13 +4048,13 @@ function LiveStatusPage() {
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                                lineNumber: 249,
+                                                                                lineNumber: 240,
                                                                                 columnNumber: 29
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 247,
+                                                                        lineNumber: 238,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4006,7 +4064,7 @@ function LiveStatusPage() {
                                                                                 className: "h-4 w-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                                lineNumber: 252,
+                                                                                lineNumber: 243,
                                                                                 columnNumber: 29
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4014,19 +4072,19 @@ function LiveStatusPage() {
                                                                                 children: schedule.venueName
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                                lineNumber: 253,
+                                                                                lineNumber: 244,
                                                                                 columnNumber: 29
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 251,
+                                                                        lineNumber: 242,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 246,
+                                                                lineNumber: 237,
                                                                 columnNumber: 25
                                                             }, this),
                                                             schedule.specialRequests && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4037,13 +4095,13 @@ function LiveStatusPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 257,
+                                                                lineNumber: 248,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 241,
+                                                        lineNumber: 232,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4051,42 +4109,42 @@ function LiveStatusPage() {
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                                             variant: "outline",
                                                             className: "text-xs",
-                                                            children: schedule.packageType
+                                                            children: schedule.packageName
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                            lineNumber: 265,
+                                                            lineNumber: 256,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 264,
+                                                        lineNumber: 255,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 220,
+                                                lineNumber: 213,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                            lineNumber: 219,
+                                            lineNumber: 212,
                                             columnNumber: 19
                                         }, this)
                                     }, schedule.id, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 218,
+                                        lineNumber: 211,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 216,
+                                lineNumber: 209,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                        lineNumber: 209,
+                        lineNumber: 202,
                         columnNumber: 11
                     }, this),
                     upcomingSchedules.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4099,7 +4157,7 @@ function LiveStatusPage() {
                                         className: "h-5 w-5 text-blue-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 281,
+                                        lineNumber: 272,
                                         columnNumber: 15
                                     }, this),
                                     "예정된 촬영",
@@ -4108,13 +4166,13 @@ function LiveStatusPage() {
                                         children: upcomingSchedules.length
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 283,
+                                        lineNumber: 274,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 280,
+                                lineNumber: 271,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4136,7 +4194,7 @@ function LiveStatusPage() {
                                                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(new Date(schedule.start), 'HH:mm')
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                    lineNumber: 294,
+                                                                    lineNumber: 285,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4147,25 +4205,25 @@ function LiveStatusPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                    lineNumber: 297,
+                                                                    lineNumber: 288,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                            lineNumber: 293,
+                                                            lineNumber: 284,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 292,
+                                                        lineNumber: 283,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "jsx-5d5e20ac9e349db4" + " " + "hidden md:block h-12 w-px bg-gray-200"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 304,
+                                                        lineNumber: 295,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4178,7 +4236,7 @@ function LiveStatusPage() {
                                                                         className: "h-4 w-4 text-muted-foreground"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 309,
+                                                                        lineNumber: 300,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4190,13 +4248,13 @@ function LiveStatusPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 310,
+                                                                        lineNumber: 301,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 308,
+                                                                lineNumber: 299,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4209,7 +4267,7 @@ function LiveStatusPage() {
                                                                                 className: "h-4 w-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                                lineNumber: 314,
+                                                                                lineNumber: 305,
                                                                                 columnNumber: 29
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4217,13 +4275,13 @@ function LiveStatusPage() {
                                                                                 children: schedule.venueName
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                                lineNumber: 315,
+                                                                                lineNumber: 306,
                                                                                 columnNumber: 29
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 313,
+                                                                        lineNumber: 304,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4231,45 +4289,44 @@ function LiveStatusPage() {
                                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                                                             variant: "outline",
                                                                             className: "text-xs",
-                                                                            children: schedule.packageType
+                                                                            children: schedule.packageName
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                            lineNumber: 318,
+                                                                            lineNumber: 309,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 317,
+                                                                        lineNumber: 308,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 312,
+                                                                lineNumber: 303,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 307,
+                                                        lineNumber: 298,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center gap-2 md:w-36",
                                                         children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
-                                                                className: "h-10 w-10 border-2 border-blue-200",
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
-                                                                    className: "bg-blue-600 text-white text-sm font-bold",
-                                                                    children: getPhotographerInitials(schedule.photographerIds)
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "jsx-5d5e20ac9e349db4" + " " + "flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white flex-shrink-0",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
+                                                                    className: "h-5 w-5"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                    lineNumber: 328,
+                                                                    lineNumber: 319,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 327,
+                                                                lineNumber: 318,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4280,7 +4337,7 @@ function LiveStatusPage() {
                                                                         children: getPhotographerNames(schedule.photographerIds)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 333,
+                                                                        lineNumber: 322,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4288,46 +4345,46 @@ function LiveStatusPage() {
                                                                         children: "담당 작가"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 334,
+                                                                        lineNumber: 323,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 332,
+                                                                lineNumber: 321,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 326,
+                                                        lineNumber: 317,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 290,
+                                                lineNumber: 281,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                            lineNumber: 289,
+                                            lineNumber: 280,
                                             columnNumber: 19
                                         }, this)
                                     }, schedule.id, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 288,
+                                        lineNumber: 279,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 286,
+                                lineNumber: 277,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                        lineNumber: 279,
+                        lineNumber: 270,
                         columnNumber: 11
                     }, this),
                     completedSchedules.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4340,7 +4397,7 @@ function LiveStatusPage() {
                                         className: "h-5 w-5 text-gray-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 349,
+                                        lineNumber: 338,
                                         columnNumber: 15
                                     }, this),
                                     "완료된 촬영",
@@ -4349,13 +4406,13 @@ function LiveStatusPage() {
                                         children: completedSchedules.length
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 351,
+                                        lineNumber: 340,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 348,
+                                lineNumber: 337,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4367,19 +4424,18 @@ function LiveStatusPage() {
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center gap-3",
                                                 children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
-                                                        className: "h-8 w-8 bg-gray-600",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
-                                                            className: "bg-gray-600 text-white text-xs",
-                                                            children: getPhotographerInitials(schedule.photographerIds)
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "jsx-5d5e20ac9e349db4" + " " + "flex h-8 w-8 items-center justify-center rounded-full bg-gray-600 text-white flex-shrink-0",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                                            className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                            lineNumber: 360,
+                                                            lineNumber: 349,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 359,
+                                                        lineNumber: 348,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4394,7 +4450,7 @@ function LiveStatusPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 365,
+                                                                lineNumber: 352,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4402,7 +4458,7 @@ function LiveStatusPage() {
                                                                 children: getPhotographerNames(schedule.photographerIds)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 368,
+                                                                lineNumber: 355,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4412,7 +4468,7 @@ function LiveStatusPage() {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 372,
+                                                                        lineNumber: 359,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4420,53 +4476,46 @@ function LiveStatusPage() {
                                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(new Date(schedule.start), 'HH:mm')
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 373,
-                                                                        columnNumber: 27
-                                                                    }, this),
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                                                                        className: "h-3 w-3 text-green-600"
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                        lineNumber: 374,
+                                                                        lineNumber: 360,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 371,
+                                                                lineNumber: 358,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                        lineNumber: 364,
+                                                        lineNumber: 351,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 358,
+                                                lineNumber: 347,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                            lineNumber: 357,
+                                            lineNumber: 346,
                                             columnNumber: 19
                                         }, this)
                                     }, schedule.id, false, {
                                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 356,
+                                        lineNumber: 345,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 354,
+                                lineNumber: 343,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                        lineNumber: 347,
+                        lineNumber: 336,
                         columnNumber: 11
                     }, this),
                     availablePhotographers.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4474,97 +4523,83 @@ function LiveStatusPage() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center justify-between",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                        className: "jsx-5d5e20ac9e349db4" + " " + "text-xl font-bold flex items-center gap-2",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserCheck$3e$__["UserCheck"], {
-                                                className: "h-5 w-5 text-emerald-600"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 390,
-                                                columnNumber: 17
-                                            }, this),
-                                            "촬영 가능한 작가",
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                className: "bg-emerald-600",
-                                                children: availablePhotographers.length
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 392,
-                                                columnNumber: 17
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 389,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "jsx-5d5e20ac9e349db4" + " " + "text-sm text-muted-foreground",
-                                        children: "오늘 일정이 없는 작가"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 394,
-                                        columnNumber: 15
-                                    }, this)
-                                ]
-                            }, void 0, true, {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "jsx-5d5e20ac9e349db4",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                            className: "jsx-5d5e20ac9e349db4" + " " + "text-xl font-bold flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserCheck$3e$__["UserCheck"], {
+                                                    className: "h-5 w-5 text-emerald-600"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                    lineNumber: 377,
+                                                    columnNumber: 19
+                                                }, this),
+                                                "촬영 가능한 작가",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                    className: "bg-emerald-600",
+                                                    children: availablePhotographers.length
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                    lineNumber: 379,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                            lineNumber: 376,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "jsx-5d5e20ac9e349db4" + " " + "text-sm text-muted-foreground mt-1",
+                                            children: "오늘 스케줄 없음 • 즉시 연락 가능"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                            lineNumber: 381,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                    lineNumber: 375,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 388,
+                                lineNumber: 374,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "jsx-5d5e20ac9e349db4" + " " + "relative",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100",
+                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory custom-scrollbar",
                                     children: availablePhotographers.map((photographer)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                                            className: "border-2 border-emerald-200 bg-emerald-50/50 flex-shrink-0 w-[200px] snap-start hover:shadow-md transition-shadow",
+                                            className: "border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white flex-shrink-0 w-[240px] snap-start hover:shadow-lg hover:scale-105 hover:border-emerald-400 transition-all duration-200",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                                                className: "p-4",
+                                                className: "p-5",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex flex-col items-center gap-3 text-center",
+                                                    className: "jsx-5d5e20ac9e349db4" + " " + "space-y-3",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
-                                                            className: "h-16 w-16",
-                                                            style: {
-                                                                backgroundColor: photographer.color
-                                                            },
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
-                                                                style: {
-                                                                    backgroundColor: photographer.color
-                                                                },
-                                                                className: "text-white text-2xl font-semibold",
-                                                                children: photographer.name.charAt(0)
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 410,
-                                                                columnNumber: 27
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                            lineNumber: 409,
-                                                            columnNumber: 25
-                                                        }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "jsx-5d5e20ac9e349db4",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "jsx-5d5e20ac9e349db4" + " " + "font-semibold text-base",
+                                                                    className: "jsx-5d5e20ac9e349db4" + " " + "font-bold text-lg text-zinc-900 mb-2",
                                                                     children: photographer.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                    lineNumber: 415,
+                                                                    lineNumber: 399,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center justify-center gap-1 text-xs text-emerald-700 mt-1",
+                                                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-100 px-2 py-1 rounded-full w-fit",
                                                                     children: [
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                                                                            className: "h-3 w-3"
+                                                                            className: "h-3.5 w-3.5"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                            lineNumber: 417,
+                                                                            lineNumber: 401,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4572,51 +4607,76 @@ function LiveStatusPage() {
                                                                             children: "촬영 가능"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                            lineNumber: 418,
+                                                                            lineNumber: 402,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                    lineNumber: 416,
+                                                                    lineNumber: 400,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                            lineNumber: 414,
+                                                            lineNumber: 398,
                                                             columnNumber: 25
+                                                        }, this),
+                                                        photographer.phone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                            href: `tel:${photographer.phone}`,
+                                                            className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 -mx-2 rounded-lg transition-all font-medium group",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
+                                                                    className: "h-4 w-4 group-hover:scale-110 transition-transform"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                                    lineNumber: 412,
+                                                                    columnNumber: 29
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "jsx-5d5e20ac9e349db4",
+                                                                    children: photographer.phone
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                                    lineNumber: 413,
+                                                                    columnNumber: 29
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                            lineNumber: 408,
+                                                            columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                    lineNumber: 408,
+                                                    lineNumber: 396,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 407,
+                                                lineNumber: 395,
                                                 columnNumber: 21
                                             }, this)
                                         }, photographer.id, false, {
                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                            lineNumber: 403,
+                                            lineNumber: 391,
                                             columnNumber: 19
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                    lineNumber: 401,
+                                    lineNumber: 389,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 400,
+                                lineNumber: 388,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                        lineNumber: 387,
+                        lineNumber: 373,
                         columnNumber: 11
                     }, this),
                     photographersOnLeave.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4624,98 +4684,84 @@ function LiveStatusPage() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center justify-between",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                        className: "jsx-5d5e20ac9e349db4" + " " + "text-xl font-bold flex items-center gap-2",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"], {
-                                                className: "h-5 w-5 text-amber-600"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 435,
-                                                columnNumber: 17
-                                            }, this),
-                                            "휴가/휴무 작가",
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                variant: "outline",
-                                                className: "border-amber-600 text-amber-700",
-                                                children: photographersOnLeave.length
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 437,
-                                                columnNumber: 17
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 434,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "jsx-5d5e20ac9e349db4" + " " + "text-sm text-muted-foreground",
-                                        children: "현재 휴무중인 작가"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                        lineNumber: 439,
-                                        columnNumber: 15
-                                    }, this)
-                                ]
-                            }, void 0, true, {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "jsx-5d5e20ac9e349db4",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                            className: "jsx-5d5e20ac9e349db4" + " " + "text-xl font-bold flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"], {
+                                                    className: "h-5 w-5 text-amber-600"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                    lineNumber: 431,
+                                                    columnNumber: 19
+                                                }, this),
+                                                "휴가/휴무 작가",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                    variant: "outline",
+                                                    className: "border-amber-600 text-amber-700",
+                                                    children: photographersOnLeave.length
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                    lineNumber: 433,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                            lineNumber: 430,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "jsx-5d5e20ac9e349db4" + " " + "text-sm text-muted-foreground mt-1",
+                                            children: "현재 휴무 중 • 연락 불가"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                            lineNumber: 435,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                    lineNumber: 429,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 433,
+                                lineNumber: 428,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "jsx-5d5e20ac9e349db4" + " " + "relative",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100",
+                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory custom-scrollbar",
                                     children: photographersOnLeave.map((photographer)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                                            className: "border-amber-200 bg-amber-50/50 flex-shrink-0 w-[200px] snap-start hover:shadow-md transition-shadow opacity-75",
+                                            className: "border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-white flex-shrink-0 w-[240px] snap-start hover:shadow-md transition-all duration-200 opacity-75 hover:opacity-100",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                                                className: "p-4",
+                                                className: "p-5",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex flex-col items-center gap-3 text-center",
+                                                    className: "jsx-5d5e20ac9e349db4" + " " + "space-y-3",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
-                                                            className: "h-16 w-16",
-                                                            style: {
-                                                                backgroundColor: photographer.color
-                                                            },
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
-                                                                style: {
-                                                                    backgroundColor: photographer.color
-                                                                },
-                                                                className: "text-white text-2xl font-semibold",
-                                                                children: photographer.name.charAt(0)
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                lineNumber: 455,
-                                                                columnNumber: 27
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                            lineNumber: 454,
-                                                            columnNumber: 25
-                                                        }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "jsx-5d5e20ac9e349db4",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "jsx-5d5e20ac9e349db4" + " " + "font-semibold text-base",
+                                                                    className: "jsx-5d5e20ac9e349db4" + " " + "font-bold text-lg text-zinc-900 mb-2",
                                                                     children: photographer.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                    lineNumber: 460,
+                                                                    lineNumber: 453,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center justify-center gap-1 text-xs text-amber-700 mt-1",
+                                                                    className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-100 px-2 py-1 rounded-full w-fit",
                                                                     children: [
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"], {
-                                                                            className: "h-3 w-3"
+                                                                            className: "h-3.5 w-3.5"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                            lineNumber: 462,
+                                                                            lineNumber: 455,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4723,51 +4769,75 @@ function LiveStatusPage() {
                                                                             children: "휴무 중"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                            lineNumber: 463,
+                                                                            lineNumber: 456,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                                    lineNumber: 461,
+                                                                    lineNumber: 454,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                            lineNumber: 459,
+                                                            lineNumber: 452,
                                                             columnNumber: 25
+                                                        }, this),
+                                                        photographer.phone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "jsx-5d5e20ac9e349db4" + " " + "flex items-center gap-2 text-sm text-zinc-400 p-2 -mx-2 rounded-lg",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
+                                                                    className: "h-4 w-4"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                                    lineNumber: 463,
+                                                                    columnNumber: 29
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "jsx-5d5e20ac9e349db4",
+                                                                    children: photographer.phone
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                                    lineNumber: 464,
+                                                                    columnNumber: 29
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
+                                                            lineNumber: 462,
+                                                            columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                    lineNumber: 453,
+                                                    lineNumber: 450,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                                lineNumber: 452,
+                                                lineNumber: 449,
                                                 columnNumber: 21
                                             }, this)
                                         }, photographer.id, false, {
                                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                            lineNumber: 448,
+                                            lineNumber: 445,
                                             columnNumber: 19
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                    lineNumber: 446,
+                                    lineNumber: 443,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                lineNumber: 445,
+                                lineNumber: 442,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                        lineNumber: 432,
+                        lineNumber: 427,
                         columnNumber: 11
                     }, this),
                     todaySchedules.length === 0 && availablePhotographers.length === 0 && photographersOnLeave.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -4778,7 +4848,7 @@ function LiveStatusPage() {
                                     className: "h-16 w-16 text-muted-foreground mx-auto mb-4 opacity-50"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                    lineNumber: 479,
+                                    lineNumber: 480,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -4786,7 +4856,7 @@ function LiveStatusPage() {
                                     children: "오늘 일정이 없습니다"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                    lineNumber: 480,
+                                    lineNumber: 481,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4794,24 +4864,24 @@ function LiveStatusPage() {
                                     children: "편안한 하루 보내세요!"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                                    lineNumber: 481,
+                                    lineNumber: 482,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                            lineNumber: 478,
+                            lineNumber: 479,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                        lineNumber: 477,
+                        lineNumber: 478,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-                lineNumber: 115,
+                lineNumber: 108,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -4821,7 +4891,7 @@ function LiveStatusPage() {
         ]
     }, void 0, true, {
         fileName: "[project]/app/(admin)/admin/live-status/page.tsx",
-        lineNumber: 114,
+        lineNumber: 107,
         columnNumber: 5
     }, this);
 }

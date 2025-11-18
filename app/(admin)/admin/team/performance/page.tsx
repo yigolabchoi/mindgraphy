@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { MonthlyPerformanceChart, RatingTrendChart, WeeklyShootsChart } from '@/components/team/performance-charts'
 
 function PerformanceContent() {
   const searchParams = useSearchParams()
@@ -185,6 +186,13 @@ function PerformanceContent() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Performance Charts */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <MonthlyPerformanceChart />
+          <RatingTrendChart />
+          <WeeklyShootsChart />
+        </div>
 
         {/* Performance Metrics */}
         <div className="grid gap-4 md:grid-cols-2">

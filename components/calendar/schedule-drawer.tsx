@@ -22,25 +22,29 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { DdayBadge } from '@/components/common/dday-badge'
 import type { ScheduleEvent } from '@/lib/mock/schedules'
-import { getStatusLabel, getPackageLabel, getVenueTypeLabel } from '@/lib/mock/schedules'
-import { ROUTES } from '@/lib/constants'
+import { getStatusLabel, getProductTypeLabel, getVenueTypeLabel } from '@/lib/mock/schedules'
 import {
-  Phone,
   MapPin,
   Clock,
   User,
   Building2,
   Package,
   FileText,
-  CheckSquare,
-  ExternalLink,
   Plus,
   Save,
-  CheckCircle
+  Trash2
 } from 'lucide-react'
-import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { currentUser } from '@/lib/mock/me'
+
+interface InternalMemo {
+  id: string
+  content: string
+  author: string
+  authorRole: string
+  timestamp: string
+}
 
 interface ScheduleDrawerProps {
   event: ScheduleEvent | null
@@ -52,26 +56,25 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
   const [memoDialogOpen, setMemoDialogOpen] = useState(false)
   const [memoType, setMemoType] = useState<'internal' | 'special'>('internal')
   const [memoContent, setMemoContent] = useState('')
-  const [existingNotes, setExistingNotes] = useState<{
-    internalNotes?: string
-    internalNotesTimestamp?: string
-    specialRequests?: string
-  }>({})
-  
-  // Checklist state
-  const defaultChecklist = ['장비 확인', '배터리 충전', '메모리카드 준비', '이동 경로 확인']
-  const [checklist, setChecklist] = useState<{ item: string; checked: boolean }[]>(
-    defaultChecklist.map(item => ({ item, checked: false }))
-  )
+  const [internalMemos, setInternalMemos] = useState<InternalMemo[]>([])
+  const [specialRequests, setSpecialRequests] = useState<string>('')
 
   // Initialize notes when event changes
   useEffect(() => {
     if (event) {
-      setExistingNotes({
-        internalNotes: event.internalNotes,
-        internalNotesTimestamp: event.internalNotesTimestamp,
-        specialRequests: event.specialRequests
-      })
+      // Initialize with existing notes (in real app, this would come from API)
+      if (event.internalNotes) {
+        setInternalMemos([{
+          id: '1',
+          content: event.internalNotes,
+          author: '관리자',
+          authorRole: 'admin',
+          timestamp: event.internalNotesTimestamp || new Date().toISOString()
+        }])
+      } else {
+        setInternalMemos([])
+      }
+      setSpecialRequests(event.specialRequests || '')
     }
   }, [event])
 
@@ -90,7 +93,7 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
 
   const handleOpenMemoDialog = (type: 'internal' | 'special') => {
     setMemoType(type)
-    setMemoContent(type === 'internal' ? (existingNotes.internalNotes || '') : (existingNotes.specialRequests || ''))
+    setMemoContent(type === 'special' ? specialRequests : '')
     setMemoDialogOpen(true)
   }
 
@@ -102,16 +105,20 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
 
     const timestamp = new Date().toISOString()
 
-    // Update the existing notes
+    // Update the notes
     if (memoType === 'internal') {
-      setExistingNotes(prev => ({ 
-        ...prev, 
-        internalNotes: memoContent,
-        internalNotesTimestamp: timestamp
-      }))
-      toast.success('내부 메모가 저장되었습니다')
+      // Add new memo to the list
+      const newMemo: InternalMemo = {
+        id: Date.now().toString(),
+        content: memoContent,
+        author: currentUser.name,
+        authorRole: currentUser.role,
+        timestamp
+      }
+      setInternalMemos(prev => [newMemo, ...prev]) // Add to beginning for newest first
+      toast.success('내부 메모가 추가되었습니다')
     } else {
-      setExistingNotes(prev => ({ ...prev, specialRequests: memoContent }))
+      setSpecialRequests(memoContent)
       toast.success('특이사항이 저장되었습니다')
     }
 
@@ -120,28 +127,25 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
       eventId: event.id,
       type: memoType,
       content: memoContent,
-      timestamp
+      timestamp,
+      author: currentUser.name
     })
 
     setMemoDialogOpen(false)
     setMemoContent('')
   }
 
-  const handleChecklistToggle = (index: number) => {
-    setChecklist(prev => prev.map((item, i) => 
-      i === index ? { ...item, checked: !item.checked } : item
-    ))
+  const handleDeleteMemo = (memoId: string) => {
+    setInternalMemos(prev => prev.filter(memo => memo.id !== memoId))
+    toast.success('메모가 삭제되었습니다')
     
-    // Show success toast when all items are checked
-    const updatedChecklist = checklist.map((item, i) => 
-      i === index ? { ...item, checked: !item.checked } : item
-    )
-    const allChecked = updatedChecklist.every(item => item.checked)
-    
-    if (allChecked) {
-      toast.success('모든 체크리스트 항목이 완료되었습니다! 🎉')
-    }
+    // TODO: API call to delete memo
+    console.log('Deleting memo:', {
+      eventId: event.id,
+      memoId
+    })
   }
+
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -163,81 +167,51 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
             </Badge>
             <DdayBadge targetDate={event.start.split('T')[0]} showIcon={false} />
             <Badge variant="outline" className="text-xs">
-              {getPackageLabel(event.packageType)}
+              {getProductTypeLabel(event.productType)}
             </Badge>
           </div>
 
-          {/* Quick Actions */}
-          {event.projectDetailId && (
-            <Link href={`/admin/projects/${event.projectDetailId}`}>
-              <Button className="w-full mb-3" size="lg">
-                <FileText className="mr-2 h-5 w-5" />
-                프로젝트 상세 보기
-              </Button>
-            </Link>
-          )}
-          
-          <div className="grid grid-cols-2 gap-2">
-            <a
-              href={`tel:${event.groomPhone}`}
-              className="inline-flex"
-            >
-              <Button variant="outline" size="sm" className="w-full">
-                <Phone className="mr-2 h-4 w-4" />
-                신랑 전화
-              </Button>
-            </a>
-            <a
-              href={`tel:${event.bridePhone}`}
-              className="inline-flex"
-            >
-              <Button variant="outline" size="sm" className="w-full">
-                <Phone className="mr-2 h-4 w-4" />
-                신부 전화
-              </Button>
-            </a>
-            <a
-              href={`https://map.kakao.com/?q=${encodeURIComponent(event.venueAddress)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex"
-            >
-              <Button variant="outline" size="sm" className="w-full">
-                <MapPin className="mr-2 h-4 w-4" />
-                지도 보기
-              </Button>
-            </a>
-            <Link href={ROUTES.CLIENT_PORTAL(event.clientPortalToken)}>
-              <Button variant="outline" size="sm" className="w-full">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                고객 포털
-              </Button>
-            </Link>
-          </div>
-
-          {/* Client Info */}
+          {/* Customer Info - 고객용 페이지와 동일한 형태 */}
           <div className="space-y-3">
             <h3 className="font-semibold text-sm flex items-center gap-2">
               <User className="h-4 w-4" />
               고객 정보
             </h3>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm bg-zinc-50 rounded-lg p-4">
-              <div>
-                <span className="text-muted-foreground">신랑:</span>
-                <p className="font-medium">{event.groomName}</p>
+            <div className="space-y-3 text-sm bg-zinc-50 rounded-lg p-4">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                <div>
+                  <span className="text-muted-foreground">신랑:</span>
+                  <p className="font-medium">{event.groomName}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">신부:</span>
+                  <p className="font-medium">{event.brideName}</p>
+                </div>
+                {event.groomPhone && (
+                  <div>
+                    <span className="text-muted-foreground">신랑 연락처:</span>
+                    <p className="font-medium">{event.groomPhone}</p>
+                  </div>
+                )}
+                {event.bridePhone && (
+                  <div>
+                    <span className="text-muted-foreground">신부 연락처:</span>
+                    <p className="font-medium">{event.bridePhone}</p>
+                  </div>
+                )}
               </div>
-              <div>
-                <span className="text-muted-foreground">신부:</span>
-                <p className="font-medium">{event.brideName}</p>
-              </div>
-              <div>
-                <span className="text-muted-foreground">신랑 연락처:</span>
-                <p className="font-medium">{event.groomPhone}</p>
-              </div>
-              <div>
-                <span className="text-muted-foreground">신부 연락처:</span>
-                <p className="font-medium">{event.bridePhone}</p>
-              </div>
+              {event.email && (
+                <div>
+                  <span className="text-muted-foreground">이메일:</span>
+                  <p className="font-medium">{event.email}</p>
+                </div>
+              )}
+              {event.referralSource && (
+                <div>
+                  <span className="text-muted-foreground">유입 경로:</span>
+                  <p className="font-medium">{event.referralSource}</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -358,9 +332,9 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
                 수정
               </Button>
             </div>
-            {existingNotes.specialRequests ? (
+            {specialRequests ? (
               <div className="text-sm bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <p className="whitespace-pre-wrap">{existingNotes.specialRequests}</p>
+                <p className="whitespace-pre-wrap">{specialRequests}</p>
               </div>
             ) : (
               <div className="text-sm text-muted-foreground italic border border-dashed rounded-lg p-4">
@@ -375,98 +349,75 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
               <h3 className="font-semibold text-sm flex items-center gap-2">
                 <FileText className="h-4 w-4" />
                 내부 메모
+                {internalMemos.length > 0 && (
+                  <Badge variant="secondary" className="ml-1">
+                    {internalMemos.length}
+                  </Badge>
+                )}
               </h3>
               <Button 
                 variant="ghost" 
                 size="sm"
                 onClick={() => handleOpenMemoDialog('internal')}
               >
+                <Plus className="h-3 w-3 mr-1" />
                 메모 추가
               </Button>
             </div>
-            {existingNotes.internalNotes ? (
-              <div className="text-sm bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
-                <p className="whitespace-pre-wrap">{existingNotes.internalNotes}</p>
-                {existingNotes.internalNotesTimestamp && (
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground pt-2 border-t border-blue-200">
-                    <Clock className="h-3 w-3" />
-                    <span>
-                      {new Date(existingNotes.internalNotesTimestamp).toLocaleString('ko-KR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
+            
+            {internalMemos.length > 0 ? (
+              <div className="space-y-2 max-h-[400px] overflow-y-auto custom-scrollbar">
+                {internalMemos.map((memo) => (
+                  <div 
+                    key={memo.id} 
+                    className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2 hover:bg-blue-100 transition-colors group"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-sm whitespace-pre-wrap flex-1">{memo.content}</p>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100 hover:text-red-600"
+                        onClick={() => handleDeleteMemo(memo.id)}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-blue-200">
+                      <div className="flex items-center gap-2">
+                        <User className="h-3 w-3" />
+                        <span className="font-medium">{memo.author}</span>
+                        <Badge variant="outline" className="text-xs">
+                          {memo.authorRole === 'admin' ? '관리자' : 
+                           memo.authorRole === 'photographer' ? '작가' : '매니저'}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        <span>
+                          {new Date(memo.timestamp).toLocaleString('ko-KR', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                )}
+                ))}
               </div>
             ) : (
-              <div className="text-sm text-muted-foreground italic border border-dashed rounded-lg p-4">
+              <div className="text-sm text-muted-foreground italic border border-dashed rounded-lg p-4 text-center">
                 내부 메모가 없습니다
-              </div>
-            )}
-          </div>
-
-          {/* Checklist */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-sm flex items-center gap-2">
-                <CheckSquare className="h-4 w-4" />
-                촬영 체크리스트
-                <Badge variant="outline" className="ml-2 text-xs">
-                  {checklist.filter(item => item.checked).length}/{checklist.length}
-                </Badge>
-              </h3>
-            </div>
-            <div className="space-y-2 rounded-lg border p-3">
-              {checklist.map((item, index) => (
-                <label 
-                  key={index} 
-                  className={cn(
-                    "flex items-center gap-3 cursor-pointer hover:bg-zinc-50 p-2 rounded transition-all",
-                    item.checked && "bg-green-50 hover:bg-green-100"
-                  )}
-                >
-                  <input 
-                    type="checkbox" 
-                    className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500" 
-                    checked={item.checked}
-                    onChange={() => handleChecklistToggle(index)}
-                  />
-                  <span className={cn(
-                    "text-sm flex-1",
-                    item.checked && "text-muted-foreground line-through"
-                  )}>
-                    {item.item}
-                  </span>
-                  {item.checked && (
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                  )}
-                </label>
-              ))}
-            </div>
-            {checklist.every(item => item.checked) && (
-              <div className="text-sm text-green-600 font-medium flex items-center gap-2 bg-green-50 p-2 rounded-lg">
-                <CheckCircle className="h-4 w-4" />
-                모든 준비가 완료되었습니다!
               </div>
             )}
           </div>
 
           {/* Footer Actions */}
           <div className="flex flex-col sm:flex-row gap-2 pt-4 border-t">
-            <Button className="flex-1">
+            <Button className="w-full">
               일정 수정
-            </Button>
-            <Button 
-              variant="outline" 
-              className="flex-1"
-              onClick={() => handleOpenMemoDialog('internal')}
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              메모 추가
             </Button>
           </div>
         </div>
@@ -478,16 +429,29 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
-              {memoType === 'internal' ? '내부 메모' : '특이사항'} {existingNotes[memoType === 'internal' ? 'internalNotes' : 'specialRequests'] ? '수정' : '추가'}
+              {memoType === 'internal' ? '내부 메모 추가' : '특이사항 수정'}
             </DialogTitle>
             <DialogDescription>
               {memoType === 'internal' 
-                ? '촬영 관련 내부 메모를 작성하세요. 이 메모는 관리자만 볼 수 있습니다.' 
+                ? '촬영 관련 내부 메모를 작성하세요. 이 메모는 관리자와 작가만 볼 수 있습니다.' 
                 : '고객 요청사항이나 특별히 주의할 사항을 기록하세요.'}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
+            {/* Author Info */}
+            {memoType === 'internal' && (
+              <div className="flex items-center gap-2 text-sm bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <User className="h-4 w-4 text-blue-600" />
+                <span className="font-medium">{currentUser.name}</span>
+                <Badge variant="secondary" className="text-xs">
+                  {currentUser.role === 'admin' ? '관리자' : 
+                   currentUser.role === 'photographer' ? '작가' : '매니저'}
+                </Badge>
+                <span className="text-xs text-muted-foreground">님이 작성합니다</span>
+              </div>
+            )}
+            
             <div className="space-y-2">
               <Label htmlFor="memo-content" className="text-sm font-medium">
                 메모 내용 <span className="text-red-500">*</span>
@@ -502,6 +466,7 @@ export function ScheduleDrawer({ event, open, onOpenChange }: ScheduleDrawerProp
                 value={memoContent}
                 onChange={(e) => setMemoContent(e.target.value)}
                 className="min-h-[150px] resize-none"
+                maxLength={1000}
               />
               <p className="text-xs text-muted-foreground">
                 {memoContent.length} / 1000자

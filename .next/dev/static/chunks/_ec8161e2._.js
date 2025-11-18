@@ -361,8 +361,16 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 "use strict";
 
 __turbopack_context__.s([
+    "babyProducts",
+    ()=>babyProducts,
     "baseProducts",
     ()=>baseProducts,
+    "dressShopProducts",
+    ()=>dressShopProducts,
+    "hanbokProducts",
+    ()=>hanbokProducts,
+    "mockContractTemplate",
+    ()=>mockContractTemplate,
     "mockNotificationSchedules",
     ()=>mockNotificationSchedules,
     "mockNotificationTemplates",
@@ -475,6 +483,226 @@ const baseProducts = [
         albumIncluded: false,
         photoCount: 60,
         basePrice: 930000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    }
+];
+const hanbokProducts = [
+    {
+        id: 'hanbok-a1',
+        name: 'A-1',
+        category: 'SNAP',
+        title: '야외 촬영 기본',
+        description: [
+            '1인 작가 진행',
+            '3시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+            '장소 한 곳에서 촬영 진행 (장소 비용 별도)',
+            '의상 한 가지 컨셉',
+            '최종본 20장 (고객셀렉, 세부보정)',
+            '전체원본 제공'
+        ],
+        albumIncluded: false,
+        photoCount: 20,
+        basePrice: 800000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    },
+    {
+        id: 'hanbok-a2',
+        name: 'A-2',
+        category: 'SNAP',
+        title: '야외 촬영 추가',
+        description: [
+            '1인 작가 진행',
+            '4시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+            '장소 두 곳에서 촬영 진행 (장소 비용 별도)',
+            '의상 두 가지 컨셉',
+            '최종본 35장 (고객셀렉, 세부보정)',
+            '전체원본 제공'
+        ],
+        albumIncluded: false,
+        photoCount: 35,
+        basePrice: 1150000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    },
+    {
+        id: 'hanbok-b1',
+        name: 'B-1',
+        category: 'SNAP',
+        title: '야외 촬영 + 실내 스튜디오',
+        description: [
+            '1인 작가 진행',
+            '4시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+            '장소 한 곳 + 실내 스튜디오 촬영',
+            '의상 두 가지 컨셉',
+            '최종본 30장 (고객셀렉, 세부보정)',
+            '전체원본 제공'
+        ],
+        albumIncluded: false,
+        photoCount: 30,
+        basePrice: 1200000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    },
+    {
+        id: 'hanbok-b2',
+        name: 'B-2',
+        category: 'SNAP',
+        title: '야외 촬영 + 실내 스튜디오',
+        description: [
+            '1인 작가 진행',
+            '5시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+            '장소 두 곳 + 실내 스튜디오 촬영',
+            '의상 세 가지 컨셉',
+            '최종본 50장 (고객셀렉, 세부보정)',
+            '전체원본 제공'
+        ],
+        albumIncluded: false,
+        photoCount: 50,
+        basePrice: 1500000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    },
+    {
+        id: 'hanbok-c1',
+        name: 'C-1',
+        category: 'SNAP',
+        title: '야외 촬영만 + 추가 시간',
+        description: [
+            '1인 작가 진행',
+            '5시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+            '장소 두 곳에서 촬영 진행 (장소 비용 별도)',
+            '의상 두 가지 컨셉',
+            '최종본 40장 (고객셀렉, 세부보정)',
+            '전체원본 제공'
+        ],
+        albumIncluded: false,
+        photoCount: 40,
+        basePrice: 1300000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    },
+    {
+        id: 'hanbok-c2',
+        name: 'C-2',
+        category: 'SNAP',
+        title: '야외 촬영 + 실내 + 추가 시간',
+        description: [
+            '1인 작가 진행',
+            '6시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+            '장소 세 곳 + 실내 스튜디오 촬영',
+            '의상 세 가지 컨셉',
+            '최종본 60장 (고객셀렉, 세부보정)',
+            '전체원본 제공'
+        ],
+        albumIncluded: false,
+        photoCount: 60,
+        basePrice: 1700000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    },
+    {
+        id: 'hanbok-d1',
+        name: 'D-1',
+        category: 'SNAP',
+        title: '실내(흰색배경) 스튜디오',
+        description: [
+            '1인 작가 진행',
+            '2시간 촬영 진행 (실내 촬영만 진행, 준비 및 모니터링 시간 포함)',
+            '장소 한 곳에서 촬영 진행 (스튜디오 장소금액 포함)',
+            '의상 한 가지 컨셉',
+            '최종본 3장 (고객셀렉, 세부보정)',
+            '전체원본 제공'
+        ],
+        albumIncluded: false,
+        photoCount: 3,
+        basePrice: 500000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    }
+];
+const dressShopProducts = [
+    {
+        id: 'dress-shop-1',
+        name: 'DRESS SHOP',
+        category: 'SNAP',
+        title: '가봉 스냅',
+        description: [
+            '1인 대표작가 촬영 진행',
+            '최종본 10장 (고객셀렉, 세부보정)',
+            '20x16 아크릴 액자 1개',
+            '전체원본 제공'
+        ],
+        albumIncluded: false,
+        photoCount: 10,
+        basePrice: 550000,
+        delivery: {
+            includesWebGallery: true,
+            includesRawDownload: true
+        },
+        isActive: true,
+        createdAt: '2024-01-15',
+        updatedAt: '2024-11-12'
+    }
+];
+const babyProducts = [
+    {
+        id: 'baby-1',
+        name: 'BABY',
+        category: 'SNAP',
+        title: '돌스냅 행사 촬영',
+        description: [
+            '2인 (작가 + 작가) 진행',
+            '돌잔치 행사 촬영',
+            '13x10인치 화보앨범 50페이지 1권',
+            '14x14인치 액자 1개',
+            '최종본 50장 (고객셀렉, 세부보정 적용)',
+            '전체원본 제공'
+        ],
+        albumIncluded: true,
+        photoCount: 50,
+        basePrice: 660000,
         delivery: {
             includesWebGallery: true,
             includesRawDownload: true
@@ -615,7 +843,7 @@ const optionProducts = [
         ],
         albumIncluded: false,
         photoCount: 0,
-        basePrice: 110000,
+        basePrice: 55000,
         delivery: {
             includesWebGallery: false,
             includesRawDownload: false
@@ -627,6 +855,9 @@ const optionProducts = [
 ];
 const mockProducts = [
     ...baseProducts,
+    ...hanbokProducts,
+    ...dressShopProducts,
+    ...babyProducts,
     ...optionProducts
 ];
 const mockPolicies = [
@@ -1137,6 +1368,117 @@ const sampleTemplateVariables = {
     '{deliveryItems}': '앨범 30P, USB',
     '{surveyUrl}': 'https://mindgraphy.com/survey/123'
 };
+const mockContractTemplate = {
+    id: 'contract-template-001',
+    name: '웨딩 촬영 서비스 이용 계약서',
+    version: 'v1.0',
+    title: '웨딩 촬영 서비스 이용 계약서',
+    description: '본 계약서는 마인드그라피(이하 "회사")와 고객 간의 웨딩 촬영 서비스 제공에 관한 계약입니다',
+    articles: [
+        {
+            id: 'article-1',
+            order: 1,
+            title: '제1조 (계약 당사자)',
+            content: [
+                '회사: 마인드그라피',
+                '주소: 서울 성동구 마조로15길 6 1층',
+                '전화: 02-2202-9966',
+                '',
+                '고객: 예식 당사자 (본 계약서 하단 서명자)'
+            ]
+        },
+        {
+            id: 'article-2',
+            order: 2,
+            title: '제2조 (촬영 서비스 내용)',
+            content: [
+                '① 촬영 일시: {weddingDate} {weddingTime}',
+                '② 촬영 장소: {venue}',
+                '③ 선택 상품: {packageName}',
+                '※ 상품 세부 내용은 마인드그라피 상품 안내서를 따릅니다'
+            ]
+        },
+        {
+            id: 'article-3',
+            order: 3,
+            title: '제3조 (계약 금액 및 지불 조건)',
+            content: [
+                '① 총 계약 금액: {totalAmount}',
+                '② 계약금 (선불): {depositAmount}',
+                '③ 잔금: {balanceAmount}',
+                '※ 계약금은 계약 체결 후 7일 이내 입금',
+                '※ 잔금은 촬영일 7일 전까지 입금'
+            ]
+        },
+        {
+            id: 'article-4',
+            order: 4,
+            title: '제4조 (회사의 의무)',
+            content: [
+                '① 회사는 계약된 일시 및 장소에서 성실히 촬영을 진행합니다',
+                '② 회사는 촬영 후 14일 이내에 프루프 사진을 제공합니다',
+                '③ 회사는 고객이 선택한 사진에 대해 세부 보정을 진행합니다',
+                '④ 회사는 최종 결과물을 촬영일로부터 60일 이내에 배송합니다'
+            ]
+        },
+        {
+            id: 'article-5',
+            order: 5,
+            title: '제5조 (고객의 의무)',
+            content: [
+                '① 고객은 계약금 및 잔금을 기한 내에 지불해야 합니다',
+                '② 고객은 촬영 일정 및 장소 변경 시 최소 7일 전에 통보해야 합니다',
+                '③ 고객은 프루프 사진 선택을 14일 이내에 완료해야 합니다',
+                '④ 고객은 촬영에 필요한 정보를 사전 미팅 시 제공해야 합니다'
+            ]
+        },
+        {
+            id: 'article-6',
+            order: 6,
+            title: '제6조 (취소 및 환불 규정)',
+            content: [
+                '① 촬영일 30일 전: 전액 환불',
+                '② 촬영일 14~29일 전: 50% 환불',
+                '③ 촬영일 7~13일 전: 30% 환불',
+                '④ 촬영일 6일 전 이내: 환불 불가',
+                '※ 회사 귀책 사유로 인한 취소는 전액 환불'
+            ]
+        },
+        {
+            id: 'article-7',
+            order: 7,
+            title: '제7조 (저작권 및 초상권)',
+            content: [
+                '① 모든 사진의 저작권은 회사에 귀속됩니다',
+                '② 고객은 개인적 용도로만 사진을 사용할 수 있습니다',
+                '③ 상업적 이용, 재판매, 2차 저작물 제작은 금지됩니다',
+                '④ 회사는 고객의 동의 하에 포트폴리오 및 홍보 목적으로 사진을 사용할 수 있습니다'
+            ]
+        },
+        {
+            id: 'article-8',
+            order: 8,
+            title: '제8조 (불가항력)',
+            content: [
+                '천재지변, 전쟁, 감염병 등 불가항력적 사유로 인해 계약 이행이 불가능한 경우, 양 당사자는 협의하여 일정을 재조정하거나 계약을 해지할 수 있습니다.'
+            ]
+        },
+        {
+            id: 'article-9',
+            order: 9,
+            title: '제9조 (분쟁 해결)',
+            content: [
+                '본 계약과 관련된 분쟁은 상호 협의하여 해결하며, 협의가 이루어지지 않을 경우 회사 소재지 관할 법원에서 해결합니다.'
+            ]
+        }
+    ],
+    footer: '계약 체결일: {contractDate}',
+    importantNotice: '본 계약서는 전자 문서로 작성되었으며, 하단에 성명을 입력하고 "계약 확인 및 동의" 버튼을 클릭하는 것으로 계약이 체결되고 법적 효력이 발생합니다. 계약 체결 후에는 위 취소 및 환불 규정이 적용됩니다.',
+    effectiveDate: '2025-01-01',
+    isActive: true,
+    createdAt: '2025-01-01',
+    updatedAt: '2025-01-01'
+};
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
@@ -1198,22 +1540,77 @@ function MastersSettingsPage() {
     const [drawerMode, setDrawerMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('create');
     const [selectedItem, setSelectedItem] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('venues');
+    // Form state
+    const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({});
     // Mock search
     const filteredVenues = venues.filter((v)=>v.name.toLowerCase().includes(searchTerm.toLowerCase()) || v.address.toLowerCase().includes(searchTerm.toLowerCase()));
     const filteredPartners = partners.filter((p)=>p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.contactPerson.toLowerCase().includes(searchTerm.toLowerCase()));
     const handleCreate = ()=>{
         setDrawerMode('create');
         setSelectedItem(null);
+        setFormData({});
         setDrawerOpen(true);
     };
     const handleEdit = (item)=>{
         setDrawerMode('edit');
         setSelectedItem(item);
+        setFormData(item);
         setDrawerOpen(true);
     };
     const handleSave = ()=>{
+        if (activeTab === 'venues') {
+            // Venue save logic
+            const ballroomsArray = formData.ballrooms ? formData.ballrooms.split(',').map((b)=>b.trim()).filter((b)=>b) : [];
+            const venueData = {
+                id: drawerMode === 'create' ? `venue-${Date.now()}` : formData.id,
+                name: formData.name || '',
+                type: formData.type || 'wedding_hall',
+                address: formData.address || '',
+                phone: formData.phone || '',
+                ballrooms: ballroomsArray,
+                parkingInfo: formData.parkingInfo,
+                notes: formData.notes,
+                isActive: formData.isActive !== undefined ? formData.isActive : true,
+                createdAt: drawerMode === 'create' ? new Date().toISOString().split('T')[0] : formData.createdAt,
+                updatedAt: new Date().toISOString().split('T')[0]
+            };
+            if (drawerMode === 'create') {
+                setVenues([
+                    ...venues,
+                    venueData
+                ]);
+            } else {
+                setVenues(venues.map((v)=>v.id === venueData.id ? venueData : v));
+            }
+        } else {
+            // Partner save logic
+            const partnerData = {
+                id: drawerMode === 'create' ? `partner-${Date.now()}` : formData.id,
+                name: formData.name || '',
+                type: formData.type || 'makeup',
+                contactPerson: formData.contactPerson || '',
+                phone: formData.phone || '',
+                email: formData.email || '',
+                address: formData.address,
+                website: formData.website,
+                commissionRate: formData.commissionRate ? Number(formData.commissionRate) : undefined,
+                notes: formData.notes,
+                isActive: formData.isActive !== undefined ? formData.isActive : true,
+                createdAt: drawerMode === 'create' ? new Date().toISOString().split('T')[0] : formData.createdAt,
+                updatedAt: new Date().toISOString().split('T')[0]
+            };
+            if (drawerMode === 'create') {
+                setPartners([
+                    ...partners,
+                    partnerData
+                ]);
+            } else {
+                setPartners(partners.map((p)=>p.id === partnerData.id ? partnerData : p));
+            }
+        }
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success(drawerMode === 'create' ? '새 항목이 생성되었습니다' : '변경사항이 저장되었습니다');
         setDrawerOpen(false);
+        setFormData({});
     };
     const getVenueTypeLabel = (type)=>{
         const labels = {
@@ -1252,7 +1649,7 @@ function MastersSettingsPage() {
                         children: "예식장과 협력사 정보를 관리하세요"
                     }, void 0, false, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 122,
+                        lineNumber: 178,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1263,20 +1660,20 @@ function MastersSettingsPage() {
                                 className: "mr-2 h-4 w-4"
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 126,
+                                lineNumber: 182,
                                 columnNumber: 11
                             }, this),
                             "새로 만들기"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 125,
+                        lineNumber: 181,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                lineNumber: 121,
+                lineNumber: 177,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1293,20 +1690,20 @@ function MastersSettingsPage() {
                                         children: "활성 예식장"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 135,
+                                        lineNumber: 191,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$building$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Building2$3e$__["Building2"], {
                                         className: "h-4 w-4 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 136,
+                                        lineNumber: 192,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 134,
+                                lineNumber: 190,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1316,7 +1713,7 @@ function MastersSettingsPage() {
                                         children: activeVenues
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 139,
+                                        lineNumber: 195,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1328,19 +1725,19 @@ function MastersSettingsPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 140,
+                                        lineNumber: 196,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 138,
+                                lineNumber: 194,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 133,
+                        lineNumber: 189,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1354,20 +1751,20 @@ function MastersSettingsPage() {
                                         children: "활성 협력사"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 148,
+                                        lineNumber: 204,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$handshake$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Handshake$3e$__["Handshake"], {
                                         className: "h-4 w-4 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 149,
+                                        lineNumber: 205,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 147,
+                                lineNumber: 203,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1377,7 +1774,7 @@ function MastersSettingsPage() {
                                         children: activePartners
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 152,
+                                        lineNumber: 208,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1389,19 +1786,19 @@ function MastersSettingsPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 153,
+                                        lineNumber: 209,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 151,
+                                lineNumber: 207,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 146,
+                        lineNumber: 202,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1415,20 +1812,20 @@ function MastersSettingsPage() {
                                         children: "총 홀 수"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 161,
+                                        lineNumber: 217,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
                                         className: "h-4 w-4 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 162,
+                                        lineNumber: 218,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 160,
+                                lineNumber: 216,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1438,7 +1835,7 @@ function MastersSettingsPage() {
                                         children: totalBallrooms
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 165,
+                                        lineNumber: 221,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1449,19 +1846,19 @@ function MastersSettingsPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 166,
+                                        lineNumber: 222,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 164,
+                                lineNumber: 220,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 159,
+                        lineNumber: 215,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1475,20 +1872,20 @@ function MastersSettingsPage() {
                                         children: "평균 수수료"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 174,
+                                        lineNumber: 230,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUp$3e$__["TrendingUp"], {
                                         className: "h-4 w-4 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 175,
+                                        lineNumber: 231,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 173,
+                                lineNumber: 229,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1501,7 +1898,7 @@ function MastersSettingsPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 178,
+                                        lineNumber: 234,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1509,25 +1906,25 @@ function MastersSettingsPage() {
                                         children: "협력사 평균"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 179,
+                                        lineNumber: 235,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 177,
+                                lineNumber: 233,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 172,
+                        lineNumber: 228,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                lineNumber: 132,
+                lineNumber: 188,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1539,7 +1936,7 @@ function MastersSettingsPage() {
                             className: "absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                         }, void 0, false, {
                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                            lineNumber: 189,
+                            lineNumber: 245,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1549,18 +1946,18 @@ function MastersSettingsPage() {
                             className: "pl-9"
                         }, void 0, false, {
                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                            lineNumber: 190,
+                            lineNumber: 246,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                    lineNumber: 188,
+                    lineNumber: 244,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                lineNumber: 187,
+                lineNumber: 243,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tabs"], {
@@ -1578,7 +1975,7 @@ function MastersSettingsPage() {
                                         className: "h-3 w-3 md:h-4 md:w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 203,
+                                        lineNumber: 259,
                                         columnNumber: 13
                                     }, this),
                                     "예식장",
@@ -1591,13 +1988,13 @@ function MastersSettingsPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 205,
+                                        lineNumber: 261,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 202,
+                                lineNumber: 258,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -1608,7 +2005,7 @@ function MastersSettingsPage() {
                                         className: "h-3 w-3 md:h-4 md:w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 208,
+                                        lineNumber: 264,
                                         columnNumber: 13
                                     }, this),
                                     "협력사",
@@ -1621,19 +2018,19 @@ function MastersSettingsPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 210,
+                                        lineNumber: 266,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 207,
+                                lineNumber: 263,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 201,
+                        lineNumber: 257,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -1655,7 +2052,7 @@ function MastersSettingsPage() {
                                                             children: "예식장명"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 222,
+                                                            lineNumber: 278,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1663,7 +2060,7 @@ function MastersSettingsPage() {
                                                             children: "타입"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 223,
+                                                            lineNumber: 279,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1671,7 +2068,7 @@ function MastersSettingsPage() {
                                                             children: "주소"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 224,
+                                                            lineNumber: 280,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1679,7 +2076,7 @@ function MastersSettingsPage() {
                                                             children: "연락처"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 225,
+                                                            lineNumber: 281,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1687,7 +2084,7 @@ function MastersSettingsPage() {
                                                             children: "홀 수"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 226,
+                                                            lineNumber: 282,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1695,7 +2092,7 @@ function MastersSettingsPage() {
                                                             children: "상태"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 227,
+                                                            lineNumber: 283,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1703,18 +2100,18 @@ function MastersSettingsPage() {
                                                             children: "작업"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 228,
+                                                            lineNumber: 284,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 221,
+                                                    lineNumber: 277,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                lineNumber: 220,
+                                                lineNumber: 276,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableBody"], {
@@ -1729,7 +2126,7 @@ function MastersSettingsPage() {
                                                                     className: "h-12 w-12 text-muted-foreground mb-4 opacity-50"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 236,
+                                                                    lineNumber: 292,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1737,7 +2134,7 @@ function MastersSettingsPage() {
                                                                     children: "예식장이 없습니다"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 237,
+                                                                    lineNumber: 293,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1745,7 +2142,7 @@ function MastersSettingsPage() {
                                                                     children: searchTerm ? '검색 결과가 없습니다' : '새 예식장을 추가하여 시작하세요'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 238,
+                                                                    lineNumber: 294,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 !searchTerm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1757,30 +2154,30 @@ function MastersSettingsPage() {
                                                                             className: "mr-2 h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 243,
+                                                                            lineNumber: 299,
                                                                             columnNumber: 33
                                                                         }, this),
                                                                         "첫 예식장 추가"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 242,
+                                                                    lineNumber: 298,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 235,
+                                                            lineNumber: 291,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                        lineNumber: 234,
+                                                        lineNumber: 290,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 233,
+                                                    lineNumber: 289,
                                                     columnNumber: 23
                                                 }, this) : filteredVenues.map((venue)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableRow"], {
                                                         className: "hover:bg-muted/50 transition-colors",
@@ -1790,7 +2187,7 @@ function MastersSettingsPage() {
                                                                 children: venue.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 253,
+                                                                lineNumber: 309,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -1799,12 +2196,12 @@ function MastersSettingsPage() {
                                                                     children: getVenueTypeLabel(venue.type)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 255,
+                                                                    lineNumber: 311,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 254,
+                                                                lineNumber: 310,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -1813,12 +2210,12 @@ function MastersSettingsPage() {
                                                                     children: venue.address
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 258,
+                                                                    lineNumber: 314,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 257,
+                                                                lineNumber: 313,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -1828,29 +2225,49 @@ function MastersSettingsPage() {
                                                                     children: venue.phone
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 261,
+                                                                    lineNumber: 317,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 260,
+                                                                lineNumber: 316,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                                    variant: "outline",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "space-y-1",
                                                                     children: [
-                                                                        venue.ballrooms.length,
-                                                                        "개"
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                                            variant: "outline",
+                                                                            children: [
+                                                                                venue.ballrooms.length,
+                                                                                "개"
+                                                                            ]
+                                                                        }, void 0, true, {
+                                                                            fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
+                                                                            lineNumber: 323,
+                                                                            columnNumber: 27
+                                                                        }, this),
+                                                                        venue.ballrooms.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                            className: "text-xs text-muted-foreground",
+                                                                            children: [
+                                                                                venue.ballrooms.slice(0, 2).join(', '),
+                                                                                venue.ballrooms.length > 2 && ` 외 ${venue.ballrooms.length - 2}개`
+                                                                            ]
+                                                                        }, void 0, true, {
+                                                                            fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
+                                                                            lineNumber: 325,
+                                                                            columnNumber: 29
+                                                                        }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 266,
+                                                                    lineNumber: 322,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 265,
+                                                                lineNumber: 321,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -1862,14 +2279,14 @@ function MastersSettingsPage() {
                                                                             className: "mr-1 h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 271,
+                                                                            lineNumber: 335,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         "활성"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 270,
+                                                                    lineNumber: 334,
                                                                     columnNumber: 31
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                                                     variant: "secondary",
@@ -1878,19 +2295,19 @@ function MastersSettingsPage() {
                                                                             className: "mr-1 h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 276,
+                                                                            lineNumber: 340,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         "비활성"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 275,
+                                                                    lineNumber: 339,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 268,
+                                                                lineNumber: 332,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -1904,54 +2321,54 @@ function MastersSettingsPage() {
                                                                         className: "h-4 w-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                        lineNumber: 288,
+                                                                        lineNumber: 352,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 282,
+                                                                    lineNumber: 346,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 281,
+                                                                lineNumber: 345,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, venue.id, true, {
                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                        lineNumber: 252,
+                                                        lineNumber: 308,
                                                         columnNumber: 25
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                lineNumber: 231,
+                                                lineNumber: 287,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 219,
+                                        lineNumber: 275,
                                         columnNumber: 13
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 218,
+                                    lineNumber: 274,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 217,
+                                lineNumber: 273,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                            lineNumber: 216,
+                            lineNumber: 272,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 215,
+                        lineNumber: 271,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -1973,7 +2390,7 @@ function MastersSettingsPage() {
                                                             children: "협력사명"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 309,
+                                                            lineNumber: 373,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1981,7 +2398,7 @@ function MastersSettingsPage() {
                                                             children: "타입"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 310,
+                                                            lineNumber: 374,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1989,7 +2406,7 @@ function MastersSettingsPage() {
                                                             children: "담당자"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 311,
+                                                            lineNumber: 375,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -1997,7 +2414,7 @@ function MastersSettingsPage() {
                                                             children: "연락처"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 312,
+                                                            lineNumber: 376,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -2005,7 +2422,7 @@ function MastersSettingsPage() {
                                                             children: "이메일"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 313,
+                                                            lineNumber: 377,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -2013,7 +2430,7 @@ function MastersSettingsPage() {
                                                             children: "수수료"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 314,
+                                                            lineNumber: 378,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -2021,7 +2438,7 @@ function MastersSettingsPage() {
                                                             children: "상태"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 315,
+                                                            lineNumber: 379,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -2029,18 +2446,18 @@ function MastersSettingsPage() {
                                                             children: "작업"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 316,
+                                                            lineNumber: 380,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 308,
+                                                    lineNumber: 372,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                lineNumber: 307,
+                                                lineNumber: 371,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableBody"], {
@@ -2055,7 +2472,7 @@ function MastersSettingsPage() {
                                                                     className: "h-12 w-12 text-muted-foreground mb-4 opacity-50"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 324,
+                                                                    lineNumber: 388,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2063,7 +2480,7 @@ function MastersSettingsPage() {
                                                                     children: "협력사가 없습니다"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 325,
+                                                                    lineNumber: 389,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2071,7 +2488,7 @@ function MastersSettingsPage() {
                                                                     children: searchTerm ? '검색 결과가 없습니다' : '새 협력사를 추가하여 시작하세요'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 326,
+                                                                    lineNumber: 390,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 !searchTerm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2083,30 +2500,30 @@ function MastersSettingsPage() {
                                                                             className: "mr-2 h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 331,
+                                                                            lineNumber: 395,
                                                                             columnNumber: 33
                                                                         }, this),
                                                                         "첫 협력사 추가"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 330,
+                                                                    lineNumber: 394,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 323,
+                                                            lineNumber: 387,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                        lineNumber: 322,
+                                                        lineNumber: 386,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 321,
+                                                    lineNumber: 385,
                                                     columnNumber: 23
                                                 }, this) : filteredPartners.map((partner)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableRow"], {
                                                         className: "hover:bg-muted/50 transition-colors",
@@ -2120,7 +2537,7 @@ function MastersSettingsPage() {
                                                                             children: partner.name
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 343,
+                                                                            lineNumber: 407,
                                                                             columnNumber: 27
                                                                         }, this),
                                                                         partner.website && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -2132,23 +2549,23 @@ function MastersSettingsPage() {
                                                                                 className: "h-3 w-3"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                                lineNumber: 351,
+                                                                                lineNumber: 415,
                                                                                 columnNumber: 31
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 345,
+                                                                            lineNumber: 409,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 342,
+                                                                    lineNumber: 406,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 341,
+                                                                lineNumber: 405,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -2158,12 +2575,12 @@ function MastersSettingsPage() {
                                                                     children: getPartnerTypeLabel(partner.type)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 357,
+                                                                    lineNumber: 421,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 356,
+                                                                lineNumber: 420,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -2174,19 +2591,19 @@ function MastersSettingsPage() {
                                                                             className: "h-3 w-3 text-muted-foreground"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 372,
+                                                                            lineNumber: 436,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         partner.contactPerson
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 371,
+                                                                    lineNumber: 435,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 370,
+                                                                lineNumber: 434,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -2198,19 +2615,19 @@ function MastersSettingsPage() {
                                                                             className: "h-3 w-3 text-muted-foreground"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 378,
+                                                                            lineNumber: 442,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         partner.phone
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 377,
+                                                                    lineNumber: 441,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 376,
+                                                                lineNumber: 440,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -2222,19 +2639,19 @@ function MastersSettingsPage() {
                                                                             className: "h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 384,
+                                                                            lineNumber: 448,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         partner.email
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 383,
+                                                                    lineNumber: 447,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 382,
+                                                                lineNumber: 446,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -2247,19 +2664,19 @@ function MastersSettingsPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 390,
+                                                                    lineNumber: 454,
                                                                     columnNumber: 31
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     className: "text-xs text-muted-foreground",
                                                                     children: "-"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 394,
+                                                                    lineNumber: 458,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 388,
+                                                                lineNumber: 452,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -2271,14 +2688,14 @@ function MastersSettingsPage() {
                                                                             className: "mr-1 h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 400,
+                                                                            lineNumber: 464,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         "활성"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 399,
+                                                                    lineNumber: 463,
                                                                     columnNumber: 31
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                                                     variant: "secondary",
@@ -2287,19 +2704,19 @@ function MastersSettingsPage() {
                                                                             className: "mr-1 h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 405,
+                                                                            lineNumber: 469,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         "비활성"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 404,
+                                                                    lineNumber: 468,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 397,
+                                                                lineNumber: 461,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -2313,60 +2730,60 @@ function MastersSettingsPage() {
                                                                         className: "h-4 w-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                        lineNumber: 417,
+                                                                        lineNumber: 481,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 411,
+                                                                    lineNumber: 475,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                lineNumber: 410,
+                                                                lineNumber: 474,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, partner.id, true, {
                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                        lineNumber: 340,
+                                                        lineNumber: 404,
                                                         columnNumber: 25
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                lineNumber: 319,
+                                                lineNumber: 383,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 306,
+                                        lineNumber: 370,
                                         columnNumber: 13
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 305,
+                                    lineNumber: 369,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                lineNumber: 304,
+                                lineNumber: 368,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                            lineNumber: 303,
+                            lineNumber: 367,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                        lineNumber: 302,
+                        lineNumber: 366,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                lineNumber: 200,
+                lineNumber: 256,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Sheet"], {
@@ -2385,7 +2802,7 @@ function MastersSettingsPage() {
                                                 className: "h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                lineNumber: 438,
+                                                lineNumber: 502,
                                                 columnNumber: 19
                                             }, this),
                                             drawerMode === 'create' ? '예식장 추가' : '예식장 수정'
@@ -2396,7 +2813,7 @@ function MastersSettingsPage() {
                                                 className: "h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                lineNumber: 443,
+                                                lineNumber: 507,
                                                 columnNumber: 19
                                             }, this),
                                             drawerMode === 'create' ? '협력사 추가' : '협력사 수정'
@@ -2404,20 +2821,20 @@ function MastersSettingsPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 435,
+                                    lineNumber: 499,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SheetDescription"], {
                                     children: activeTab === 'venues' ? '예식장 정보를 입력하세요. 모든 필수 정보를 입력해주세요.' : '협력사 정보를 입력하세요. 담당자 연락처는 필수입니다.'
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 448,
+                                    lineNumber: 512,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                            lineNumber: 434,
+                            lineNumber: 498,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2433,12 +2850,12 @@ function MastersSettingsPage() {
                                                 children: "기본 정보"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                lineNumber: 460,
+                                                lineNumber: 524,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                            lineNumber: 459,
+                                            lineNumber: 523,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2459,27 +2876,31 @@ function MastersSettingsPage() {
                                                                             children: "*"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 468,
+                                                                            lineNumber: 532,
                                                                             columnNumber: 30
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 467,
+                                                                    lineNumber: 531,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                                     placeholder: "예: 더 그랜드 웨딩홀",
-                                                                    defaultValue: selectedItem && 'name' in selectedItem ? selectedItem.name : ''
+                                                                    value: formData.name || '',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            name: e.target.value
+                                                                        })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 470,
+                                                                    lineNumber: 534,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 466,
+                                                            lineNumber: 530,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2494,25 +2915,29 @@ function MastersSettingsPage() {
                                                                             children: "*"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 477,
+                                                                            lineNumber: 542,
                                                                             columnNumber: 28
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 476,
+                                                                    lineNumber: 541,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                                                                     className: "w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-                                                                    defaultValue: selectedItem && 'type' in selectedItem ? selectedItem.type : 'wedding_hall',
+                                                                    value: formData.type || 'wedding_hall',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            type: e.target.value
+                                                                        }),
                                                                     children: [
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                             value: "wedding_hall",
                                                                             children: "웨딩홀"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 483,
+                                                                            lineNumber: 549,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2520,7 +2945,7 @@ function MastersSettingsPage() {
                                                                             children: "호텔"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 484,
+                                                                            lineNumber: 550,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2528,7 +2953,7 @@ function MastersSettingsPage() {
                                                                             children: "교회"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 485,
+                                                                            lineNumber: 551,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2536,7 +2961,7 @@ function MastersSettingsPage() {
                                                                             children: "야외"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 486,
+                                                                            lineNumber: 552,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2544,25 +2969,25 @@ function MastersSettingsPage() {
                                                                             children: "기타"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 487,
+                                                                            lineNumber: 553,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 479,
+                                                                    lineNumber: 544,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 475,
+                                                            lineNumber: 540,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 465,
+                                                    lineNumber: 529,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2575,7 +3000,7 @@ function MastersSettingsPage() {
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 494,
+                                                                    lineNumber: 560,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 "주소 ",
@@ -2584,27 +3009,31 @@ function MastersSettingsPage() {
                                                                     children: "*"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 495,
+                                                                    lineNumber: 561,
                                                                     columnNumber: 26
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 493,
+                                                            lineNumber: 559,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                             placeholder: "예: 서울시 강남구 테헤란로 123",
-                                                            defaultValue: selectedItem && 'address' in selectedItem ? selectedItem.address : ''
+                                                            value: formData.address || '',
+                                                            onChange: (e)=>setFormData({
+                                                                    ...formData,
+                                                                    address: e.target.value
+                                                                })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 497,
+                                                            lineNumber: 563,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 492,
+                                                    lineNumber: 558,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2620,7 +3049,7 @@ function MastersSettingsPage() {
                                                                             className: "h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 506,
+                                                                            lineNumber: 573,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         "연락처 ",
@@ -2629,27 +3058,31 @@ function MastersSettingsPage() {
                                                                             children: "*"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 507,
+                                                                            lineNumber: 574,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 505,
+                                                                    lineNumber: 572,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                                     placeholder: "02-1234-5678",
-                                                                    defaultValue: selectedItem && 'phone' in selectedItem ? selectedItem.phone : ''
+                                                                    value: formData.phone || '',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            phone: e.target.value
+                                                                        })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 509,
+                                                                    lineNumber: 576,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 504,
+                                                            lineNumber: 571,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2664,25 +3097,29 @@ function MastersSettingsPage() {
                                                                             children: "*"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 516,
+                                                                            lineNumber: 584,
                                                                             columnNumber: 28
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 515,
+                                                                    lineNumber: 583,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                                                                     className: "w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-                                                                    defaultValue: selectedItem && 'isActive' in selectedItem ? String(selectedItem.isActive) : 'true',
+                                                                    value: String(formData.isActive !== undefined ? formData.isActive : true),
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            isActive: e.target.value === 'true'
+                                                                        }),
                                                                     children: [
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                             value: "true",
                                                                             children: "활성"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 522,
+                                                                            lineNumber: 591,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2690,25 +3127,25 @@ function MastersSettingsPage() {
                                                                             children: "비활성"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 523,
+                                                                            lineNumber: 592,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 518,
+                                                                    lineNumber: 586,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 514,
+                                                            lineNumber: 582,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 503,
+                                                    lineNumber: 570,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2719,21 +3156,33 @@ function MastersSettingsPage() {
                                                             children: "보유 홀 (쉼표로 구분)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 529,
+                                                            lineNumber: 598,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                            placeholder: "예: 그랜드홀 (300석), 프리미어홀 (200석)",
-                                                            defaultValue: selectedItem && 'ballrooms' in selectedItem ? selectedItem.ballrooms.join(', ') : ''
+                                                            placeholder: "예: 그랜드홀 (300석), 프리미어홀 (200석), 스위트홀 (100석)",
+                                                            value: formData.ballrooms ? Array.isArray(formData.ballrooms) ? formData.ballrooms.join(', ') : formData.ballrooms : '',
+                                                            onChange: (e)=>setFormData({
+                                                                    ...formData,
+                                                                    ballrooms: e.target.value
+                                                                })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 532,
+                                                            lineNumber: 601,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-xs text-muted-foreground",
+                                                            children: '💡 각 홀을 쉼표로 구분하여 입력하세요. 예: "그랜드홀 (300석), 프리미어홀 (200석)"'
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
+                                                            lineNumber: 606,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 528,
+                                                    lineNumber: 597,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2744,21 +3193,25 @@ function MastersSettingsPage() {
                                                             children: "주차 정보"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 539,
+                                                            lineNumber: 612,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                             placeholder: "예: 지하 3층 주차장, 발렛파킹 가능",
-                                                            defaultValue: selectedItem && 'parkingInfo' in selectedItem ? selectedItem.parkingInfo || '' : ''
+                                                            value: formData.parkingInfo || '',
+                                                            onChange: (e)=>setFormData({
+                                                                    ...formData,
+                                                                    parkingInfo: e.target.value
+                                                                })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 540,
+                                                            lineNumber: 613,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 538,
+                                                    lineNumber: 611,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2769,33 +3222,37 @@ function MastersSettingsPage() {
                                                             children: "메모"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 547,
+                                                            lineNumber: 621,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                             placeholder: "예: 천장 높이 5m, 자연광 우수",
-                                                            defaultValue: selectedItem && 'notes' in selectedItem ? selectedItem.notes || '' : ''
+                                                            value: formData.notes || '',
+                                                            onChange: (e)=>setFormData({
+                                                                    ...formData,
+                                                                    notes: e.target.value
+                                                                })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 548,
+                                                            lineNumber: 622,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 546,
+                                                    lineNumber: 620,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                            lineNumber: 464,
+                                            lineNumber: 528,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 458,
+                                    lineNumber: 522,
                                     columnNumber: 15
                                 }, this) : // Partner Form
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2807,12 +3264,12 @@ function MastersSettingsPage() {
                                                 children: "기본 정보"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                lineNumber: 559,
+                                                lineNumber: 634,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                            lineNumber: 558,
+                                            lineNumber: 633,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2833,27 +3290,31 @@ function MastersSettingsPage() {
                                                                             children: "*"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 567,
+                                                                            lineNumber: 642,
                                                                             columnNumber: 30
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 566,
+                                                                    lineNumber: 641,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                                     placeholder: "예: 프리미엄 메이크업샵",
-                                                                    defaultValue: selectedItem && 'name' in selectedItem ? selectedItem.name : ''
+                                                                    value: formData.name || '',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            name: e.target.value
+                                                                        })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 569,
+                                                                    lineNumber: 644,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 565,
+                                                            lineNumber: 640,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2868,25 +3329,29 @@ function MastersSettingsPage() {
                                                                             children: "*"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 576,
+                                                                            lineNumber: 652,
                                                                             columnNumber: 28
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 575,
+                                                                    lineNumber: 651,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                                                                     className: "w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-                                                                    defaultValue: selectedItem && 'type' in selectedItem ? selectedItem.type : 'makeup',
+                                                                    value: formData.type || 'makeup',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            type: e.target.value
+                                                                        }),
                                                                     children: [
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                             value: "makeup",
                                                                             children: "메이크업"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 582,
+                                                                            lineNumber: 659,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2894,7 +3359,7 @@ function MastersSettingsPage() {
                                                                             children: "드레스"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 583,
+                                                                            lineNumber: 660,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2902,7 +3367,7 @@ function MastersSettingsPage() {
                                                                             children: "스튜디오"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 584,
+                                                                            lineNumber: 661,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2910,7 +3375,7 @@ function MastersSettingsPage() {
                                                                             children: "플래너"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 585,
+                                                                            lineNumber: 662,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2918,7 +3383,7 @@ function MastersSettingsPage() {
                                                                             children: "플로리스트"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 586,
+                                                                            lineNumber: 663,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2926,25 +3391,25 @@ function MastersSettingsPage() {
                                                                             children: "기타"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 587,
+                                                                            lineNumber: 664,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 578,
+                                                                    lineNumber: 654,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 574,
+                                                            lineNumber: 650,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 564,
+                                                    lineNumber: 639,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2960,7 +3425,7 @@ function MastersSettingsPage() {
                                                                             className: "h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 595,
+                                                                            lineNumber: 672,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         "담당자명 ",
@@ -2969,27 +3434,31 @@ function MastersSettingsPage() {
                                                                             children: "*"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 596,
+                                                                            lineNumber: 673,
                                                                             columnNumber: 30
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 594,
+                                                                    lineNumber: 671,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                                     placeholder: "예: 김미연",
-                                                                    defaultValue: selectedItem && 'contactPerson' in selectedItem ? selectedItem.contactPerson : ''
+                                                                    value: formData.contactPerson || '',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            contactPerson: e.target.value
+                                                                        })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 598,
+                                                                    lineNumber: 675,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 593,
+                                                            lineNumber: 670,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3002,7 +3471,7 @@ function MastersSettingsPage() {
                                                                             className: "h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 605,
+                                                                            lineNumber: 683,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         "연락처 ",
@@ -3011,33 +3480,37 @@ function MastersSettingsPage() {
                                                                             children: "*"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 606,
+                                                                            lineNumber: 684,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 604,
+                                                                    lineNumber: 682,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                                     placeholder: "010-1234-5678",
-                                                                    defaultValue: selectedItem && 'phone' in selectedItem ? selectedItem.phone : ''
+                                                                    value: formData.phone || '',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            phone: e.target.value
+                                                                        })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 608,
+                                                                    lineNumber: 686,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 603,
+                                                            lineNumber: 681,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 592,
+                                                    lineNumber: 669,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3050,7 +3523,7 @@ function MastersSettingsPage() {
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 617,
+                                                                    lineNumber: 696,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 "이메일 ",
@@ -3059,28 +3532,32 @@ function MastersSettingsPage() {
                                                                     children: "*"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 618,
+                                                                    lineNumber: 697,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 616,
+                                                            lineNumber: 695,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                             type: "email",
                                                             placeholder: "example@email.com",
-                                                            defaultValue: selectedItem && 'email' in selectedItem ? selectedItem.email : ''
+                                                            value: formData.email || '',
+                                                            onChange: (e)=>setFormData({
+                                                                    ...formData,
+                                                                    email: e.target.value
+                                                                })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 620,
+                                                            lineNumber: 699,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 615,
+                                                    lineNumber: 694,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3093,28 +3570,32 @@ function MastersSettingsPage() {
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 629,
+                                                                    lineNumber: 709,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 "주소"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 628,
+                                                            lineNumber: 708,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                             placeholder: "예: 서울시 강남구 압구정로 456",
-                                                            defaultValue: selectedItem && 'address' in selectedItem ? selectedItem.address || '' : ''
+                                                            value: formData.address || '',
+                                                            onChange: (e)=>setFormData({
+                                                                    ...formData,
+                                                                    address: e.target.value
+                                                                })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 632,
+                                                            lineNumber: 712,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 627,
+                                                    lineNumber: 707,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3130,28 +3611,32 @@ function MastersSettingsPage() {
                                                                             className: "h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 641,
+                                                                            lineNumber: 722,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         "웹사이트"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 640,
+                                                                    lineNumber: 721,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                                     placeholder: "https://example.com",
-                                                                    defaultValue: selectedItem && 'website' in selectedItem ? selectedItem.website || '' : ''
+                                                                    value: formData.website || '',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            website: e.target.value
+                                                                        })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 644,
+                                                                    lineNumber: 725,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 639,
+                                                            lineNumber: 720,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3164,35 +3649,39 @@ function MastersSettingsPage() {
                                                                             className: "h-3 w-3"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                            lineNumber: 651,
+                                                                            lineNumber: 733,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         "수수료율 (%)"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 650,
+                                                                    lineNumber: 732,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                                     type: "number",
                                                                     placeholder: "15",
-                                                                    defaultValue: selectedItem && 'commissionRate' in selectedItem ? selectedItem.commissionRate || '' : ''
+                                                                    value: formData.commissionRate || '',
+                                                                    onChange: (e)=>setFormData({
+                                                                            ...formData,
+                                                                            commissionRate: e.target.value
+                                                                        })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 654,
+                                                                    lineNumber: 736,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 649,
+                                                            lineNumber: 731,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 638,
+                                                    lineNumber: 719,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3207,25 +3696,29 @@ function MastersSettingsPage() {
                                                                     children: "*"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 664,
+                                                                    lineNumber: 747,
                                                                     columnNumber: 26
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 663,
+                                                            lineNumber: 746,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                                                             className: "w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-                                                            defaultValue: selectedItem && 'isActive' in selectedItem ? String(selectedItem.isActive) : 'true',
+                                                            value: String(formData.isActive !== undefined ? formData.isActive : true),
+                                                            onChange: (e)=>setFormData({
+                                                                    ...formData,
+                                                                    isActive: e.target.value === 'true'
+                                                                }),
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                     value: "true",
                                                                     children: "활성"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 670,
+                                                                    lineNumber: 754,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -3233,19 +3726,19 @@ function MastersSettingsPage() {
                                                                     children: "비활성"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                    lineNumber: 671,
+                                                                    lineNumber: 755,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 666,
+                                                            lineNumber: 749,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 662,
+                                                    lineNumber: 745,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3256,33 +3749,37 @@ function MastersSettingsPage() {
                                                             children: "메모"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 676,
+                                                            lineNumber: 760,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                             placeholder: "예: 웨딩 전문, 출장 가능",
-                                                            defaultValue: selectedItem && 'notes' in selectedItem ? selectedItem.notes || '' : ''
+                                                            value: formData.notes || '',
+                                                            onChange: (e)=>setFormData({
+                                                                    ...formData,
+                                                                    notes: e.target.value
+                                                                })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 677,
+                                                            lineNumber: 761,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 675,
+                                                    lineNumber: 759,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                            lineNumber: 563,
+                                            lineNumber: 638,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 557,
+                                    lineNumber: 632,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -3297,7 +3794,7 @@ function MastersSettingsPage() {
                                                     children: "💡"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 690,
+                                                    lineNumber: 775,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3308,7 +3805,7 @@ function MastersSettingsPage() {
                                                             children: "작성 팁"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 692,
+                                                            lineNumber: 777,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -3319,21 +3816,21 @@ function MastersSettingsPage() {
                                                                         children: "• 정확한 주소와 연락처를 입력해주세요"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                        lineNumber: 696,
+                                                                        lineNumber: 781,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                         children: '• 홀 정보는 "(홀명 (수용인원))" 형식으로 입력하세요'
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                        lineNumber: 697,
+                                                                        lineNumber: 782,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                         children: "• 주차 정보는 고객에게 중요한 정보입니다"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                        lineNumber: 698,
+                                                                        lineNumber: 783,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
@@ -3343,56 +3840,56 @@ function MastersSettingsPage() {
                                                                         children: "• 담당자 연락처는 실시간 연락 가능한 번호를 입력하세요"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                        lineNumber: 702,
+                                                                        lineNumber: 787,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                         children: "• 수수료율은 정확히 입력하여 계산 오류를 방지하세요"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                        lineNumber: 703,
+                                                                        lineNumber: 788,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                         children: "• 웹사이트는 고객에게 추가 정보 제공에 유용합니다"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                                        lineNumber: 704,
+                                                                        lineNumber: 789,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                            lineNumber: 693,
+                                                            lineNumber: 778,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                                    lineNumber: 691,
+                                                    lineNumber: 776,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                            lineNumber: 689,
+                                            lineNumber: 774,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                        lineNumber: 688,
+                                        lineNumber: 773,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 687,
+                                    lineNumber: 772,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                            lineNumber: 455,
+                            lineNumber: 519,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3405,7 +3902,7 @@ function MastersSettingsPage() {
                                     children: "취소"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 715,
+                                    lineNumber: 800,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3416,41 +3913,41 @@ function MastersSettingsPage() {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                            lineNumber: 719,
+                                            lineNumber: 804,
                                             columnNumber: 15
                                         }, this),
                                         drawerMode === 'create' ? '생성' : '저장'
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                                    lineNumber: 718,
+                                    lineNumber: 803,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                            lineNumber: 714,
+                            lineNumber: 799,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                    lineNumber: 433,
+                    lineNumber: 497,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-                lineNumber: 432,
+                lineNumber: 496,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/(admin)/admin/settings/masters/page.tsx",
-        lineNumber: 119,
+        lineNumber: 175,
         columnNumber: 5
     }, this);
 }
-_s(MastersSettingsPage, "mmFOErLuIq08xGJL7cCWVH64Eko=");
+_s(MastersSettingsPage, "HQJPbqYOApawZMFuBcw8jH47frY=");
 _c = MastersSettingsPage;
 var _c;
 __turbopack_context__.k.register(_c, "MastersSettingsPage");

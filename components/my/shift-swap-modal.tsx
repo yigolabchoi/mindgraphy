@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import type { MySchedule } from '@/lib/mock/me'
-import { mockPhotographers } from '@/lib/mock/schedules'
+import { mockSchedulePhotographers } from '@/lib/mock/schedules'
 import { Calendar, MapPin, Clock, User } from 'lucide-react'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
@@ -42,7 +42,7 @@ export function ShiftSwapModal({ open, onOpenChange, schedule, onSubmit }: Shift
   if (!schedule) return null
 
   // Exclude current photographer
-  const availablePhotographers = mockPhotographers.filter(p => p.id !== 'photo-1')
+  const availablePhotographers = mockSchedulePhotographers.filter(p => p.id !== 'photo-1')
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

@@ -5,6 +5,7 @@ import { AdminNav } from './admin-nav'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -31,12 +32,12 @@ export function AdminLayout({ children, align = 'center' }: AdminLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Mobile Header with Menu Button */}
-        <header className="lg:hidden flex items-center justify-between h-14 px-4 border-b bg-white sticky top-0 z-10">
+        <header className="lg:hidden flex items-center justify-between h-14 px-4 border-b bg-white sticky top-0 z-10 shadow-sm">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setMobileMenuOpen(true)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 focus-ring"
           >
             <Menu className="h-5 w-5" />
           </Button>
@@ -50,8 +51,11 @@ export function AdminLayout({ children, align = 'center' }: AdminLayoutProps) {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto">
-          <div className={align === 'left' ? 'p-4 md:p-6' : 'container mx-auto p-4 md:p-6 max-w-7xl'}>
+        <main className="flex-1 overflow-y-auto bg-zinc-50/50 custom-scrollbar">
+          <div className={cn(
+            align === 'left' ? 'p-4 md:p-6 lg:p-8' : 'container mx-auto p-4 md:p-6 lg:p-8 max-w-7xl',
+            'animate-in fade-in slide-in-from-bottom duration-300'
+          )}>
             {children}
           </div>
         </main>

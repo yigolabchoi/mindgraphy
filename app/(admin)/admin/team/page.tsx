@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import { AdminLayout } from '@/components/layout/admin-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { KPICard, StatusBadge } from '@/components/common'
 import {
   Table,
   TableBody,
@@ -34,13 +34,12 @@ import {
 import {
   mockTeamUsers,
   getRoleLabel,
-  getStatusLabel,
-  getStatusColor,
   formatRelativeTime,
   type TeamUser,
   type TeamUserRole,
   type UserStatus
 } from '@/lib/mock/users'
+import { Badge } from '@/components/ui/badge'
 import {
   Users,
   Plus,
@@ -169,62 +168,43 @@ export default function TeamPage() {
         </div>
 
         {/* KPI Cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">전체 계정</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalUsers}</div>
-              <p className="text-xs text-muted-foreground">
-                전체 팀원 수
-              </p>
-            </CardContent>
-          </Card>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 animate-in fade-in slide-in-from-bottom duration-300">
+          <KPICard
+            title="전체 계정"
+            value={totalUsers}
+            description="전체 팀원 수"
+            icon={Users}
+            onClick={() => {}}
+          />
 
-          <Card className="hover:shadow-md transition-shadow border-green-200 bg-green-50">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">활성 계정</CardTitle>
-              <UserCheck className="h-4 w-4 text-green-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-700">{activeUsers}</div>
-              <p className="text-xs text-green-600">
-                현재 활동중
-              </p>
-            </CardContent>
-          </Card>
+          <KPICard
+            title="활성 계정"
+            value={activeUsers}
+            description="현재 활동중"
+            icon={UserCheck}
+            valueClassName="text-green-700"
+            className="ring-green-200 bg-gradient-to-br from-green-50 to-white"
+          />
 
-          <Card className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">사진작가</CardTitle>
-              <Camera className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{photographers}</div>
-              <p className="text-xs text-muted-foreground">
-                총 작가 수
-              </p>
-            </CardContent>
-          </Card>
+          <KPICard
+            title="사진작가"
+            value={photographers}
+            description="총 작가 수"
+            icon={Camera}
+            onClick={() => {}}
+          />
 
-          <Card className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">평균 평점</CardTitle>
-              <Award className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{avgPhotographerRating.toFixed(1)}</div>
-              <p className="text-xs text-muted-foreground">
-                작가 평점
-              </p>
-            </CardContent>
-          </Card>
+          <KPICard
+            title="평균 평점"
+            value={avgPhotographerRating.toFixed(1)}
+            description="작가 평점"
+            icon={Award}
+            onClick={() => {}}
+          />
         </div>
 
         {/* Filters */}
-        <Card>
+        <Card className="border-0 ring-1 ring-zinc-200/50 shadow-sm animate-in fade-in slide-in-from-bottom duration-500">
           <CardContent className="p-4">
             <div className="grid gap-4 md:grid-cols-3">
               <div className="relative">
@@ -233,7 +213,7 @@ export default function TeamPage() {
                   placeholder="이름 또는 이메일 검색..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9"
+                  className="pl-9 focus-ring"
                 />
               </div>
               
@@ -266,9 +246,9 @@ export default function TeamPage() {
         </Card>
 
         {/* Users Table */}
-        <Card>
+        <Card className="border-0 ring-1 ring-zinc-200/50 shadow-sm animate-in fade-in slide-in-from-bottom duration-700">
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto custom-scrollbar">
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
@@ -324,9 +304,7 @@ export default function TeamPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge className={cn("border", getStatusColor(user.status))}>
-                            {getStatusLabel(user.status)}
-                          </Badge>
+                          <StatusBadge status={user.status} />
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
                           {user.lastLogin ? formatRelativeTime(user.lastLogin) : '-'}

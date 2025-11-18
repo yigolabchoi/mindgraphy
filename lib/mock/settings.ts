@@ -1,39 +1,9 @@
 import { format } from 'date-fns'
+import type { Product, Policy, ContractTemplate, ContractArticle } from '@/lib/types'
 
 // ============================================================
 // PRODUCTS, OPTIONS, POLICIES
 // ============================================================
-
-export interface Product {
-  id: string
-  name: string
-  category: 'SNAP' | 'OPTION'
-  title: string
-  description: string[]
-  albumIncluded: boolean
-  photoCount: number
-  albumPages?: number
-  miniAlbums?: number
-  basePrice: number
-  delivery: {
-    includesWebGallery: boolean
-    includesRawDownload: boolean
-  }
-  isActive: boolean
-  createdAt?: string
-  updatedAt?: string
-}
-
-export interface Policy {
-  id: string
-  name: string
-  type: 'cancellation' | 'refund' | 'usage' | 'privacy'
-  version: string
-  content: string
-  effectiveDate: string
-  isActive: boolean
-  createdAt: string
-}
 
 // ============================================================
 // BASE PRODUCTS (본식스냅 상품)
@@ -132,6 +102,237 @@ export const baseProducts: Product[] = [
     albumIncluded: false,
     photoCount: 60,
     basePrice: 930000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  }
+]
+
+// ============================================================
+// HANBOK & CASUAL PRODUCTS
+// ============================================================
+
+export const hanbokProducts: Product[] = [
+  {
+    id: 'hanbok-a1',
+    name: 'A-1',
+    category: 'SNAP',
+    title: '야외 촬영 기본',
+    description: [
+      '1인 작가 진행',
+      '3시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+      '장소 한 곳에서 촬영 진행 (장소 비용 별도)',
+      '의상 한 가지 컨셉',
+      '최종본 20장 (고객셀렉, 세부보정)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 20,
+    basePrice: 800000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  },
+  {
+    id: 'hanbok-a2',
+    name: 'A-2',
+    category: 'SNAP',
+    title: '야외 촬영 추가',
+    description: [
+      '1인 작가 진행',
+      '4시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+      '장소 두 곳에서 촬영 진행 (장소 비용 별도)',
+      '의상 두 가지 컨셉',
+      '최종본 35장 (고객셀렉, 세부보정)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 35,
+    basePrice: 1150000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  },
+  {
+    id: 'hanbok-b1',
+    name: 'B-1',
+    category: 'SNAP',
+    title: '야외 촬영 + 실내 스튜디오',
+    description: [
+      '1인 작가 진행',
+      '4시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+      '장소 한 곳 + 실내 스튜디오 촬영',
+      '의상 두 가지 컨셉',
+      '최종본 30장 (고객셀렉, 세부보정)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 30,
+    basePrice: 1200000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  },
+  {
+    id: 'hanbok-b2',
+    name: 'B-2',
+    category: 'SNAP',
+    title: '야외 촬영 + 실내 스튜디오',
+    description: [
+      '1인 작가 진행',
+      '5시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+      '장소 두 곳 + 실내 스튜디오 촬영',
+      '의상 세 가지 컨셉',
+      '최종본 50장 (고객셀렉, 세부보정)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 50,
+    basePrice: 1500000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  },
+  {
+    id: 'hanbok-c1',
+    name: 'C-1',
+    category: 'SNAP',
+    title: '야외 촬영만 + 추가 시간',
+    description: [
+      '1인 작가 진행',
+      '5시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+      '장소 두 곳에서 촬영 진행 (장소 비용 별도)',
+      '의상 두 가지 컨셉',
+      '최종본 40장 (고객셀렉, 세부보정)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 40,
+    basePrice: 1300000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  },
+  {
+    id: 'hanbok-c2',
+    name: 'C-2',
+    category: 'SNAP',
+    title: '야외 촬영 + 실내 + 추가 시간',
+    description: [
+      '1인 작가 진행',
+      '6시간 촬영 진행 (이동, 준비, 모니터링 시간 포함)',
+      '장소 세 곳 + 실내 스튜디오 촬영',
+      '의상 세 가지 컨셉',
+      '최종본 60장 (고객셀렉, 세부보정)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 60,
+    basePrice: 1700000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  },
+  {
+    id: 'hanbok-d1',
+    name: 'D-1',
+    category: 'SNAP',
+    title: '실내(흰색배경) 스튜디오',
+    description: [
+      '1인 작가 진행',
+      '2시간 촬영 진행 (실내 촬영만 진행, 준비 및 모니터링 시간 포함)',
+      '장소 한 곳에서 촬영 진행 (스튜디오 장소금액 포함)',
+      '의상 한 가지 컨셉',
+      '최종본 3장 (고객셀렉, 세부보정)',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 3,
+    basePrice: 500000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  }
+]
+
+// ============================================================
+// DRESS SHOP & BABY PRODUCTS
+// ============================================================
+
+export const dressShopProducts: Product[] = [
+  {
+    id: 'dress-shop-1',
+    name: 'DRESS SHOP',
+    category: 'SNAP',
+    title: '가봉 스냅',
+    description: [
+      '1인 대표작가 촬영 진행',
+      '최종본 10장 (고객셀렉, 세부보정)',
+      '20x16 아크릴 액자 1개',
+      '전체원본 제공'
+    ],
+    albumIncluded: false,
+    photoCount: 10,
+    basePrice: 550000,
+    delivery: { 
+      includesWebGallery: true, 
+      includesRawDownload: true 
+    },
+    isActive: true,
+    createdAt: '2024-01-15',
+    updatedAt: '2024-11-12'
+  }
+]
+
+export const babyProducts: Product[] = [
+  {
+    id: 'baby-1',
+    name: 'BABY',
+    category: 'SNAP',
+    title: '돌스냅 행사 촬영',
+    description: [
+      '2인 (작가 + 작가) 진행',
+      '돌잔치 행사 촬영',
+      '13x10인치 화보앨범 50페이지 1권',
+      '14x14인치 액자 1개',
+      '최종본 50장 (고객셀렉, 세부보정 적용)',
+      '전체원본 제공'
+    ],
+    albumIncluded: true,
+    photoCount: 50,
+    basePrice: 660000,
     delivery: { 
       includesWebGallery: true, 
       includesRawDownload: true 
@@ -269,7 +470,7 @@ export const optionProducts: Product[] = [
     ],
     albumIncluded: false,
     photoCount: 0,
-    basePrice: 110000,
+    basePrice: 55000,
     delivery: { 
       includesWebGallery: false, 
       includesRawDownload: false 
@@ -281,7 +482,7 @@ export const optionProducts: Product[] = [
 ]
 
 // Combined product list for easier access
-export const mockProducts: Product[] = [...baseProducts, ...optionProducts]
+export const mockProducts: Product[] = [...baseProducts, ...hanbokProducts, ...dressShopProducts, ...babyProducts, ...optionProducts]
 
 export const mockPolicies: Policy[] = [
   {
@@ -819,5 +1020,121 @@ export const sampleTemplateVariables = {
   '{downloadPassword}': '1234',
   '{deliveryItems}': '앨범 30P, USB',
   '{surveyUrl}': 'https://mindgraphy.com/survey/123'
+}
+
+// ============================================================
+// CONTRACT
+// ============================================================
+
+export const mockContractTemplate: ContractTemplate = {
+  id: 'contract-template-001',
+  name: '웨딩 촬영 서비스 이용 계약서',
+  version: 'v1.0',
+  title: '웨딩 촬영 서비스 이용 계약서',
+  description: '본 계약서는 마인드그라피(이하 "회사")와 고객 간의 웨딩 촬영 서비스 제공에 관한 계약입니다',
+  articles: [
+    {
+      id: 'article-1',
+      order: 1,
+      title: '제1조 (계약 당사자)',
+      content: [
+        '회사: 마인드그라피',
+        '주소: 서울 성동구 마조로15길 6 1층',
+        '전화: 02-2202-9966',
+        '',
+        '고객: 예식 당사자 (본 계약서 하단 서명자)'
+      ]
+    },
+    {
+      id: 'article-2',
+      order: 2,
+      title: '제2조 (촬영 서비스 내용)',
+      content: [
+        '① 촬영 일시: {weddingDate} {weddingTime}',
+        '② 촬영 장소: {venue}',
+        '③ 선택 상품: {packageName}',
+        '※ 상품 세부 내용은 마인드그라피 상품 안내서를 따릅니다'
+      ]
+    },
+    {
+      id: 'article-3',
+      order: 3,
+      title: '제3조 (계약 금액 및 지불 조건)',
+      content: [
+        '① 총 계약 금액: {totalAmount}',
+        '② 계약금 (선불): {depositAmount}',
+        '③ 잔금: {balanceAmount}',
+        '※ 계약금은 계약 체결 후 7일 이내 입금',
+        '※ 잔금은 촬영일 7일 전까지 입금'
+      ]
+    },
+    {
+      id: 'article-4',
+      order: 4,
+      title: '제4조 (회사의 의무)',
+      content: [
+        '① 회사는 계약된 일시 및 장소에서 성실히 촬영을 진행합니다',
+        '② 회사는 촬영 후 14일 이내에 프루프 사진을 제공합니다',
+        '③ 회사는 고객이 선택한 사진에 대해 세부 보정을 진행합니다',
+        '④ 회사는 최종 결과물을 촬영일로부터 60일 이내에 배송합니다'
+      ]
+    },
+    {
+      id: 'article-5',
+      order: 5,
+      title: '제5조 (고객의 의무)',
+      content: [
+        '① 고객은 계약금 및 잔금을 기한 내에 지불해야 합니다',
+        '② 고객은 촬영 일정 및 장소 변경 시 최소 7일 전에 통보해야 합니다',
+        '③ 고객은 프루프 사진 선택을 14일 이내에 완료해야 합니다',
+        '④ 고객은 촬영에 필요한 정보를 사전 미팅 시 제공해야 합니다'
+      ]
+    },
+    {
+      id: 'article-6',
+      order: 6,
+      title: '제6조 (취소 및 환불 규정)',
+      content: [
+        '① 촬영일 30일 전: 전액 환불',
+        '② 촬영일 14~29일 전: 50% 환불',
+        '③ 촬영일 7~13일 전: 30% 환불',
+        '④ 촬영일 6일 전 이내: 환불 불가',
+        '※ 회사 귀책 사유로 인한 취소는 전액 환불'
+      ]
+    },
+    {
+      id: 'article-7',
+      order: 7,
+      title: '제7조 (저작권 및 초상권)',
+      content: [
+        '① 모든 사진의 저작권은 회사에 귀속됩니다',
+        '② 고객은 개인적 용도로만 사진을 사용할 수 있습니다',
+        '③ 상업적 이용, 재판매, 2차 저작물 제작은 금지됩니다',
+        '④ 회사는 고객의 동의 하에 포트폴리오 및 홍보 목적으로 사진을 사용할 수 있습니다'
+      ]
+    },
+    {
+      id: 'article-8',
+      order: 8,
+      title: '제8조 (불가항력)',
+      content: [
+        '천재지변, 전쟁, 감염병 등 불가항력적 사유로 인해 계약 이행이 불가능한 경우, 양 당사자는 협의하여 일정을 재조정하거나 계약을 해지할 수 있습니다.'
+      ]
+    },
+    {
+      id: 'article-9',
+      order: 9,
+      title: '제9조 (분쟁 해결)',
+      content: [
+        '본 계약과 관련된 분쟁은 상호 협의하여 해결하며, 협의가 이루어지지 않을 경우 회사 소재지 관할 법원에서 해결합니다.'
+      ]
+    }
+  ],
+  footer: '계약 체결일: {contractDate}',
+  importantNotice: '본 계약서는 전자 문서로 작성되었으며, 하단에 성명을 입력하고 "계약 확인 및 동의" 버튼을 클릭하는 것으로 계약이 체결되고 법적 효력이 발생합니다. 계약 체결 후에는 위 취소 및 환불 규정이 적용됩니다.',
+  effectiveDate: '2025-01-01',
+  isActive: true,
+  createdAt: '2025-01-01',
+  updatedAt: '2025-01-01'
 }
 

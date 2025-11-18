@@ -21,13 +21,11 @@ import {
 } from 'lucide-react'
 import {
   mockPosts,
-  getPinnedPosts,
-  getRecentPosts,
   getPostsByCategory,
   type Post,
   type PostCategory
 } from '@/lib/mock/board'
-import { formatDateWithWeekday, getRelativeTime } from '@/lib/utils'
+import { getRelativeTime } from '@/lib/utils'
 import { useAuthStore } from '@/lib/store/auth-store'
 
 const CATEGORY_LABELS: Record<PostCategory, string> = {
@@ -179,7 +177,7 @@ export default function BoardPage() {
         </div>
 
         {/* Category Tabs */}
-        <Tabs value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as any)}>
+        <Tabs value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as typeof selectedCategory)}>
           <TabsList className="w-full justify-start overflow-x-auto">
             <TabsTrigger value="all">전체</TabsTrigger>
             <TabsTrigger value="notice">공지사항</TabsTrigger>

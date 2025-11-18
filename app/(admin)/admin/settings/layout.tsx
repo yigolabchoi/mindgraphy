@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { AdminLayout } from '@/components/layout/admin-layout'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/lib/constants'
-import { Package, Bell, Database } from 'lucide-react'
+import { Package, Database } from 'lucide-react'
 
 const settingsTabs = [
   {
@@ -13,12 +13,6 @@ const settingsTabs = [
     href: ROUTES.ADMIN_SETTINGS_PRODUCTS,
     icon: Package,
     description: '상품, 옵션, 정책 관리'
-  },
-  {
-    name: '알림 관리',
-    href: ROUTES.ADMIN_SETTINGS_NOTIFICATIONS,
-    icon: Bell,
-    description: '템플릿, 발송 스케줄'
   },
   {
     name: '마스터 데이터',
@@ -46,35 +40,39 @@ export default function SettingsLayout({
           </p>
         </div>
 
-        {/* Tabs - Mobile Optimized */}
-        <div className="border-b overflow-x-auto">
-          <nav className="flex space-x-4 md:space-x-8 min-w-max">
-            {settingsTabs.map((tab) => {
-              const isActive = pathname === tab.href
-              const Icon = tab.icon
+        {/* Tabs - Redesigned */}
+        <div className="bg-zinc-100 rounded-lg p-1.5 inline-flex gap-1 animate-in fade-in slide-in-from-bottom duration-300">
+          {settingsTabs.map((tab) => {
+            const isActive = pathname === tab.href
+            const Icon = tab.icon
 
-              return (
-                <Link
-                  key={tab.href}
-                  href={tab.href}
-                  className={cn(
-                    'flex items-center gap-2 border-b-2 pb-3 md:pb-4 text-sm font-medium transition-colors whitespace-nowrap',
-                    isActive
-                      ? 'border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100'
-                      : 'border-transparent text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100'
-                  )}
-                >
-                  <Icon className="h-4 w-4 flex-shrink-0" />
-                  <div className="flex flex-col">
-                    <span>{tab.name}</span>
-                    <span className="text-xs text-muted-foreground hidden md:inline">
-                      {tab.description}
-                    </span>
-                  </div>
-                </Link>
-              )
-            })}
-          </nav>
+            return (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                className={cn(
+                  'flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all duration-200 whitespace-nowrap group',
+                  isActive
+                    ? 'bg-white text-zinc-900 shadow-sm scale-[1.02]'
+                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
+                )}
+              >
+                <Icon className={cn(
+                  "h-4 w-4 flex-shrink-0 transition-transform group-hover:scale-110",
+                  isActive ? "text-zinc-900" : "text-zinc-500"
+                )} />
+                <div className="flex flex-col">
+                  <span>{tab.name}</span>
+                  <span className={cn(
+                    "text-xs hidden lg:inline transition-colors",
+                    isActive ? "text-zinc-600" : "text-zinc-500"
+                  )}>
+                    {tab.description}
+                  </span>
+                </div>
+              </Link>
+            )
+          })}
         </div>
 
         {/* Content */}

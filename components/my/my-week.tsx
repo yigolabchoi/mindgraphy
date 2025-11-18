@@ -7,7 +7,8 @@ import {
   Calendar,
   Clock,
   MapPin,
-  CheckSquare
+  Camera,
+  Tag
 } from 'lucide-react'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
@@ -17,14 +18,25 @@ interface MyWeekProps {
 }
 
 export function MyWeek({ schedule }: MyWeekProps) {
-  // Group schedules by date
-  const schedulesByDate = schedule.reduce((acc, item) => {
-    if (!acc[item.date]) {
-      acc[item.date] = []
+  const getProductTypeLabel = (type: string) => {
+    const labels = {
+      wedding: '일반 웨딩 촬영',
+      hanbok: 'HANBOK & CASUAL',
+      dress_shop: 'DRESS SHOP',
+      baby: 'BABY 돌스냅'
     }
-    acc[item.date].push(item)
-    return acc
-  }, {} as Record<string, MySchedule[]>)
+    return labels[type as keyof typeof labels] || type
+  }
+
+  const getProductTypeBadgeColor = (type: string) => {
+    const colors = {
+      wedding: 'bg-blue-100 text-blue-800 border-blue-200',
+      hanbok: 'bg-purple-100 text-purple-800 border-purple-200',
+      dress_shop: 'bg-pink-100 text-pink-800 border-pink-200',
+      baby: 'bg-green-100 text-green-800 border-green-200'
+    }
+    return colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+  }
 
   return (
     <div className="space-y-6">
@@ -47,10 +59,15 @@ export function MyWeek({ schedule }: MyWeekProps) {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-1">
-                    <CardTitle className="text-lg">{item.title}</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      {format(parseISO(item.date), 'M월 d일 (EEE)', { locale: ko })}
-                    </p>
+                    <CardTitle className="text-lg">{item.groomName} & {item.brideName}</CardTitle>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Badge variant="outline" className={`text-xs ${getProductTypeBadgeColor(item.productType)}`}>
+                        {getProductTypeLabel(item.productType)}
+                      </Badge>
+                      <p className="text-sm text-muted-foreground">
+                        {format(parseISO(item.date), 'M월 d일 (EEE)', { locale: ko })}
+                      </p>
+                    </div>
                   </div>
                   <Badge variant={item.status === 'upcoming' ? 'outline' : 'default'}>
                     {item.status === 'upcoming' ? '예정' : item.status === 'in_progress' ? '진행중' : '완료'}
@@ -64,28 +81,41 @@ export function MyWeek({ schedule }: MyWeekProps) {
                     {item.startTime} - {item.endTime}
                   </span>
                   <span className="text-muted-foreground">·</span>
-                  <span>예식 {item.ceremonyTime}</span>
+                  <span>{item.productType === 'wedding' ? '예식' : '촬영'} {item.weddingTime}</span>
                 </div>
 
-                <div className="flex items-start gap-2 text-sm">
-                  <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                  <span>{item.venueName}</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm">
-                  <CheckSquare className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-muted-foreground">
-                    준비 상태: {item.checklistCompleted}/{item.checklistTotal}
-                  </span>
-                  <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden ml-2">
-                    <div
-                      className="h-full bg-green-500"
-                      style={{
-                        width: `${(item.checklistCompleted / item.checklistTotal) * 100}%`
-                      }}
-                    />
+                {item.venueName && (
+                  <div className="flex items-start gap-2 text-sm">
+                    <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <span>{item.venueName}</span>
                   </div>
-                </div>
+                )}
+
+                {item.photographerNames && item.photographerNames.length > 0 && (
+                  <div className="flex items-start gap-2 text-sm">
+                    <Camera className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-medium">담당 작가:</span>
+                      <span className="text-muted-foreground">
+                        {item.photographerNames.join(', ')}
+                      </span>
+                      <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                        {item.photographerNames.length}명
+                      </Badge>
+                    </div>
+                  </div>
+                )}
+
+                {item.referralSource && (
+                  <div className="flex items-start gap-2 text-sm">
+                    <Tag className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <div>
+                      <span className="text-muted-foreground">유입 경로:</span>
+                      <span className="ml-2 font-medium">{item.referralSource}</span>
+                    </div>
+                  </div>
+                )}
+
               </CardContent>
             </Card>
           ))

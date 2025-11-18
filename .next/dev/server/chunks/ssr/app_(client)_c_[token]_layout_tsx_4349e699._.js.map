@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/hyojoonchoi/Hyojoon%20Drive/Cursor-Project/Proce/mindgraphy/app/%28client%29/c/%5Btoken%5D/layout.tsx"],"sourcesContent":["import { STATIC_TOKENS } from '@/lib/constants'\n\n// Generate static params for all tokens at layout level\nexport async function generateStaticParams() {\n  return STATIC_TOKENS.map((token) => ({\n    token,\n  }))\n}\n\nexport default function TokenLayout({\n  children,\n}: {\n  children: React.ReactNode\n}) {\n  return <>{children}</>\n}\n\n"],"names":[],"mappings":";;;;;;;AAAA;;;AAGO,eAAe;IACpB,OAAO,iIAAa,CAAC,GAAG,CAAC,CAAC,QAAU,CAAC;YACnC;QACF,CAAC;AACH;AAEe,SAAS,YAAY,EAClC,QAAQ,EAGT;IACC,qBAAO;kBAAG;;AACZ","debugId":null}}]
-}

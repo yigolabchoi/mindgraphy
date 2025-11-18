@@ -67,11 +67,11 @@ export function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
   }
 
   return (
-    <div className="flex h-screen w-64 flex-col border-r bg-zinc-50">
+    <div className="flex h-screen w-64 flex-col border-r bg-gradient-to-b from-zinc-50 to-white shadow-sm">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b px-6">
-        <Link href={ROUTES.HOME} className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm">
+      <div className="flex h-16 items-center border-b px-6 bg-white/80 backdrop-blur-sm">
+        <Link href={ROUTES.HOME} className="flex items-center gap-2 group">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm transition-transform group-hover:scale-105">
             M
           </div>
           <span className="text-lg font-semibold">MindGraphy</span>
@@ -79,7 +79,7 @@ export function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
+      <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto custom-scrollbar">
         {navigation.map((item) => {
           // Check if the current path matches this navigation item
           const isActive = pathname === item.href || 
@@ -91,16 +91,17 @@ export function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
               href={item.href}
               onClick={onNavigate}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-zinc-900 text-white'
-                  : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900'
+                  ? 'bg-zinc-900 text-white shadow-md scale-[1.02]'
+                  : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 hover:scale-[1.01]',
+                'focus-ring'
               )}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
               <span className="flex-1">{item.title}</span>
               {item.badge && (
-                <Badge variant="secondary" className="ml-auto">
+                <Badge variant="secondary" className="ml-auto text-xs">
                   {item.badge}
                 </Badge>
               )}
@@ -110,11 +111,11 @@ export function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
       </nav>
 
       {/* User Profile */}
-      <div className="border-t p-4 space-y-3">
+      <div className="border-t p-4 space-y-3 bg-white/50 backdrop-blur-sm">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-colors">
-              <Avatar>
+            <button className="flex items-center gap-3 w-full hover:bg-zinc-100 rounded-lg p-2 transition-all duration-200 hover:shadow-sm focus-ring">
+              <Avatar className="ring-2 ring-white">
                 <AvatarFallback className="bg-zinc-900 text-white text-sm font-medium">
                   {getInitials(user.name)}
                 </AvatarFallback>
@@ -135,18 +136,18 @@ export function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>내 계정</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="focus-ring cursor-pointer">
               <User className="mr-2 h-4 w-4" />
               <span>프로필</span>
             </DropdownMenuItem>
             {user.role === 'admin' && (
-              <DropdownMenuItem onClick={() => router.push('/admin/settings')}>
+              <DropdownMenuItem onClick={() => router.push('/admin/settings')} className="focus-ring cursor-pointer">
                 <Settings className="mr-2 h-4 w-4" />
                 <span>설정</span>
               </DropdownMenuItem>
             )}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+            <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus-ring cursor-pointer">
               <LogOut className="mr-2 h-4 w-4" />
               <span>로그아웃</span>
             </DropdownMenuItem>
